@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida Interattiva all'Allocazione Geografica degli ETF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: L'applicazione è strutturata come un percorso guidato per l'investitore. Inizia con una diagnosi del problema ("La Situazione Attuale"), dove si evidenzia la concentrazione dei portafogli globali standard. Prosegue con la "Prospettiva Storica" per mostrare perché la concentrazione è rischiosa, illustrando la ciclicità dei mercati. La sezione "Strategie Alternative" presenta le soluzioni, confrontando l'approccio standard con quello equal-weight. Il cuore dell'app è la sezione "Portafogli Modello", che consente all'utente di interagire e confrontare visivamente tre approcci concreti. Infine, le "Considerazioni Pratiche" forniscono dettagli essenziali su tasse e valuta. Questa struttura trasforma un report statico in un'esperienza di apprendimento interattiva, facilitando la comprensione e la decisione. -->
+    <!-- Visualization & Content Choices: Report Info: Concentrazione geografica/settoriale -> Goal: Informare -> Viz: Donut Charts -> Interaction: Hover per dettagli -> Justification: Immediata comprensione delle proporzioni. | Report Info: Performance storica regionale -> Goal: Mostrare il cambiamento -> Viz: Line Chart -> Interaction: Hover su punti dati -> Justification: Visualizza efficacemente la ciclicità e la "reversione alla media". | Report Info: Confronto Market-Cap vs Equal-Weight -> Goal: Confrontare -> Viz: Due Donut Charts affiancati -> Interaction: Nessuna, confronto visivo diretto -> Justification: Evidenzia in modo netto la differenza di diversificazione. | Report Info: Portafogli Modello -> Goal: Organizzare e confrontare soluzioni -> Viz: Bar Chart dinamico + Cards -> Interaction: Click sui bottoni per aggiornare il grafico centrale -> Justification: È l'elemento interattivo chiave, permette all'utente di "giocare" con le allocazioni e vedere l'impatto delle scelte. Tutte le visualizzazioni sono realizzate con Chart.js (Canvas) per garantire la conformità ai requisiti. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #383838;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D97706; /* Amber 600 */
+            border-bottom-color: #D97706;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F3F4F6; /* Gray 100 */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .btn-primary {
+            background-color: #F59E0B; /* Amber 500 */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #D97706; /* Amber 600 */
+        }
+        .btn-secondary {
+            background-color: #E5E7EB; /* Gray 200 */
+            color: #374151; /* Gray 700 */
+            transition: background-color 0.3s;
+        }
+        .btn-secondary.active {
+            background-color: #D97706; /* Amber 600 */
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #4B5563; /* Gray 600 */
+            margin-bottom: 1rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4B5563; /* Gray 600 */
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <span class="text-xl font-bold text-amber-600">Investire con Strategia</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#situazione" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Situazione Attuale</a>
+                        <a href="#storia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Prospettiva Storica</a>
+                        <a href="#strategie" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Strategie Alternative</a>
+                        <a href="#portafogli" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Portafogli Modello</a>
+                        <a href="#pratica" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Considerazioni Pratiche</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <section id="situazione" class="py-16 text-center">
+            <h2 class="text-gray-700">La Situazione Attuale: Il Rischio della Concentrazione</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                Un ETF azionario "globale" standard, basato sulla capitalizzazione di mercato, non è così diversificato come sembra. L'investitore sta, di fatto, assumendo una scommessa fortemente concentrata sulla continua sovraperformance del mercato statunitense e del settore tecnologico, che insieme dominano l'indice.
+            </p>
+            <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
+                <div class="card p-6">
+                    <h3 class="text-gray-700">Concentrazione Geografica (MSCI ACWI)</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="geoConcentrationChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-gray-700">Concentrazione Settoriale (MSCI ACWI)</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="sectorConcentrationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="storia" class="py-16">
+            <h2 class="text-center text-gray-700">Prospettiva Storica: La Ruota Gira Sempre</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600 text-center">
+                La storia dei mercati finanziari insegna che la leadership regionale non è permanente. Periodi di eccezionale sovraperformance sono spesso seguiti da periodi di rendimenti inferiori alla media. Scommettere sul vincitore di ieri può essere una strategia rischiosa per il domani.
+            </p>
+            <div class="mt-12 card p-6">
+                <h3 class="text-center text-gray-700">Performance Relativa Regionale (1995-2024)</h3>
+                <p class="text-center text-sm text-gray-500 mb-4">Valore cumulato di 100$ investiti. Evidenzia la ciclicità della leadership.</p>
+                <div class="chart-container h-96 max-h-[500px]">
+                    <canvas id="historicalPerformanceChart"></canvas>
+                </div>
+            </div>
+             <div class="mt-12 card p-6">
+                <h3 class="text-center text-gray-700">Rendimento vs Rischio (ultimi 20 anni)</h3>
+                <p class="text-center text-sm text-gray-500 mb-4">Confronto tra rendimento annualizzato e volatilità.</p>
+                <div class="chart-container h-80 max-h-[400px]">
+                    <canvas id="riskReturnChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="strategie" class="py-16">
+            <h2 class="text-center text-gray-700">Strategie Alternative per una Vera Diversificazione</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600 text-center">
+                Per mitigare il rischio di concentrazione, esistono approcci alternativi alla ponderazione per capitalizzazione. La strategia "Equal Weight" (a peso equo) è una delle più efficaci per ottenere un portafoglio geograficamente e settorialmente più bilanciato.
+            </p>
+            <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center">
+                    <h3 class="text-gray-700">Market-Cap Weight (Standard)</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="marketCapAllocChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-gray-600">Dominato dagli USA (~65%).</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-gray-700">Equal Weight (Alternativa)</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="equalWeightAllocChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-gray-600">Peso USA ridotto (~41%), maggiore equilibrio.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="portafogli" class="py-16">
+            <h2 class="text-center text-gray-700">Costruisci il Tuo Portafoglio: Tre Modelli a Confronto</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600 text-center">
+                Seleziona un modello di portafoglio per visualizzarne l'allocazione geografica e le caratteristiche. Questo strumento ti aiuta a capire l'impatto pratico delle diverse filosofie di investimento.
+            </p>
+            <div class="mt-8 flex justify-center space-x-2 md:space-x-4">
+                <button id="btn-p1" class="portfolio-btn btn-secondary active px-4 py-2 rounded-full font-semibold" onclick="updatePortfolioView('p1')">Baseline Passiva</button>
+                <button id="btn-p2" class="portfolio-btn btn-secondary px-4 py-2 rounded-full font-semibold" onclick="updatePortfolioView('p2')">Diversificato</button>
+                <button id="btn-p3" class="portfolio-btn btn-secondary px-4 py-2 rounded-full font-semibold" onclick="updatePortfolioView('p3')">Ibrido Core-Satellite</button>
+            </div>
+
+            <div class="mt-12 card p-6">
+                <h3 id="portfolio-title" class="text-center text-gray-700">Portafoglio 1: Baseline Passiva</h3>
+                <div class="chart-container h-80 max-h-[400px]">
+                    <canvas id="portfolioAllocationChart"></canvas>
+                </div>
+            </div>
+
+            <div id="portfolio-details" class="mt-8">
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+        
+        <section id="pratica" class="py-16">
+            <h2 class="text-center text-gray-700">Considerazioni Pratiche per l'Investitore Italiano</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600 text-center">
+                Oltre alla strategia, due aspetti sono cruciali per massimizzare i rendimenti netti: la gestione del rischio di cambio e l'efficienza fiscale.
+            </p>
+            <div class="mt-12 grid md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-10 w-10 text-amber-500 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1h4v1h-4zm-4 6H5v1h3v-1zm0 0h.01M12 18h.01M12 18h-1v-1h1v1zm8-2h-1v-1h1v1zm-3-10V5h-1v1h1zM5 7H4v1h1V7zm11 11v-1h-1v1h1z"/></svg>
+                        <h3 class="text-xl font-bold text-gray-700">Rischio di Cambio: Coprire o No?</h3>
+                    </div>
+                    <p class="text-gray-600">Per un investimento azionario a lungo termine, la visione prevalente è di **non coprire il rischio di cambio**. I costi della copertura erodono i rendimenti, mentre l'esposizione a valute come il dollaro USA può agire da diversificatore durante le crisi, ammortizzando le perdite.</p>
+                </div>
+                <div class="card p-8">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-10 w-10 text-amber-500 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <h3 class="text-xl font-bold text-gray-700">Efficienza Fiscale: La Scelta Giusta</h3>
+                    </div>
+                    <p class="text-gray-600">Per l'investitore italiano, la scelta più efficiente è un **ETF UCITS ad accumulazione (Acc)**. Questo permette di reinvestire i dividendi senza tassazione immediata, massimizzando l'interesse composto. L'imposta (26%) è dovuta solo al momento della vendita, sulla plusvalenza totale.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            <p>Questa applicazione è a scopo puramente illustrativo ed educativo. Le informazioni non costituiscono consulenza finanziaria. Investire comporta dei rischi.</p>
+        </div>
+    </footer>
+
+    <script>
+        const chartData = {
+            geoConcentration: {
+                labels: ['Stati Uniti', 'Giappone', 'Regno Unito', 'Cina', 'Francia', 'Altro'],
+                data: [64.9, 4.7, 3.2, 3.0, 2.4, 21.8]
+            },
+            sectorConcentration: {
+                labels: ['Tecnologia', 'Finanziari', 'Industriali', 'Cons. Discrezionali', 'Sanitario', 'Altro'],
+                data: [26.6, 17.6, 10.9, 10.3, 8.5, 26.1]
+            },
+            historical: {
+                labels: Array.from({length: 30}, (_, i) => 1995 + i),
+                datasets: [
+                    { label: 'USA', data: [100,123,164,211,255,232,192,150,192,211,221,257,270,170,209,240,245,284,375,424,420,466,564,536,691,816,1028,843,1054,1150], borderColor: '#3B82F6', tension: 0.1 },
+                    { label: 'Europa', data: [100,115,143,185,192,184,151,104,120,140,172,213,228,123,150,153,147,169,206,217,222,224,271,236,290,278,342,301,343,370], borderColor: '#10B981', tension: 0.1 },
+                    { label: 'Emergenti', data: [100,111,124,74,120,109,105,116,181,221,338,422,603,277,482,569,461,526,510,500,425,465,623,548,641,654,802,658,743,780], borderColor: '#F59E0B', tension: 0.1 }
+                ]
+            },
+            riskReturn: {
+                labels: ['Stati Uniti (S&P 500)', 'Mondo Sviluppato (MSCI World)', 'Europa (MSCI Europe)', 'Mercati Emergenti (MSCI EM)'],
+                cagr: [10.83, 8.47, 7.68, 6.79],
+                volatility: [15.32, 14.37, 15.09, 20.27]
+            },
+            marketCapAlloc: {
+                labels: ['Stati Uniti', 'Giappone', 'Regno Unito', 'Altro'],
+                data: [65, 5, 3, 27]
+            },
+            equalWeightAlloc: {
+                labels: ['Stati Uniti', 'Giappone', 'Canada', 'Regno Unito', 'Altro'],
+                data: [41, 14, 7, 6, 32]
+            },
+            portfolios: {
+                p1: {
+                    title: 'Portafoglio 1: Baseline Passiva',
+                    allocation: { 'Stati Uniti': 65, 'Europa': 15, 'Pacifico': 7, 'Emergenti': 13 },
+                    details: `
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-green-600">Pro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Massima semplicità e costi minimi.</li>
+                                    <li>Nessuna manutenzione richiesta.</li>
+                                    <li>Cattura il momentum del mercato.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-red-600">Contro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Elevata concentrazione su USA/Tecnologia.</li>
+                                    <li>Scommessa implicita contro la reversione alla media.</li>
+                                    <li>Vulnerabile a un decennio di sottoperformance USA.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 bg-white p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">Implementazione Esempio:</h4>
+                            <p class="text-gray-600">100% in iShares MSCI ACWI UCITS ETF (Acc) o Vanguard FTSE All-World UCITS ETF (Acc).</p>
+                        </div>
+                    `
+                },
+                p2: {
+                    title: 'Portafoglio 2: Geograficamente Diversificato',
+                    allocation: { 'Stati Uniti': 45, 'Europa': 25, 'Pacifico': 15, 'Emergenti': 15 },
+                    details: `
+                         <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-green-600">Pro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Diversificazione geografica notevolmente migliorata.</li>
+                                    <li>Riduce il rischio di concentrazione su un singolo paese.</li>
+                                    <li>Disciplina l'investitore a un'esposizione bilanciata.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-red-600">Contro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Richiede ribilanciamento periodico (annuale).</li>
+                                    <li>Costo aggregato potrebbe essere leggermente superiore.</li>
+                                    <li>Potrebbe sottoperformare se il momentum USA continua.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 bg-white p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">Implementazione Esempio:</h4>
+                            <p class="text-gray-600">Mix di ETF regionali: iShares Core S&P 500, iShares MSCI Europe, iShares MSCI Japan, iShares MSCI Emerging Markets IMI (tutti Acc).</p>
+                        </div>
+                    `
+                },
+                p3: {
+                    title: 'Portafoglio 3: Ibrido Core-Satellite',
+                    allocation: { 'Stati Uniti': 60, 'Europa': 13, 'Pacifico': 7, 'Emergenti': 20 },
+                    details: `
+                         <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-green-600">Pro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Cerca di migliorare i rendimenti con view di lungo termine.</li>
+                                    <li>Altamente personalizzabile.</li>
+                                    <li>Combina un nucleo passivo con scommesse tattiche.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-lg text-red-600">Contro</h4>
+                                <ul class="list-disc list-inside mt-2 text-gray-700">
+                                    <li>Più complesso da gestire.</li>
+                                    <li>Richiede fiducia nelle proprie analisi.</li>
+                                    <li>Tracking error significativo rispetto al benchmark.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 bg-white p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">Implementazione Esempio:</h4>
+                            <p class="text-gray-600">70% MSCI ACWI, 15% MSCI Emerging Markets, 15% MSCI World Equal Weight.</p>
+                        </div>
+                    `
+                }
+            }
+        };
+
+        const chartColors = ['#3B82F6', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#6B7280'];
+
+        let portfolioAllocationChart;
+
+        function createDonutChart(ctx, labels, data, title) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: chartColors,
+                        borderColor: '#FDFBF8',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (c) => `${c.label}: ${c.raw.toFixed(1)}%` } }
+                    }
+                }
+            });
+        }
+
+        function createLineChart(ctx, data) {
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: false } },
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        function createBarChart(ctx, labels, datasets, yAxisLabel) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: yAxisLabel }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(2)}%` } }
+                    }
+                }
+            });
+        }
+
+        function updatePortfolioView(portfolioId) {
+            const portfolioData = chartData.portfolios[portfolioId];
+            
+            document.querySelectorAll('.portfolio-btn').forEach(btn => btn.classList.remove('active', 'btn-primary'));
+            document.querySelectorAll('.portfolio-btn').forEach(btn => btn.classList.add('btn-secondary'));
+            
+            const activeBtn = document.getElementById(`btn-${portfolioId}`);
+            activeBtn.classList.add('active', 'btn-primary');
+            activeBtn.classList.remove('btn-secondary');
+
+            document.getElementById('portfolio-title').innerText = portfolioData.title;
+            document.getElementById('portfolio-details').innerHTML = portfolioData.details;
+
+            if (portfolioAllocationChart) {
+                portfolioAllocationChart.data.labels = Object.keys(portfolioData.allocation);
+                portfolioAllocationChart.data.datasets[0].data = Object.values(portfolioData.allocation);
+                portfolioAllocationChart.update();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createDonutChart(document.getElementById('geoConcentrationChart').getContext('2d'), chartData.geoConcentration.labels, chartData.geoConcentration.data);
+            createDonutChart(document.getElementById('sectorConcentrationChart').getContext('2d'), chartData.sectorConcentration.labels, chartData.sectorConcentration.data);
+            
+            createLineChart(document.getElementById('historicalPerformanceChart').getContext('2d'), chartData.historical);
+
+            createBarChart(document.getElementById('riskReturnChart').getContext('2d'), chartData.riskReturn.labels, [
+                { label: 'Rendimento (CAGR)', data: chartData.riskReturn.cagr, backgroundColor: '#3B82F6' },
+                { label: 'Volatilità', data: chartData.riskReturn.volatility, backgroundColor: '#EF4444' }
+            ], 'Percentuale (%)');
+
+            createDonutChart(document.getElementById('marketCapAllocChart').getContext('2d'), chartData.marketCapAlloc.labels, chartData.marketCapAlloc.data);
+            createDonutChart(document.getElementById('equalWeightAllocChart').getContext('2d'), chartData.equalWeightAlloc.labels, chartData.equalWeightAlloc.data);
+
+            const portfolioCtx = document.getElementById('portfolioAllocationChart').getContext('2d');
+            const initialPortfolio = chartData.portfolios.p1;
+            portfolioAllocationChart = new Chart(portfolioCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(initialPortfolio.allocation),
+                    datasets: [{
+                        label: 'Allocazione Geografica (%)',
+                        data: Object.values(initialPortfolio.allocation),
+                        backgroundColor: chartColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'x',
+                    scales: { y: { beginAtZero: true, max: 70, ticks: { callback: (v) => v + '%' } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            updatePortfolioView('p1');
+        });
+    </script>
+</body>
+</html>
