@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida Interattiva ai Diritti dei Genitori 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Ho progettato l'applicazione come una dashboard a singola pagina con navigazione a schede tematiche (Panoramica, Sostegno Economico, Lavoro, Tutele, Fisco). Questa architettura non lineare e orientata al compito permette agli utenti di accedere rapidamente alle informazioni di cui hanno bisogno (es. "quanto mi spetta?") senza dover scorrere contenuti non pertinenti. Il flusso utente parte da una panoramica generale e si dirama in sezioni specializzate, ciascuna con elementi interattivi come grafici e un simulatore, per massimizzare l'usabilità e la comprensione rispetto alla lettura di un report statico. -->
+    <!-- Visualization & Content Choices: 
+        - Assegno Unico: Report Info -> Importi AUU basati su ISEE. Goal -> Confrontare e informare. Viz -> Grafico a barre interattivo (Chart.js) per mostrare la progressività del beneficio. Interaction -> Tooltip su hover. Justification -> Visualizzazione immediata della correlazione ISEE-importo.
+        - Bonus Nido: Report Info -> Tiers di bonus per anno di nascita e ISEE. Goal -> Chiarire la nuova struttura differenziata. Viz -> Grafico a barre raggruppate (Chart.js). Interaction -> Filtro per anno di nascita. Justification -> Rende evidente la differenza di trattamento e il vantaggio per i nuovi nati.
+        - Congedo Parentale: Report Info -> Evoluzione dell'indennità 80%/30%. Goal -> Spiegare la riforma. Viz -> Grafico a barre (Chart.js) che confronta le indennità 2023-2024-2025. Justification -> Traduce una tabella complessa in una visualizzazione chiara e d'impatto.
+        - Simulatore Benefici: Report Info -> Regole di calcolo AUU e Bonus Nido. Goal -> Fornire una stima personalizzata. Method -> Form HTML con input (ISEE, figli) e output dinamico. Interaction -> Calcolo in tempo reale con JS. Justification -> Elemento di massimo engagement e utilità pratica, trasforma i dati da passivi ad attivi.
+        - Tutele e Diritti: Report Info -> Testo legale denso. Goal -> Organizzare e semplificare. Method -> Accordion/Tabs HTML/JS. Interaction -> Click per espandere. Justification -> Evita "muri di testo" e permette una consultazione mirata.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4; 
+            color: #333;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            border-bottom-color: #d97706; /* amber-600 */
+            color: #d97706;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .btn-primary {
+            background-color: #d97706;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #b45309;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-stone-800">Genitori 2025: Guida Interattiva</h1>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#panoramica" class="nav-link font-medium text-stone-600">Panoramica</a>
+                    <a href="#sostegno" class="nav-link font-medium text-stone-600">Sostegno Economico</a>
+                    <a href="#lavoro" class="nav-link font-medium text-stone-600">Lavoro e Congedi</a>
+                    <a href="#tutele" class="nav-link font-medium text-stone-600">Tutele e Diritti</a>
+                    <a href="#fisco" class="nav-link font-medium text-stone-600">Fisco</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="panoramica" class="mb-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-4 text-center">Il Paesaggio della Genitorialità nel 2025</h2>
+            <p class="max-w-3xl mx-auto text-center text-stone-600 mb-10">
+                Il 2025 segna una svolta per le famiglie, con un sistema di aiuti sempre più basato su trasferimenti diretti e legati all'ISEE. L'Assegno Unico si consolida come pilastro centrale, affiancato da nuovi bonus e da una riforma dei congedi pensata per una maggiore equità. Questa guida ti aiuta a navigare le novità.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="card p-6">
+                    <div class="text-5xl text-amber-600 mb-3">📄</div>
+                    <h3 class="text-xl font-semibold mb-2">L'ISEE è la Chiave</h3>
+                    <p class="text-stone-600">L'Indicatore della Situazione Economica Equivalente (ISEE) è diventato il documento indispensabile per accedere alla maggior parte dei bonus e per modularne l'importo. Aggiornarlo è il primo passo fondamentale.</p>
+                </div>
+                <div class="card p-6">
+                    <div class="text-5xl text-amber-600 mb-3">👶</div>
+                    <h3 class="text-xl font-semibold mb-2">Assegno Unico Centrale</h3>
+                    <p class="text-stone-600">L'Assegno Unico e Universale (AUU) sostituisce le vecchie detrazioni per figli under 21, diventando il principale strumento di sostegno economico diretto, con importi variabili e numerose maggiorazioni.</p>
+                </div>
+                <div class="card p-6">
+                    <div class="text-5xl text-amber-600 mb-3">⚖️</div>
+                    <h3 class="text-xl font-semibold mb-2">Equità nei Congedi</h3>
+                    <p class="text-stone-600">La riforma del congedo parentale, con 3 mesi retribuiti all'80%, mira a incentivare un'equa ripartizione dei compiti di cura tra i genitori, promuovendo un ruolo più attivo anche per i padri.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sostegno" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-8 text-center">Sostegno Economico: Bonus e Sussidi</h2>
+            <p class="max-w-3xl mx-auto text-center text-stone-600 mb-12">
+                Questa sezione analizza i principali aiuti economici diretti erogati dall'INPS. Utilizza il simulatore per avere una stima personalizzata e consulta i grafici per capire come variano gli importi.
+            </p>
+            
+            <div class="card p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-semibold mb-4 text-center">Simulatore Benefici 2025</h3>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <div class="mb-4">
+                            <label for="isee" class="block font-medium mb-1">Il tuo ISEE annuo (€)</label>
+                            <input type="number" id="isee" placeholder="Es. 20000" class="w-full p-2 border border-stone-300 rounded-md">
+                        </div>
+                        <div class="mb-4">
+                            <label for="figli" class="block font-medium mb-1">Numero di figli minori (nati prima del 2024)</label>
+                            <input type="number" id="figli" placeholder="Es. 1" value="1" min="0" class="w-full p-2 border border-stone-300 rounded-md">
+                        </div>
+                        <div class="mb-4">
+                            <label for="figli2024" class="block font-medium mb-1">Numero di figli minori (nati dal 1/1/2024)</label>
+                            <input type="number" id="figli2024" placeholder="Es. 0" value="0" min="0" class="w-full p-2 border border-stone-300 rounded-md">
+                        </div>
+                         <div class="mb-4">
+                            <label for="genitoriLavoratori" class="block font-medium mb-1">Entrambi i genitori lavorano?</label>
+                            <select id="genitoriLavoratori" class="w-full p-2 border border-stone-300 rounded-md">
+                                <option value="si">Sì</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bg-stone-50 p-6 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold mb-2">La tua stima mensile</h4>
+                        <p class="text-4xl font-bold text-amber-600 mb-4" id="risultatoAUU">€ 0</p>
+                        <p class="text-stone-600 mb-4">di Assegno Unico Universale</p>
+                        <hr class="my-4">
+                         <h4 class="text-lg font-semibold mb-2">La tua stima annuale</h4>
+                        <p class="text-4xl font-bold text-amber-600" id="risultatoNido">€ 0</p>
+                        <p class="text-stone-600">di Bonus Asilo Nido</p>
+                        <p class="text-xs text-stone-500 mt-4">Nota: la stima è indicativa e non include tutte le maggiorazioni (es. disabilità, madri under 21).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Assegno Unico e Universale (AUU) per ISEE</h3>
+                    <p class="text-sm text-center text-stone-500 mb-4">Importo mensile per un figlio minore, senza maggiorazioni.</p>
+                    <div class="chart-container">
+                        <canvas id="auuChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Bonus Asilo Nido: Confronto Annuale</h3>
+                    <p class="text-sm text-center text-stone-500 mb-4">Importo massimo annuale in base all'anno di nascita del figlio e all'ISEE.</p>
+                    <div class="chart-container">
+                        <canvas id="nidoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lavoro" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-8 text-center">Lavoro e Congedi</h2>
+             <p class="max-w-3xl mx-auto text-center text-stone-600 mb-12">
+                Il sistema dei congedi è stato potenziato per favorire la conciliazione vita-lavoro. Questa sezione illustra i tuoi diritti come genitore lavoratore, con un focus sulla grande novità del congedo parentale.
+            </p>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">Evoluzione Indennità Congedo Parentale</h3>
+                    <p class="text-sm text-center text-stone-500 mb-4">Confronto della retribuzione per i primi mesi di congedo facoltativo.</p>
+                    <div class="chart-container h-[450px]">
+                        <canvas id="congedoChart"></canvas>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-center">I tuoi diritti in sintesi</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg">Congedo di Maternità</h4>
+                            <p class="text-stone-600"><strong>5 mesi</strong> di astensione obbligatoria, retribuiti all'<strong>80%</strong>. Flessibile prima e dopo il parto.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg">Congedo di Paternità</h4>
+                            <p class="text-stone-600"><strong>10 giorni</strong> obbligatori, retribuiti al <strong>100%</strong>, da fruire entro 5 mesi dalla nascita.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg">Congedo Parentale 2025 (Facoltativo)</h4>
+                            <p class="text-stone-600">Fino a 10/11 mesi totali per la coppia. Per chi termina il congedo obbligatorio dal 2025: <strong>3 mesi sono retribuiti all'80%</strong> e 6 mesi al 30%.</p>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg">Divieto di Licenziamento</h4>
+                            <p class="text-stone-600">Tutela assoluta per la madre dalla gravidanza fino a <strong>1 anno</strong> di età del bambino, estesa al padre che fruisce del congedo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tutele" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-8 text-center">Tutele e Diritti Fondamentali</h2>
+            <p class="max-w-3xl mx-auto text-center text-stone-600 mb-12">
+                Oltre al sostegno economico, la legge italiana definisce un quadro di diritti e doveri per proteggere la relazione genitore-figlio e prevede tutele specifiche per situazioni familiari particolari. Clicca su ogni sezione per approfondire.
+            </p>
+            <div class="max-w-3xl mx-auto space-y-2">
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-header w-full text-left p-4 font-semibold text-lg flex justify-between items-center">
+                        <span>Principi: Responsabilità e Bigenitorialità</span>
+                        <span class="arrow text-2xl transform transition-transform">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 border-t border-stone-200 text-stone-700">
+                            <p><strong>Responsabilità Genitoriale:</strong> Sostituisce la vecchia "patria potestà". È un insieme di doveri e diritti esercitati da entrambi i genitori di comune accordo, nell'esclusivo interesse del figlio (art. 316 Codice Civile).</p><br>
+                            <p><strong>Bigenitorialità:</strong> In caso di separazione, è il principio che garantisce al figlio il diritto a un rapporto continuativo ed equilibrato con entrambi i genitori. La regola è l'affidamento condiviso.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-header w-full text-left p-4 font-semibold text-lg flex justify-between items-center">
+                        <span>Genitori di Figli con Disabilità</span>
+                        <span class="arrow text-2xl transform transition-transform">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 border-t border-stone-200 text-stone-700">
+                           <p>Le tutele sono significativamente rafforzate:</p>
+                           <ul class="list-disc pl-5 mt-2 space-y-1">
+                               <li><strong>Assegno Unico:</strong> Riconosciuto senza limiti di età e con maggiorazioni importanti.</li>
+                               <li><strong>Congedo Parentale:</strong> Prolungabile fino a 3 anni.</li>
+                               <li><strong>Permessi Legge 104/1992:</strong> Diritto a permessi lavorativi retribuiti.</li>
+                               <li><strong>Benefici Fiscali:</strong> Detrazioni per figli a carico senza limiti di età e per spese specifiche.</li>
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-header w-full text-left p-4 font-semibold text-lg flex justify-between items-center">
+                        <span>Genitori Adottivi e Affidatari</span>
+                        <span class="arrow text-2xl transform transition-transform">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 border-t border-stone-200 text-stone-700">
+                           <p>La legge garantisce la <strong>piena equiparazione</strong> ai genitori biologici. Tutti i diritti (congedi, permessi, bonus, divieto di licenziamento) si applicano con le stesse modalità. Il termine di decorrenza è la data di "ingresso del minore in famiglia".</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-header w-full text-left p-4 font-semibold text-lg flex justify-between items-center">
+                        <span>Genitori Soli</span>
+                        <span class="arrow text-2xl transform transition-transform">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 border-t border-stone-200 text-stone-700">
+                           <p>Per i nuclei monoparentali sono previste tutele rafforzate:</p>
+                           <ul class="list-disc pl-5 mt-2 space-y-1">
+                               <li><strong>Congedo Parentale Esteso:</strong> Il limite massimo è esteso a <strong>11 mesi</strong> totali.</li>
+                               <li><strong>Indennità Congedo:</strong> 9 mesi sono indennizzati al 30% (oltre ai mesi all'80% previsti dalla nuova riforma).</li>
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fisco" class="scroll-mt-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-8 text-center">Fisco e Tasse: Le Detrazioni 2025</h2>
+            <p class="max-w-3xl mx-auto text-center text-stone-600 mb-12">
+                Con l'introduzione dell'Assegno Unico, il sistema delle detrazioni fiscali è cambiato. Ecco una sintesi chiara di cosa puoi ancora detrarre nella dichiarazione dei redditi 2025 (relativa all'anno 2024).
+            </p>
+            <div class="card p-6 md:p-8">
+                <div class="text-center border-2 border-dashed border-amber-500 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-semibold">La Regola d'Oro dei 21 Anni</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4 items-center">
+                        <div class="text-right pr-4 border-r border-stone-300">
+                            <p class="font-bold text-2xl">Figli &lt; 21 anni</p>
+                            <p class="text-stone-600">Il sostegno è l'<strong>Assegno Unico</strong>. Le detrazioni per figli a carico sono state abolite.</p>
+                        </div>
+                        <div class="text-left pl-4">
+                             <p class="font-bold text-2xl">Figli 21-30 anni</p>
+                            <p class="text-stone-600">Si ha diritto alle <strong>detrazioni IRPEF</strong> per figli a carico (se con reddito entro i limiti).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="text-2xl font-semibold mb-4 text-center">Principali Spese Detraibili al 19%</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-stone-50">
+                            <tr>
+                                <th class="p-3 font-semibold">Tipo di Spesa</th>
+                                <th class="p-3 font-semibold">Limite Massimo di Spesa</th>
+                                <th class="p-3 font-semibold">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3 font-medium">Istruzione (scolastiche)</td>
+                                <td class="p-3">€ 1.000 per figlio</td>
+                                <td class="p-3 text-sm text-stone-600">Novità 2025. Per asili nido, scuole infanzia, primarie e secondarie.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-medium">Attività Sportive</td>
+                                <td class="p-3">€ 210 per figlio</td>
+                                <td class="p-3 text-sm text-stone-600">Per ragazzi tra 5 e 18 anni.</td>
+                            </tr>
+                             <tr class="border-b">
+                                <td class="p-3 font-medium">Università</td>
+                                <td class="p-3">Varia</td>
+                                <td class="p-3 text-sm text-stone-600">Limiti diversi per atenei statali e non statali.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">Spese Sanitarie</td>
+                                <td class="p-3">Nessun limite</td>
+                                <td class="p-3 text-sm text-stone-600">Sulla parte che eccede la franchigia di 129,11 €.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 mt-16">
+        <div class="container mx-auto px-4 py-6 text-center text-sm">
+            <p>&copy; 2025 Guida Interattiva ai Diritti dei Genitori. Le informazioni sono indicative e basate sulla normativa vigente. Si raccomanda di consultare le fonti ufficiali (INPS, Agenzia delle Entrate).</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const iseeInput = document.getElementById('isee');
+    const figliInput = document.getElementById('figli');
+    const figli2024Input = document.getElementById('figli2024');
+    const genitoriLavoratoriSelect = document.getElementById('genitoriLavoratori');
+    const risultatoAUU = document.getElementById('risultatoAUU');
+    const risultatoNido = document.getElementById('risultatoNido');
+
+    function calculateAUU(isee, numFigli, numFigli2024, entrambiLavoratori) {
+        let importoBase = 0;
+        const soglie = [
+            { isee: 17227.33, importo: 201.00, maggiorazioneLavoro: 34.40 },
+            { isee: 20000, importo: 180.00, maggiorazioneLavoro: 30.00 },
+            { isee: 25000, importo: 150.00, maggiorazioneLavoro: 20.00 },
+            { isee: 30000, importo: 120.00, maggiorazioneLavoro: 15.00 },
+            { isee: 35000, importo: 95.00, maggiorazioneLavoro: 10.00 },
+            { isee: 40500, importo: 85.00, maggiorazioneLavoro: 5.00 },
+            { isee: 45939.56, importo: 57.50, maggiorazioneLavoro: 0 },
+        ];
+        
+        const iseeVal = isee || 99999;
+        let importoFiglio = 57.50;
+        let maggiorazioneLavoro = 0;
+
+        for (const soglia of soglie) {
+            if (iseeVal <= soglia.isee) {
+                importoFiglio = soglia.importo;
+                maggiorazioneLavoro = soglia.maggiorazioneLavoro;
+                break;
+            }
+        }
+        
+        let totaleFigli = numFigli + numFigli2024;
+        let importoTotale = (numFigli * importoFiglio) + (numFigli2024 * importoFiglio);
+
+        if (entrambiLavoratori) {
+           importoTotale += maggiorazioneLavoro;
+        }
+        
+        if (numFigli2024 > 0) {
+            importoTotale += (importoFiglio * 0.5) * numFigli2024;
+        }
+
+        if (totaleFigli >= 4) {
+             importoTotale += 150;
+        } else if (totaleFigli === 3) {
+             importoTotale += 80;
+        }
+
+        return importoTotale;
+    }
+
+    function calculateNido(isee, numFigli, numFigli2024) {
+        const iseeVal = isee || 99999;
+        let importoNido = 0;
+
+        if (numFigli > 0) {
+            if (iseeVal <= 25000) importoNido += 3000 * numFigli;
+            else if (iseeVal <= 40000) importoNido += 2500 * numFigli;
+            else importoNido += 1500 * numFigli;
+        }
+        
+        if (numFigli2024 > 0) {
+             if (iseeVal <= 40000) importoNido += 3600 * numFigli2024;
+             else importoNido += 1500 * numFigli2024;
+        }
+        
+        return importoNido;
+    }
+
+    function updateSimulator() {
+        const isee = parseFloat(iseeInput.value) || 0;
+        const figli = parseInt(figliInput.value) || 0;
+        const figli2024 = parseInt(figli2024Input.value) || 0;
+        const entrambiLavoratori = genitoriLavoratoriSelect.value === 'si';
+
+        const auuMensile = calculateAUU(isee, figli, figli2024, entrambiLavoratori);
+        const nidoAnnuale = calculateNido(isee, figli, figli2024);
+
+        risultatoAUU.textContent = `€ ${auuMensile.toFixed(2)}`;
+        risultatoNido.textContent = `€ ${nidoAnnuale.toFixed(2)}`;
+    }
+
+    [iseeInput, figliInput, figli2024Input, genitoriLavoratoriSelect].forEach(el => {
+        el.addEventListener('input', updateSimulator);
+    });
+    
+    updateSimulator();
+
+    const auuData = {
+        labels: ['< 17.2k', '20k', '25k', '30k', '35k', '40.5k', '> 45.9k'],
+        datasets: [{
+            label: 'Importo Mensile per Figlio (€)',
+            data: [201, 180, 150, 120, 95, 85, 57.5],
+            backgroundColor: 'rgba(217, 119, 6, 0.6)',
+            borderColor: 'rgba(217, 119, 6, 1)',
+            borderWidth: 1
+        }]
+    };
+    new Chart(document.getElementById('auuChart'), {
+        type: 'bar',
+        data: auuData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, title: { display: true, text: 'AUU in base a fasce ISEE' } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Euro (€)' } }, x: { title: { display: true, text: 'ISEE Annuo' } } }
+        }
+    });
+
+    const nidoData = {
+        labels: ['ISEE ≤ 25k', 'ISEE 25k-40k', 'ISEE > 40k'],
+        datasets: [
+            {
+                label: 'Nati prima del 2024',
+                data: [3000, 2500, 1500],
+                backgroundColor: 'rgba(107, 114, 128, 0.6)',
+                borderColor: 'rgba(107, 114, 128, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Nati dal 2024',
+                data: [3600, 3600, 1500],
+                backgroundColor: 'rgba(217, 119, 6, 0.6)',
+                borderColor: 'rgba(217, 119, 6, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+    new Chart(document.getElementById('nidoChart'), {
+        type: 'bar',
+        data: nidoData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' }, title: { display: true, text: 'Bonus Nido Annuale per ISEE' } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Euro (€)' } } }
+        }
+    });
+    
+    const congedoData = {
+        labels: ['1° Mese', '2° Mese', '3° Mese'],
+        datasets: [
+             {
+                label: 'Fino al 2023',
+                data: [80, 30, 30],
+                backgroundColor: 'rgba(156, 163, 175, 0.5)',
+                borderColor: 'rgba(156, 163, 175, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Nel 2024',
+                data: [80, 80, 30],
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Dal 2025',
+                data: [80, 80, 80],
+                backgroundColor: 'rgba(217, 119, 6, 0.6)',
+                borderColor: 'rgba(217, 119, 6, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+    new Chart(document.getElementById('congedoChart'), {
+        type: 'bar',
+        data: congedoData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' }, title: { display: true, text: 'Percentuale di Retribuzione' } },
+            scales: { y: { beginAtZero: true, max: 100, ticks: { callback: value => value + '%' } } }
+        }
+    });
+
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        const content = item.querySelector('.accordion-content');
+        const arrow = header.querySelector('.arrow');
+        header.addEventListener('click', () => {
+            const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+            accordionItems.forEach(i => {
+                i.querySelector('.accordion-content').style.maxHeight = '0px';
+                i.querySelector('.arrow').style.transform = 'rotate(0deg)';
+                i.querySelector('.arrow').textContent = '+';
+            });
+            if (!isOpen) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                arrow.style.transform = 'rotate(45deg)';
+                arrow.textContent = '×';
+            }
+        });
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('main section');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 80) {
+                current = section.getAttribute('id');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
