@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografica: Gestione Attiva vs. Passiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues (#003f5c, #374c80, #7a5195, #bc5090, #ef5675, #ff764a, #ffa600) -->
+    <!-- Application Structure Plan: The infographic is structured as a narrative journey. It starts with a high-level hook (The Great Debate), defines the players (Section 1), reveals the critical flaw (Section 2: Costs, with a line chart), presents overwhelming evidence (Section 4: SPIVA data, with a bar chart), debunks the main counter-argument (Section 5: Persistence, with an HTML/CSS diagram), and ends with a clear verdict. This scrollytelling approach is more engaging and persuasive than a simple data dump. -->
+    <!-- Visualization & Content Choices: 1. Cost Impact (Table 1) -> Goal: Change -> Viz: Line Chart -> Justification: Best to show cumulative effect over time -> Library: Chart.js. 2. SPIVA Data (Tables 2 & 3) -> Goal: Compare -> Viz: Bar Chart -> Justification: Excellent for comparing percentages across categories -> Library: Chart.js. 3. Persistence (Table 4) -> Goal: Organize/Inform -> Viz: Custom HTML/CSS Flow Diagram -> Justification: Illustrates the "leaky pipeline" of top performers better than a table -> Method: HTML/CSS with Tailwind. 4. Big Numbers (e.g., 93%) -> Goal: Inform -> Viz: Large text callouts -> Justification: High impact for key stats -> Method: HTML/CSS with Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Slab', serif;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-16">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#003f5c]">La Grande Sfida</h1>
+            <p class="text-xl md:text-2xl mt-4 text-gray-600">Gestione Attiva vs. Gestione Passiva: Chi vince la corsa al rendimento?</p>
+        </header>
+
+        <section id="definitions" class="mb-16">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-[#003f5c]">
+                    <h2 class="text-2xl font-bold text-[#003f5c] mb-3">Gestione Attiva</h2>
+                    <p class="text-lg mb-4"><strong>Obiettivo:</strong> Battere il mercato.</p>
+                    <p>Un team di gestori seleziona attivamente i titoli, cercando di generare un extra-rendimento ("alpha") attraverso analisi e previsioni. Questo comporta costi più elevati.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-[#ffa600]">
+                    <h2 class="text-2xl font-bold text-[#ffa600] mb-3">Gestione Passiva</h2>
+                    <p class="text-lg mb-4"><strong>Obiettivo:</strong> Replicare il mercato.</p>
+                    <p>Uno strumento (ETF) segue fedelmente un indice di riferimento. Un processo automatizzato che garantisce il rendimento del mercato ("beta") a costi minimi.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="costs" class="mb-16 bg-white p-6 md:p-10 rounded-lg shadow-xl">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#003f5c]">Il Fattore Decisivo: I Costi</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Mentre i rendimenti sono incerti, i costi sono una certezza. Una piccola differenza annua si trasforma in un divario enorme nel lungo periodo.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="costImpactChart"></canvas>
+            </div>
+            <div class="text-center mt-6">
+                <p class="text-2xl font-bold text-[#ef5675]">-272.639 €</p>
+                <p class="text-gray-600">Valore perso in 30 anni a causa dei costi più elevati della gestione attiva (1.8% vs 0.2%).</p>
+            </div>
+        </section>
+
+        <section id="spiva" class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#003f5c]">L'Evidenza Empirica: I Dati SPIVA</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">I report SPIVA (S&P Indices Versus Active) dimostrano che la stragrande maggioranza dei fondi attivi non riesce a battere il mercato nel lungo periodo.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                    <div class="chart-container" style="height: 450px;">
+                        <canvas id="spivaChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl font-bold text-[#7a5195]">93.9%</p>
+                        <p class="text-lg mt-2">dei fondi azionari USA ha sottoperformato il proprio benchmark in 15 anni.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl font-bold text-[#bc5090]">97.4%</p>
+                        <p class="text-lg mt-2">dei fondi azionari globali (in EUR) ha sottoperformato il proprio benchmark in 10 anni.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-5xl font-bold text-[#ff764a]">~60%</p>
+                        <p class="text-lg mt-2">dei fondi attivi scompare in 15 anni (*survivorship bias*). La probabilità che un fondo chiuda è maggiore di quella che batta il mercato.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="persistence" class="mb-16 bg-white p-6 md:p-10 rounded-lg shadow-xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#003f5c]">Il Mito del "Gestore Bravo"</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">La performance passata non è un indicatore di successo futuro. L'abilità è rara, la fortuna è casuale. I fondi al top raramente rimangono al top.</p>
+            </div>
+            <div class="relative flex flex-col items-center">
+                <div class="w-full md:w-3/4 bg-blue-100 p-4 rounded-lg text-center shadow">
+                    <h4 class="font-bold text-blue-800">100%</h4>
+                    <p class="text-sm text-blue-700">Fondi nel primo 25% per performance (Anno 1)</p>
+                </div>
+                <div class="h-16 w-1 border-l-4 border-dashed border-[#ffa600]"></div>
+                <div class="absolute top-[60px] right-0 md:right-1/4 text-red-600 font-bold text-lg">-76%</div>
+                <div class="w-full md:w-3/4 bg-blue-100 p-4 rounded-lg text-center shadow">
+                    <h4 class="font-bold text-blue-800">24%</h4>
+                    <p class="text-sm text-blue-700">Rimangono nel primo 25% (Anno 2)</p>
+                </div>
+                <div class="h-16 w-1 border-l-4 border-dashed border-[#ffa600]"></div>
+                 <div class="absolute top-[170px] right-0 md:right-1/4 text-red-600 font-bold text-lg">-100%</div>
+                <div class="w-full md:w-3/4 bg-red-100 p-4 rounded-lg text-center shadow">
+                    <h4 class="font-bold text-red-800">0%</h4>
+                    <p class="text-sm text-red-700">Rimangono nel primo 25% (Anno 3)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="verdict" class="text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-[#003f5c]">Il Verdetto</h2>
+            <div class="max-w-3xl mx-auto mt-6 bg-white p-8 rounded-lg shadow-2xl border-t-8 border-[#003f5c]">
+                <p class="text-xl md:text-2xl text-gray-700">Per la stragrande maggioranza degli investitori, un portafoglio diversificato di **ETF passivi a basso costo** sarebbe stato **significativamente più conveniente e redditizio** di un investimento in fondi attivi.</p>
+                <blockquote class="mt-6 border-l-4 border-gray-300 pl-4 italic text-gray-600">
+                    "Negli investimenti, ottieni ciò per cui non paghi."
+                    <cite class="block not-italic mt-2 font-semibold">- John C. Bogle, Fondatore di Vanguard</cite>
+                </blockquote>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function wrapLabel(str) {
+            const maxLength = 16;
+            if (str.length <= maxLength) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const costImpactCtx = document.getElementById('costImpactChart').getContext('2d');
+            new Chart(costImpactCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 31 }, (_, i) => i),
+                    datasets: [{
+                        label: 'ETF Passivo (0.2% costo)',
+                        data: [100000, 106800, 114054, 121800, 130076, 138923, 148384, 158506, 169339, 180938, 193364, 206684, 220971, 236304, 252769, 270461, 289484, 309952, 331987, 355722, 381302, 408882, 438630, 470724, 505356, 542735, 583084, 626645, 673680, 724465, 779294],
+                        borderColor: '#003f5c',
+                        backgroundColor: 'rgba(0, 63, 92, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Fondo Attivo (1.8% costo)',
+                        data: [100000, 105200, 110670, 116415, 122449, 128786, 135442, 142430, 149766, 157469, 165557, 174051, 182972, 192344, 202189, 212532, 223398, 234815, 246815, 259428, 272688, 286631, 301295, 316722, 332958, 350050, 368048, 387007, 406987, 428055, 450282],
+                        borderColor: '#ef5675',
+                        backgroundColor: 'rgba(239, 86, 117, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: false },
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Anni' } },
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', notation: 'compact' }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const spivaCtx = document.getElementById('spivaChart').getContext('2d');
+            new Chart(spivaCtx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        wrapLabel('All Domestic Equity (USA 15y)'),
+                        wrapLabel('Large-Cap Funds (USA 15y)'),
+                        wrapLabel('Europe Equity (EUR 10y)'),
+                        wrapLabel('Global Equity (EUR 10y)')
+                    ],
+                    datasets: [{
+                        label: '% Sottoperformante',
+                        data: [93.87, 92.33, 93.10, 97.37],
+                        backgroundColor: ['#003f5c', '#374c80', '#7a5195', '#bc5090'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        title: { display: false },
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw.toFixed(2) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            min: 80,
+                            max: 100,
+                            title: { display: true, text: '% Sottoperformante' },
+                            ticks: {
+                                callback: function(value) { return value + '%'; }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
