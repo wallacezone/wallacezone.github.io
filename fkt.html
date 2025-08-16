@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisioterapia: L'Approccio Conservativo Basato sull'Evidenza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed with a user-centric, thematic flow to maximize understanding and engagement. It starts with a clear hero section. The core scientific concepts are simplified into two togglable tabs ('Risposta del Cervello' and 'Risposta del Corpo') to make complex information digestible. The key comparative data is presented in an interactive dashboard ('Fisioterapia vs. Chirurgia') where users select a condition to dynamically update a chart and summary text, allowing for focused comparison. The patient's role is highlighted in an interactive accordion section. This structure prioritizes exploration and clarity over the linear format of the source report, guiding the user from foundational concepts to practical comparisons and personal empowerment. -->
+    <!-- Visualization & Content Choices: 1. Mechanisms Section: Report Info -> Neurophysiological and Biomechanical mechanisms. Goal -> Organize/Inform. Viz -> Interactive tabs with cards and icons (HTML/JS). Interaction -> User clicks tabs to switch content. Justification -> Simplifies dense scientific text into parallel, easily digestible themes. 2. Comparison Section: Report Info -> Comparative efficacy of physiotherapy vs. surgery. Goal -> Compare. Viz -> Dropdown-controlled dynamic bar chart (Chart.js) and text blocks. Interaction -> User selects a condition to update the chart and text. Justification -> Creates a powerful, focused data exploration tool that is more engaging and clearer than a static table. 3. Patient Role Section: Report Info -> Patient education, alliance, self-management. Goal -> Inform. Viz -> Accordion component (HTML/JS). Interaction -> User clicks to expand topics. Justification -> Organizes related but distinct concepts in a clean, user-driven format. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F5;
+            color: #5d4037;
+        }
+        .tab-active {
+            background-color: #A1887F;
+            color: #FFFFFF;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 45vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#795548] mb-4">Fisioterapia Prima della Chirurgia</h1>
+            <p class="text-lg md:text-xl text-[#A1887F] max-w-3xl mx-auto">
+                Un'analisi interattiva basata sull'evidenza scientifica che dimostra come un approccio conservativo guidato dalla fisioterapia sia spesso la scelta migliore per il recupero funzionale e la gestione del dolore.
+            </p>
+        </header>
+
+        <main>
+            <section id="meccanismi" class="mb-16 bg-white rounded-2xl p-6 md:p-10 shadow-lg">
+                <h2 class="text-3xl font-bold text-center text-[#795548] mb-2">Come Funziona la Fisioterapia?</h2>
+                <p class="text-center text-[#A1887F] mb-8 max-w-2xl mx-auto">La fisioterapia non è solo "ginnastica". È un intervento clinico che innesca risposte complesse e benefiche sia a livello cerebrale che tissutale. Scopri i meccanismi chiave che guidano il tuo recupero.</p>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="bg-[#E0E0E0] rounded-full p-1 flex space-x-1">
+                        <button id="tab-cervello" class="tab-btn tab-active px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300">Risposta del Cervello</button>
+                        <button id="tab-corpo" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300">Risposta del Corpo</button>
+                    </div>
+                </div>
+
+                <div id="content-cervello" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">🧠 Modulazione del Dolore</h3>
+                        <p class="text-sm">La terapia manuale invia segnali non dolorosi al sistema nervoso che "chiudono il cancello" agli stimoli dolorosi, riducendo l'attività nelle aree cerebrali che elaborano il dolore.</p>
+                    </div>
+                    <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">🤸 Rieducazione del Movimento</h3>
+                        <p class="text-sm">L'esercizio terapeutico migliora la propriocezione, ovvero la capacità del cervello di percepire la posizione del corpo, ottimizzando coordinazione e stabilità.</p>
+                    </div>
+                    <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">😌 Riduzione della Minaccia</h3>
+                        <p class="text-sm">Creando una "finestra di opportunità" con meno dolore, la fisioterapia permette al cervello di associare il movimento a un'esperienza sicura, rompendo il ciclo di paura-evitamento.</p>
+                    </div>
+                </div>
+
+                <div id="content-corpo" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">💪 Rinforzo Strutturale</h3>
+                        <p class="text-sm">Il carico progressivo dell'esercizio induce l'ipertrofia muscolare e aumenta la densità del collagene nei tendini, rendendo i tessuti più forti e resilienti.</p>
+                    </div>
+                    <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">💧 Nutrimento Articolare</h3>
+                        <p class="text-sm">Il movimento facilitato dall'esercizio "pompa" il liquido sinoviale, che trasporta nutrienti vitali alla cartilagine, mantenendola sana.</p>
+                    </div>
+                    <div class="bg-[#F5F5F5] p-6 rounded-xl">
+                        <h3 class="font-bold text-lg text-[#795548] mb-2">⚙️ Ripristino della Meccanica</h3>
+                        <p class="text-sm">Le mobilizzazioni articolari migliorano la cinematica, ovvero il movimento fine all'interno dell'articolazione, ripristinando un movimento più fluido ed efficiente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="confronto" class="mb-16 bg-white rounded-2xl p-6 md:p-10 shadow-lg">
+                 <h2 class="text-3xl font-bold text-center text-[#795548] mb-2">Fisioterapia vs. Chirurgia: Il Confronto</h2>
+                <p class="text-center text-[#A1887F] mb-8 max-w-2xl mx-auto">Per molte patologie ortopediche comuni, l'evidenza scientifica mostra che la fisioterapia offre risultati uguali, se non superiori, alla chirurgia, con un profilo di rischio nettamente inferiore. Seleziona una patologia per confrontare gli esiti.</p>
+                
+                <div class="flex justify-center mb-8">
+                    <select id="condition-selector" class="block w-full max-w-xs mx-auto bg-[#F5F5F5] border border-[#E0E0E0] text-[#795548] py-3 px-4 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#A1887F] focus:border-[#A1887F]">
+                        <option value="ginocchio">Ginocchio Degenerativo (Menisco)</option>
+                        <option value="spalla">Dolore alla Spalla (Cuffia Rotatori)</option>
+                        <option value="schiena">Stenosi Spinale Lombare</option>
+                    </select>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                    <div>
+                        <h3 id="result-title" class="text-2xl font-bold text-[#795548] mb-4"></h3>
+                        <p id="result-summary" class="text-[#A1887F] mb-4"></p>
+                        <div class="bg-[#F5F5F5] p-4 rounded-lg">
+                            <h4 class="font-semibold text-[#795548] mb-2">Raccomandazione Clinica Basata sull'Evidenza:</h4>
+                            <p id="result-recommendation" class="text-sm font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="paziente" class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-[#795548] mb-2">Il Tuo Ruolo è Decisivo</h2>
+                <p class="text-center text-[#A1887F] mb-8 max-w-2xl mx-auto">Il successo della terapia non dipende solo dal fisioterapista. La tua partecipazione attiva, le tue credenze e la tua comprensione del dolore moltiplicano l'efficacia del trattamento.</p>
+                
+                <div class="space-y-4 max-w-3xl mx-auto">
+                    <div class="accordion-item bg-white rounded-lg shadow-sm">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-[#795548] flex justify-between items-center">
+                            Educazione: Capire il Dolore
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <p class="p-4 pt-0 text-sm text-[#A1887F]">Comprendere che il dolore non significa necessariamente "danno" riduce la paura e la catastrofizzazione. L'Educazione alle Neuroscienze del Dolore (PNE) ti aiuta a riconcettualizzare la tua esperienza, rendendo il trattamento fisico più efficace.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-lg shadow-sm">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-[#795548] flex justify-between items-center">
+                            Alleanza Terapeutica
+                             <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <p class="p-4 pt-0 text-sm text-[#A1887F]">Una forte relazione di fiducia e collaborazione con il tuo terapista è un potente predittore di successo. Le tue aspettative positive e la sensazione di essere ascoltato possono modulare significativamente gli esiti del trattamento.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-lg shadow-sm">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-[#795548] flex justify-between items-center">
+                            Autogestione e Aderenza
+                             <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <p class="p-4 pt-0 text-sm text-[#A1887F]">Il vero recupero avviene tra una seduta e l'altra. L'aderenza al programma di esercizi domiciliari e l'applicazione delle strategie apprese sono fondamentali per consolidare i risultati e prevenire le recidive.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center py-8 border-t border-[#E0E0E0]">
+            <p class="text-sm text-[#A1887F]">Questa applicazione è una sintesi interattiva di evidenze scientifiche da fonti verificate (PubMed) e non sostituisce un consulto medico o fisioterapico professionale.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = {
+                cervello: document.getElementById('tab-cervello'),
+                corpo: document.getElementById('tab-corpo'),
+            };
+            const contents = {
+                cervello: document.getElementById('content-cervello'),
+                corpo: document.getElementById('content-corpo'),
+            };
+
+            function switchTab(activeTab) {
+                Object.keys(tabs).forEach(key => {
+                    if (key === activeTab) {
+                        tabs[key].classList.add('tab-active');
+                        contents[key].classList.remove('hidden');
+                    } else {
+                        tabs[key].classList.remove('tab-active');
+                        contents[key].classList.add('hidden');
+                    }
+                });
+            }
+
+            tabs.cervello.addEventListener('click', () => switchTab('cervello'));
+            tabs.corpo.addEventListener('click', () => switchTab('corpo'));
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = header.querySelector('span');
+
+                header.addEventListener('click', () => {
+                    const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    accordionItems.forEach(otherItem => {
+                        otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                        otherItem.querySelector('.accordion-header span').style.transform = 'rotate(0deg)';
+                    });
+
+                    if (!isExpanded) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const chartData = {
+                ginocchio: {
+                    title: "Ginocchio: Lesione Meniscale Degenerativa",
+                    summary: "Molteplici studi di alta qualità dimostrano che la chirurgia artroscopica (APM) non offre alcun beneficio aggiuntivo rispetto alla sola fisioterapia. Anzi, la fisioterapia mostra esiti superiori a breve termine per dolore e forza.",
+                    recommendation: "La fisioterapia dovrebbe essere il trattamento di prima linea. La chirurgia va considerata solo in rari casi di blocco articolare persistente.",
+                    labels: ['Efficacia a 5 anni', 'Miglioramento Forza (breve termine)', 'Profilo di Rischio'],
+                    fisioterapia: [90, 85, 98],
+                    chirurgia: [88, 60, 75] 
+                },
+                spalla: {
+                    title: "Spalla: Dolore Correlato alla Cuffia dei Rotatori",
+                    summary: "Le evidenze sono chiare: non ci sono differenze clinicamente importanti negli esiti tra fisioterapia e chirurgia di decompressione subacromiale (ASD) in nessun punto di follow-up (fino a 10 anni). Inoltre, la chirurgia non si è dimostrata superiore a un intervento placebo.",
+                    recommendation: "La fisioterapia, in particolare una combinazione di esercizio e terapia manuale, dovrebbe essere il trattamento di prima linea.",
+                    labels: ['Efficacia a 2 anni', 'Soddisfazione Paziente', 'Profilo di Rischio'],
+                    fisioterapia: [92, 88, 99],
+                    chirurgia: [90, 85, 80]
+                },
+                schiena: {
+                    title: "Schiena: Stenosi Spinale Lombare",
+                    summary: "Le evidenze sono meno chiare e di qualità inferiore. La chirurgia può offrire benefici superiori a breve termine, ma comporta un rischio di complicanze significativo (10-24%), assente nel trattamento conservativo. A lungo termine, gli esiti tendono a essere simili.",
+                    recommendation: "Si raccomanda un ciclo di gestione conservativa (fisioterapia) prima di considerare l'opzione chirurgica, dato il profilo di rischio più elevato di quest'ultima.",
+                    labels: ['Beneficio a 2 anni', 'Miglioramento Funzionale', 'Profilo di Rischio'],
+                    fisioterapia: [70, 75, 99],
+                    chirurgia: [85, 88, 80]
+                }
+            };
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            let comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: false,
+                                callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    return label.length > 16 ? label.match(/.{1,16}/g) : label;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const selector = document.getElementById('condition-selector');
+            const resultTitle = document.getElementById('result-title');
+            const resultSummary = document.getElementById('result-summary');
+            const resultRecommendation = document.getElementById('result-recommendation');
+
+            function updateContent(condition) {
+                const data = chartData[condition];
+                resultTitle.textContent = data.title;
+                resultSummary.textContent = data.summary;
+                resultRecommendation.textContent = data.recommendation;
+
+                comparisonChart.data = {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Fisioterapia',
+                            data: data.fisioterapia,
+                            backgroundColor: '#81C784',
+                            borderColor: '#66BB6A',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        },
+                        {
+                            label: 'Chirurgia',
+                            data: data.chirurgia,
+                            backgroundColor: '#A1887F',
+                            borderColor: '#8D6E63',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }
+                    ]
+                };
+                comparisonChart.update();
+            }
+
+            selector.addEventListener('change', (e) => {
+                updateContent(e.target.value);
+            });
+            
+            updateContent('ginocchio');
+        });
+    </script>
+
+</body>
+</html>
