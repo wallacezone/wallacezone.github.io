@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stagionalità Italia & Veneto</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Variabili Colori e Stili --- */
+        :root {
+            --primary-bg: #fdfdfd;
+            --card-bg: #ffffff;
+            --text-color: #343a40;
+            --header-color: #2a4d3a;
+            --shadow-color: rgba(0, 0, 0, 0.07);
+            --border-color: #e9ecef;
+            --accent-fruit: #e55934;
+            --accent-veg: #27ae60;
+            --accent-herbs: #8a6d3b;
+            --accent-veneto: #0077b6;
+            --advice-bg: #eef7ff;
+            --advice-border: #bde0fe;
+        }
+
+        /* --- Reset e Stili Globali --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- Layout Principale --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        #main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--header-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Box Consiglio del Mese --- */
+        .advice-box {
+            background-color: var(--advice-bg);
+            border: 1px solid var(--advice-border);
+            border-left: 5px solid var(--accent-veneto);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0 3rem 0;
+            font-family: 'Source Serif 4', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        .advice-box strong {
+            font-style: normal;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- Sezioni (Frutta, Verdura, Erbe) --- */
+        .season-section {
+            margin-bottom: 3rem;
+        }
+
+        .season-section h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid;
+        }
+
+        #frutta h2 { border-color: var(--accent-fruit); color: var(--accent-fruit); }
+        #verdura h2 { border-color: var(--accent-veg); color: var(--accent-veg); }
+        #erbe h2 { border-color: var(--accent-herbs); color: var(--accent-herbs); }
+
+        /* --- Griglia di Card dei Prodotti --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding-right: 0.5rem;
+        }
+
+        .product-origin {
+            background-color: var(--accent-veneto);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            flex-shrink: 0;
+            cursor: help;
+        }
+
+        .product-status {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #6c757d;
+            text-align: right;
+            margin-top: auto; /* Spinge lo status in basso */
+        }
+
+        /* --- Media Queries per Responsività --- */
+        @media (max-width: 768px) {
+            #main-title { font-size: 2.2rem; }
+            .season-section h2 { font-size: 1.8rem; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 1.5rem 0.75rem; }
+            #main-title { font-size: 1.8rem; }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .product-card { padding: 0.75rem; }
+            .product-name { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1 id="main-title">Caricamento...</h1>
+        </header>
+
+        <div id="advice-container" class="advice-box">
+            </div>
+
+        <main>
+            <section id="frutta" class="season-section">
+                <h2>Frutta</h2>
+                <div id="frutta-container" class="product-grid"></div>
+            </section>
+
+            <section id="verdura" class="season-section">
+                <h2>Verdura</h2>
+                <div id="verdura-container" class="product-grid"></div>
+            </section>
+            
+            <section id="erbe" class="season-section">
+                <h2>Erbe Aromatiche</h2>
+                <div id="erbe-container" class="product-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const seasonalData = {
+                0: { 
+                    mese: 'Gennaio', 
+                    consiglio: "<strong>Consiglio:</strong> Questo è il mese d'elezione del <strong>Radicchio Rosso di Treviso Tardivo IGP</strong>. Il suo sapore amarognolo e la sua croccantezza lo rendono perfetto per un risotto classico o semplicemente grigliato.", 
+                    frutta: [
+                        { nome: 'Arance', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Clementine', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Kiwi', stato: '', origine: 'Italia' }, 
+                        { nome: 'Limoni', stato: '', origine: 'Italia' },
+                        { nome: 'Mandarini', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Mele', stato: 'di conservazione', origine: 'Italia' },
+                        { nome: 'Pere', stato: 'di conservazione', origine: 'Italia' },
+                        { nome: 'Pompelmi', stato: '', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Radicchio di Treviso Tardivo', stato: 'picco', origine: 'Veneto' }, 
+                        { nome: 'Radicchio di Castelfranco', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Cardi', stato: '', origine: 'Italia' }, 
+                        { nome: 'Cavolfiori', stato: '', origine: 'Italia' }, 
+                        { nome: 'Porri', stato: '', origine: 'Italia' },
+                        { nome: 'Broccoli', stato: '', origine: 'Italia' },
+                        { nome: 'Topinambur', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' }, 
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Alloro', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                1: { 
+                    mese: 'Febbraio', 
+                    consiglio: "<strong>Consiglio:</strong> Utilizza i porri e le patate, abbondanti in questo periodo, per creare una vellutata calda e confortante, magari aggiungendo qualche fetta di pancetta croccante.", 
+                    frutta: [
+                        { nome: 'Arance', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Kiwi', stato: '', origine: 'Italia' }, 
+                        { nome: 'Mandarini', stato: 'fine', origine: 'Italia' },
+                        { nome: 'Mele', stato: 'di conservazione', origine: 'Italia' },
+                        { nome: 'Pere', stato: 'di conservazione', origine: 'Italia' },
+                        { nome: 'Pompelmi', stato: 'fine', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Radicchio di Treviso', stato: 'fine', origine: 'Veneto' }, 
+                        { nome: 'Carciofi', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Spinaci', stato: '', origine: 'Italia' },
+                        { nome: 'Bietole', stato: '', origine: 'Italia' },
+                        { nome: 'Cavolfiori', stato: '', origine: 'Italia' },
+                        { nome: 'Finocchi', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' }, 
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Alloro', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                2: { 
+                    mese: 'Marzo', 
+                    consiglio: "<strong>Consiglio:</strong> È il momento di cercare le erbe spontanee come il tarassaco (<em>pisacàn</em> in dialetto veneto). Le sue foglie giovani sono ottime in insalata, mentre quelle più mature si possono cuocere come gli spinaci.", 
+                    frutta: [
+                        { nome: 'Mele', stato: 'fine conservazione', origine: 'Italia' }, 
+                        { nome: 'Pere', stato: 'fine conservazione', origine: 'Italia' },
+                        { nome: 'Kiwi', stato: 'fine', origine: 'Italia' }, 
+                        { nome: 'Arance', stato: 'fine', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Asparagi', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Agretti', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Carciofi', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Tarassaco', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Spinaci', stato: '', origine: 'Italia' },
+                        { nome: 'Cipollotti', stato: 'inizio', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Menta', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Prezzemolo', stato: '', origine: 'Italia' },
+                        { nome: 'Salvia', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                3: { 
+                    mese: 'Aprile', 
+                    consiglio: "<strong>Consiglio:</strong> I <em>bruscandoli</em> (germogli di luppolo selvatico) sono una prelibatezza primaverile. Usali per preparare un risotto delicato o una frittata. Si raccolgono nei campi e lungo le siepi.", 
+                    frutta: [
+                        { nome: 'Fragole', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Nespole', stato: 'inizio', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Asparago Bianco di Bassano DOP', stato: 'picco', origine: 'Veneto' }, 
+                        { nome: 'Asparagi verdi', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Piselli', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Fave', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Bruscandoli', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Patate novelle', stato: '', origine: 'Italia' },
+                        { nome: 'Ravanelli', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Erba cipollina', stato: '', origine: 'Italia' }, 
+                        { nome: 'Menta', stato: '', origine: 'Italia' },
+                        { nome: 'Dragoncello', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                4: { 
+                    mese: 'Maggio', 
+                    consiglio: "<strong>Consiglio:</strong> Questo è il mese d'oro dell'<strong>Asparago Bianco di Bassano DOP</strong>. Provalo nella classica ricetta 'alla bassanese' con uova sode, sale, pepe e un filo d'olio EVO.", 
+                    frutta: [
+                        { nome: 'Ciliege', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Fragole', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Nespole', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Kiwi', stato: 'fine', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Asparagi', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Piselli', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Fave', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Zucchine', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Patate novelle', stato: '', origine: 'Italia' },
+                        { nome: 'Lattuga', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Basilico', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Prezzemolo', stato: '', origine: 'Italia' },
+                        { nome: 'Menta', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                5: { 
+                    mese: 'Giugno', 
+                    consiglio: "<strong>Consiglio:</strong> Le <strong>Ciliegie di Marostica IGP</strong> sono al loro meglio. Oltre a gustarle fresche, prova a farne una confettura casalinga o un clafoutis, un classico dolce francese.", 
+                    frutta: [
+                        { nome: 'Ciliegie di Marostica IGP', stato: 'picco', origine: 'Veneto' }, 
+                        { nome: 'Albicocche', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Pesche', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Meloni', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Fragole', stato: 'fine', origine: 'Italia' },
+                        { nome: 'Susine', stato: 'inizio', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Zucchine', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Pomodori', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Peperoni', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Fagiolini', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Cetrioli', stato: '', origine: 'Italia' },
+                        { nome: 'Aglio fresco', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Basilico', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Origano', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Menta', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                6: { 
+                    mese: 'Luglio', 
+                    consiglio: "<strong>Consiglio:</strong> Con l'abbondanza di pomodori maturi, è il momento ideale per preparare la salsa di pomodoro fatta in casa da conservare per l'inverno. Scegli le varietà da sugo come il San Marzano.", 
+                    frutta: [
+                        { nome: 'Pesche', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Albicocche', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Angurie', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Meloni', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Lamponi', stato: '', origine: 'Italia' },
+                        { nome: 'Mirtilli', stato: '', origine: 'Italia' },
+                        { nome: 'Prugne', stato: '', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Pomodori', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Melanzane', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Peperoni', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Cetrioli', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Fagiolo di Lamon', stato: 'inizio', origine: 'Veneto' },
+                        { nome: 'Zucchine', stato: 'picco', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Basilico', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Menta', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Origano', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Timo', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                7: { 
+                    mese: 'Agosto', 
+                    consiglio: "<strong>Consiglio:</strong> La peperonata è un contorno estivo perfetto. Cuoci lentamente peperoni gialli e rossi con cipolla, aglio e pomodori freschi. È ottima sia calda che fredda.", 
+                    frutta: [
+                        { nome: 'Fichi', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Uva', stato: 'inizio', origine: 'Italia' }, 
+                        { nome: 'Angurie', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Meloni', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Pesche', stato: 'fine', origine: 'Italia' },
+                        { nome: 'Susine', stato: 'picco', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Peperoni', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Pomodori', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Melanzane', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Mais dolce', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Cetrioli', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Cipolle', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Basilico', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Origano', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                8: { 
+                    mese: 'Settembre',
+                    consiglio: "<strong>Consiglio:</strong> Questo è il mese della vendemmia. Cerca l'uva Fragola o l'uva Isabella, varietà locali ottime da mangiare fresche o per preparare la tradizionale marmellata (fragolino).",
+                    frutta: [
+                        { nome: 'Uva da tavola', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Fichi', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Prugne', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Pere', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Mele', stato: 'inizio nuove varietà', origine: 'Italia' },
+                        { nome: 'Giuggiole', stato: 'picco', origine: 'Veneto' }
+                    ],
+                    verdura: [
+                        { nome: 'Zucca', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Funghi Porcini', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Finferli', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Bietole', stato: '', origine: 'Italia' },
+                        { nome: 'Spinaci', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Fagiolo di Lamon', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Pomodori', stato: 'fine', origine: 'Italia' },
+                        { nome: 'Peperoni', stato: 'fine', origine: 'Italia' }
+                    ],
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' },
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Timo', stato: '', origine: 'Italia' },
+                        { nome: 'Basilico', stato: 'fine', origine: 'Italia' }
+                    ]
+                },
+                9: { 
+                    mese: 'Ottobre',
+                    consiglio: "<strong>Consiglio:</strong> La zucca è la regina della tavola. Provala nei classici tortelli, in un risotto cremoso, o semplicemente cotta al forno con rosmarino e un pizzico di sale grosso.",
+                    frutta: [
+                        { nome: 'Mele', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Pere', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Castagne', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Marroni di San Zeno DOP', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Cachi', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Melagrane', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Uva', stato: 'fine', origine: 'Italia' }
+                    ],
+                    verdura: [
+                        { nome: 'Zucca', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Funghi', stato: 'picco', origine: 'Italia' },
+                        { nome: 'Radicchio di Treviso precoce', stato: 'inizio', origine: 'Veneto' },
+                        { nome: 'Porri', stato: '', origine: 'Italia' },
+                        { nome: 'Finocchi', stato: '', origine: 'Italia' },
+                        { nome: 'Cavoli', stato: '', origine: 'Italia' }
+                    ],
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' },
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Alloro', stato: '', origine: 'Italia' }
+                    ]
+                },
+                10: { 
+                    mese: 'Novembre', 
+                    consiglio: "<strong>Consiglio:</strong> È il momento di preparare il 'Radicchio tardivo in saor', una ricetta veneta che abbina il radicchio cotto con cipolle in agrodolce, pinoli e uvetta. Un contorno dal sapore unico.", 
+                    frutta: [
+                        { nome: 'Cachi', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Castagne', stato: 'fine', origine: 'Italia' }, 
+                        { nome: 'Kiwi', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Arance', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Mandarini', stato: 'inizio', origine: 'Italia' },
+                        { nome: 'Mele', stato: 'di conservazione', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Radicchio di Treviso Tardivo', stato: 'inizio', origine: 'Veneto' }, 
+                        { nome: 'Zucca', stato: 'fine', origine: 'Italia' }, 
+                        { nome: 'Cavolo nero', stato: '', origine: 'Italia' }, 
+                        { nome: 'Topinambur', stato: '', origine: 'Italia' },
+                        { nome: 'Cardi', stato: '', origine: 'Italia' },
+                        { nome: 'Finocchi', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' }, 
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' }
+                    ] 
+                },
+                11: { 
+                    mese: 'Dicembre', 
+                    consiglio: "<strong>Consiglio:</strong> Il sedano di Verona, o sedano rapa, è un ortaggio invernale versatile. Grattugiato crudo in insalata o cotto in purè, è un'ottima alternativa alle patate.", 
+                    frutta: [
+                        { nome: 'Arance', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Clementine', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Kiwi', stato: '', origine: 'Italia' },
+                        { nome: 'Mele', stato: 'di conservazione', origine: 'Italia' },
+                        { nome: 'Pere', stato: 'di conservazione', origine: 'Italia' }
+                    ], 
+                    verdura: [
+                        { nome: 'Radicchio di Treviso Tardivo', stato: 'picco', origine: 'Veneto' }, 
+                        { nome: 'Cardi', stato: 'picco', origine: 'Italia' }, 
+                        { nome: 'Sedano di Verona', stato: 'picco', origine: 'Veneto' },
+                        { nome: 'Broccoli', stato: '', origine: 'Italia' },
+                        { nome: 'Cavolfiori', stato: '', origine: 'Italia' }
+                    ], 
+                    erbe: [
+                        { nome: 'Salvia', stato: '', origine: 'Italia' }, 
+                        { nome: 'Rosmarino', stato: '', origine: 'Italia' },
+                        { nome: 'Alloro', stato: '', origine: 'Italia' }
+                    ] 
+                }
+            };
+
+            function populateProducts(containerId, productList) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; 
+                productList.forEach(product => {
+                    let originBadge = '';
+                    if (product.origine === 'Veneto') {
+                        originBadge = `<span class="product-origin" title="Prodotto tipico Veneto">VE</span>`;
+                    }
+                    
+                    let statusInfo = '';
+                    if (product.stato && product.stato.trim() !== '') {
+                        statusInfo = `<div class="product-status">${product.stato}</div>`;
+                    }
+
+                    container.innerHTML += `
+                        <div class="product-card">
+                            <div>
+                                <div class="card-header">
+                                    <span class="product-name">${product.nome}</span>
+                                    ${originBadge}
+                                </div>
+                            </div>
+                            ${statusInfo}
+                        </div>
+                    `;
+                });
+            }
+
+            const now = new Date();
+            const monthIndex = now.getMonth();
+            const currentMonthData = seasonalData[monthIndex];
+
+            document.getElementById('main-title').textContent = `Stagionalità di ${currentMonthData.mese}`;
+            document.getElementById('advice-container').innerHTML = currentMonthData.consiglio;
+            
+            populateProducts('frutta-container', currentMonthData.frutta);
+            populateProducts('verdura-container', currentMonthData.verdura);
+            populateProducts('erbe-container', currentMonthData.erbe);
+        });
+    </script>
+
+</body>
+</html>
