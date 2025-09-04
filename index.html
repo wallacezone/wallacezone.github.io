@@ -68,6 +68,7 @@
             flex-grow: 1;
             width: 100%;
             height: 100%;
+            position: relative; /* Needed for debug view positioning */
         }
 
         /* SVG styling */
@@ -116,6 +117,30 @@
         .context-menu-item:hover {
             background-color: #f0f2f5;
         }
+
+        /* Debug View Styling */
+        .debug-container {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        #debugOutput {
+            width: 300px;
+            height: 150px;
+            font-family: monospace;
+            font-size: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: both;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +158,11 @@
     <!-- Main SVG Container -->
     <div class="tree-container">
         <svg id="tree-svg"></svg>
+        <!-- Debug View -->
+        <div class="debug-container">
+            <button id="debugBtn" class="btn" style="background-color: #f0ad4e;">Mostra Info di Debug</button>
+            <textarea id="debugOutput" readonly placeholder="I dati di debug appariranno qui..."></textarea>
+        </div>
     </div>
 
     <!-- Tooltip Element -->
@@ -161,9 +191,11 @@
         const contextMenu = d3.select("#contextMenu");
         const exportBtn = document.getElementById('exportBtn');
         const importFile = document.getElementById('importFile');
+        const debugBtn = document.getElementById('debugBtn');
+        const debugOutput = document.getElementById('debugOutput');
 
         // --- VERSION INDICATOR ---
-        const version = "v3.2 (Corrected Layout)";
+        const version = "v3.3 (Debug + Stable Layout)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -291,72 +323,59 @@
 
             nodes.forEach(n => n.y = n.depth * (nodeHeight + verticalSpacing) + 50);
 
-            // --- HORIZONTAL POSITIONING (REWRITTEN ALGORITHM) ---
+            // --- HORIZONTAL POSITIONING ---
             const levels = Array.from({ length: maxDepth + 1 }, () => []);
-            nodes.forEach(n => levels[n.depth].push(n));
-            
-            // Position nodes from bottom up to establish children's positions first
+            nodes.forEach(n => {
+                if(levels[n.depth]) levels[n.depth].push(n);
+            });
+
+            // Position nodes from bottom up
             for (let i = maxDepth; i >= 0; i--) {
                 const level = levels[i];
-                const familyUnits = [];
-                const handled = new Set();
+                if (!level) continue;
 
-                // 1. Group nodes into family units (couples or singles)
+                // Set initial target X for each node/couple based on their children
                 level.forEach(n => {
-                    if (handled.has(n.id)) return;
-                    const unit = { nodes: [n], children: n._children };
-                    const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
-                    if (partner && partner.depth === i && !handled.has(partner.id)) {
-                        unit.nodes.push(partner);
-                        unit.children = [...new Set([...unit.children, ...partner._children])];
-                        handled.add(partner.id);
-                    }
-                    familyUnits.push(unit);
-                    handled.add(n.id);
-                });
-
-                // 2. Calculate the desired center for each family unit based on its children's positions
-                familyUnits.forEach(unit => {
-                    if (unit.children.length > 0) {
-                        const childrenNodes = unit.children.map(cid => nodeMap.get(cid)).filter(Boolean);
-                        if(childrenNodes.length > 0) {
-                           unit.targetX = d3.mean(childrenNodes, d => d.x);
-                        } else {
-                           unit.targetX = 0;
-                        }
-                    } else {
-                        unit.targetX = 0; // Default for childless units
+                    const children = getChildren(n);
+                    const partner = getPartners(n)[0];
+                    if (partner && partner.depth === n.depth && n.id < partner.id) {
+                         const familyChildren = [...new Set([...children, ...getChildren(partner)])];
+                         if (familyChildren.length > 0) {
+                             const meanX = d3.mean(familyChildren, c => c.x);
+                             n.targetX = meanX - (nodeWidth + horizontalSpacing) / 2;
+                             partner.targetX = meanX + (nodeWidth + horizontalSpacing) / 2;
+                         }
+                    } else if (children.length > 0 && !partner) {
+                        n.targetX = d3.mean(children, c => c.x);
                     }
                 });
 
-                // 3. Sort family units by their target X position
-                familyUnits.sort((a, b) => a.targetX - b.targetX);
+                // Sort the level by targetX to group families
+                level.sort((a,b) => (a.targetX || a.id) - (b.targetX || b.id));
 
-                // 4. Place units from left to right, resolving overlaps
-                let currentX = 0;
-                familyUnits.forEach((unit, index) => {
-                    const unitWidth = unit.nodes.length * nodeWidth + (unit.nodes.length - 1) * horizontalSpacing;
+                // Place nodes and resolve overlaps with cascading shift
+                level.forEach((n, idx) => {
+                    if (idx === 0) {
+                        n.x = n.targetX || 0;
+                        return;
+                    }
+                    const prevNode = level[idx-1];
+                    const desiredX = prevNode.x + nodeWidth + horizontalSpacing;
                     
-                    if (index > 0) {
-                        const prevUnit = familyUnits[index - 1];
-                        const prevUnitWidth = prevUnit.nodes.length * nodeWidth + (prevUnit.nodes.length - 1) * horizontalSpacing;
-                        currentX = prevUnit.x + prevUnitWidth/2 + horizontalSpacing + unitWidth/2;
-                    } else {
-                        currentX = 0;
-                    }
-                    unit.x = currentX;
-
-                    // Position nodes within the unit
-                    if (unit.nodes.length === 1) {
-                        unit.nodes[0].x = unit.x;
-                    } else {
-                        unit.nodes.sort((a, b) => a.id - b.id); // Consistent ordering
-                        const offset = (nodeWidth + horizontalSpacing) / 2;
-                        unit.nodes[0].x = unit.x - offset;
-                        unit.nodes[1].x = unit.x + offset;
+                    // If the node has a target position, try to respect it, otherwise place it next to previous
+                    const baseX = n.targetX !== undefined ? Math.max(n.targetX, desiredX) : desiredX;
+                    n.x = baseX;
+                    
+                    // Cascade shift if there is still an overlap
+                    if (n.x < desiredX) {
+                        const shift = desiredX - n.x;
+                        for (let k = idx; k < level.length; k++) {
+                            levels[i][k].x += shift;
+                        }
                     }
                 });
             }
+
 
             // Center the whole tree
             if (nodes.length > 0) {
@@ -607,6 +626,22 @@
             reader.readAsText(file);
             event.target.value = ''; 
         });
+
+        debugBtn.addEventListener('click', () => {
+            const cleanNodes = nodes.map(n => ({
+                id: n.id,
+                name: n.name,
+                depth: n.depth,
+                x: n.x,
+                y: n.y,
+                _parents: n._parents,
+                _children: n._children,
+                _partners: n._partners
+            }));
+            const debugInfo = `NODES:\n${JSON.stringify(cleanNodes, null, 2)}\n\nLINKS:\n${JSON.stringify(links, null, 2)}`;
+            debugOutput.value = debugInfo;
+        });
+
 
         // --- INITIALIZE THE APPLICATION ---
         if (nodes.length === 0) {
