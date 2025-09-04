@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.4";
+        const version = "v2.5";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -374,19 +374,26 @@
                 const commonChildren = children1.filter(c => children2.includes(c)).map(cid => nodeMap.get(cid)).filter(Boolean);
 
                 if (commonChildren.length > 0) {
-                    const midX = (p1.x + p2.x) / 2;
+                    const parentMidX = (p1.x + p2.x) / 2;
                     const midY = p1.y + nodeHeight / 2 + verticalSpacing / 2;
                     
+                    // Vertical line from parents' midpoint down to the connection level
                     linkGroup.append('path')
-                         .attr('d', `M${midX},${p1.y} L${midX},${midY}`)
+                         .attr('d', `M${parentMidX},${p1.y + nodeHeight/2} L${parentMidX},${midY}`)
+                         .attr('fill', 'none')
                          .attr('stroke', '#999').attr('stroke-width', 2);
-                    
-                    const minChildX = d3.min(commonChildren, c => c.x);
-                    const maxChildX = d3.max(commonChildren, c => c.x);
+
+                    // Find the full horizontal extent needed for the connection bar
+                    const allX = [parentMidX, ...commonChildren.map(c => c.x)];
+                    const minX = d3.min(allX);
+                    const maxX = d3.max(allX);
+
+                    // The main horizontal bar
                     linkGroup.append('path')
-                        .attr('d', `M${minChildX},${midY} L${maxChildX},${midY}`)
+                        .attr('d', `M${minX},${midY} L${maxX},${midY}`)
                         .attr('stroke', '#999').attr('stroke-width', 2);
 
+                    // Lines from horizontal bar to each child
                     commonChildren.forEach(child => {
                         linkGroup.append('path')
                             .attr('d', `M${child.x},${midY} L${child.x},${child.y - nodeHeight/2}`)
