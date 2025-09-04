@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.6";
+        const version = "v2.8";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -309,7 +309,6 @@
 
                         const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
 
-                        // Case 1: Node is part of a couple.
                         if (partner && partner.depth === i) {
                             const familyChildren = [...new Set([...n._children, ...partner._children])].map(cid => nodeMap.get(cid));
                             
@@ -318,13 +317,11 @@
                                 n.x = meanX - (nodeWidth + horizontalSpacing) / 2;
                                 partner.x = meanX + (nodeWidth + horizontalSpacing) / 2;
                             } else {
-                                // Childless couple: ensure they are adjacent. Overlap resolver will space them.
                                 partner.x = n.x + nodeWidth + horizontalSpacing; 
                             }
                             handled.add(n.id);
                             handled.add(partner.id);
                         } 
-                        // Case 2: Node is single.
                         else {
                             if (n._children.length > 0) {
                                 const childrenNodes = n._children.map(cid => nodeMap.get(cid));
@@ -424,19 +421,9 @@
 
 
         // --- DATA MANIPULATION ---
-        function addPerson(name, sourceNode = null, relationship = null) {
+        function addPerson(name) {
             const newNode = { id: nodeIdCounter++, name: name || "New Person", birth: "", death: "" };
             nodes.push(newNode);
-
-            if (sourceNode && relationship) {
-                if (relationship === 'child') {
-                    links.push({ source: sourceNode.id, target: newNode.id, type: 'parent-child' });
-                } else if (relationship === 'parent') {
-                    links.push({ source: newNode.id, target: sourceNode.id, type: 'parent-child' });
-                } else if (relationship === 'partner') {
-                    links.push({ source: sourceNode.id, target: newNode.id, type: 'partner' });
-                }
-            }
             return newNode;
         }
 
@@ -509,7 +496,9 @@
             const name = prompt("Enter parent's name:");
             if (!name) return;
 
-            const newParent = addPerson(name, selectedNode, 'parent');
+            const newParent = addPerson(name);
+            links.push({ source: newParent.id, target: selectedNode.id, type: 'parent-child' });
+
             const existingParents = getParents(selectedNode).filter(p => p && p.id !== newParent.id);
             if(existingParents.length > 0) {
                  links.push({ source: newParent.id, target: existingParents[0].id, type: 'partner' });
@@ -522,7 +511,9 @@
             const name = prompt("Enter child's name:");
             if(!name) return;
 
-            const newChild = addPerson(name, selectedNode, 'child');
+            const newChild = addPerson(name);
+            links.push({ source: selectedNode.id, target: newChild.id, type: 'parent-child' });
+
             const partners = getPartners(selectedNode);
             if (partners.length > 0) {
                  links.push({ source: partners[0].id, target: newChild.id, type: 'parent-child' });
@@ -535,7 +526,9 @@
             const name = prompt("Enter partner's name:");
             if (!name) return;
             
-            const newPartner = addPerson(name, selectedNode, 'partner');
+            const newPartner = addPerson(name);
+            links.push({ source: selectedNode.id, target: newPartner.id, type: 'partner' });
+
             const children = getChildren(selectedNode);
             children.forEach(child => {
                 const childParents = getParents(child);
@@ -550,14 +543,17 @@
             if (!selectedNode) return;
             const name = prompt("Enter sibling's name:");
             if (!name) return;
-            
-            const newSibling = addPerson(name);
+
             const parents = getParents(selectedNode);
-            parents.forEach(parent => {
-                if (parent) {
+            if (parents.length === 0) {
+                console.warn("Adding a sibling to a node with no parents. The new node will be disconnected.");
+                addPerson(name);
+            } else {
+                const newSibling = addPerson(name);
+                parents.forEach(parent => {
                     links.push({ source: parent.id, target: newSibling.id, type: 'parent-child' });
-                }
-            });
+                });
+            }
             update();
         });
 
@@ -604,15 +600,12 @@
         });
 
         // --- INITIALIZE THE APPLICATION ---
-        function initialize() {
-            if (nodes.length === 0) {
-                const initialNode = { id: nodeIdCounter++, name: "You", birth: "", death: "" };
-                nodes.push(initialNode);
-            }
-            update();
+        if (nodes.length === 0) {
+            const initialNode = { id: nodeIdCounter++, name: "You", birth: "", death: "" };
+            nodes.push(initialNode);
         }
+        update();
 
-        initialize();
     </script>
 </body>
 </html>
