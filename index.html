@@ -1,106 +1,509 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alessandro Barbieri</title>
+    <title>Interactive Family Tree Builder</title>
     <style>
+        /* General body styling for a modern, clean look */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-            background-color: #f6f8fa;
-            color: #24292e;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            color: #333;
         }
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #ffffff;
+
+        /* Header styling */
+        .header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #1c1e21;
+        }
+
+        /* Controls styling for import/export buttons */
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
             border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
         }
-        .profile {
-            text-align: center;
-            margin-bottom: 20px;
+
+        .btn:hover {
+            background-color: #166fe5;
         }
-        .profile img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 1px solid #e1e4e8;
+
+        /* Hide the default file input */
+        input[type="file"] {
+            display: none;
         }
-        .profile h1 {
-            margin: 15px 0;
-            font-size: 2.2em;
+
+        /* Main container for the SVG canvas */
+        .tree-container {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
         }
-        .profile p {
-            color: #586069;
-            font-size: 1.1em;
+
+        /* SVG styling */
+        svg {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
         }
-        .section {
-            margin-bottom: 20px;
+        svg:active {
+            cursor: grabbing;
         }
-        .section-title {
-            font-size: 1.6em;
-            margin-bottom: 10px;
-            color: #24292e;
-            border-bottom: 2px solid #e1e4e8;
-            padding-bottom: 5px;
+
+        /* Tooltip styling */
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            opacity: 0;
         }
-        ul {
-            list-style: none;
-            padding: 0;
+
+        /* Context menu for node actions */
+        .context-menu {
+            position: absolute;
+            visibility: hidden;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            min-width: 120px;
+            z-index: 10;
         }
-        li {
-            margin-bottom: 8px;
-            font-size: 1em;
-            line-height: 1.5;
+
+        .context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
         }
-        a {
-            color: #0366d6;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .navbar {
-            background-color: #24292e;
-            padding: 10px;
-        }
-        .navbar a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .navbar a:hover {
-            text-decoration: underline;
+
+        .context-menu-item:hover {
+            background-color: #f0f2f5;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="profile">
-            <img src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri">
-            <h1>Alessandro Barbieri</h1>
-            Medico Chirurgo Specialista in Ortopedia e Traumatologia
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Family Tree Builder</h1>
+        <div class="controls">
+            <button id="exportBtn" class="btn">Export Tree (JSON)</button>
+            <label for="importFile" class="btn">Import Tree (JSON)</label>
+            <input type="file" id="importFile" accept=".json">
         </div>
-
-        <div class="section experience">
-            <div class="section-title"></div>
-            <ul>
-            <li><a href="diritti_medico_genitore.html">Diritti Genitorialità Medico SSN [Gemini AI]</a></li>
-                <li><a href="diritti_medico_genitore_link.html">Diritti Genitorialità Medico SSN (link utili)</a></li>
-                <li><a href="diritti_genitori.html">Diritti dei Genitori 2025 [Gemini AI]</a></li>
-                <li><a href="equally_weighted.html">Allocazione Geografica Strategica per un Portafoglio Globale di ETF Azionari [Gemini AI]</a></li>
-                <li><a href="etf_vs_fondi.html">Gestione Passiva (ETF) vs. Gestione Attiva (Fondi Comuni) [Gemini AI]</a></li>
-                <li><a href="fkt.html">L'Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica [Gemini AI]</a></li>
-                <li><a href="stagionalita.html">Stagionalità Frutta e Verdura in Italia e in Veneto [Gemini AI]</a></li>
-                <li><a href="interactive_family_tree_builder.html">Interactive Family Tree Builder [Gemini AI]</a></li>
-            </ul>
-        </div>
-
     </div>
+
+    <!-- Main SVG Container -->
+    <div class="tree-container">
+        <svg id="tree-svg"></svg>
+    </div>
+
+    <!-- Tooltip Element -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- Context Menu Element -->
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" id="addParent">Add Parent</div>
+        <div class="context-menu-item" id="addChild">Add Child</div>
+        <div class="context-menu-item" id="addPartner">Add Partner</div>
+        <div class="context-menu-item" id="addSibling">Add Sibling</div>
+        <hr style="margin: 5px 0; border: none; border-top: 1px solid #eee;">
+        <div class="context-menu-item" id="editNode">Edit</div>
+        <div class="context-menu-item" id="deleteNode">Delete</div>
+    </div>
+
+
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+        // --- DOM ELEMENT SELECTION ---
+        const svg = d3.select("#tree-svg");
+        const container = document.querySelector('.tree-container');
+        const tooltip = d3.select("#tooltip");
+        const contextMenu = d3.select("#contextMenu");
+        const exportBtn = document.getElementById('exportBtn');
+        const importFile = document.getElementById('importFile');
+
+        // --- INITIAL SETUP ---
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        let nodes = [];
+        let links = [];
+        let nodeIdCounter = 0;
+        let selectedNode = null;
+
+        // SVG containers for links and nodes
+        const g = svg.append("g");
+        let link = g.append("g").attr("class", "links").selectAll(".link");
+        let node = g.append("g").attr("class", "nodes").selectAll(".node");
+
+        // --- ZOOM & PAN FUNCTIONALITY ---
+        const zoom = d3.zoom().on("zoom", (event) => {
+            g.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+
+        // --- CORE FUNCTIONS ---
+
+        /**
+         * Main update function to re-render the tree.
+         */
+        function update() {
+            // 1. Calculate the layout
+            updateLayout();
+
+            // Node data join
+            node = node.data(nodes, d => d.id)
+                .join(
+                    enter => {
+                        const nodeGroup = enter.append("g")
+                            .attr("class", "node")
+                            .attr("transform", d => `translate(${d.x}, ${d.y})`)
+                            .on("click", handleNodeClick)
+                            .on("mouseover", handleMouseOver)
+                            .on("mouseout", handleMouseOut);
+
+                        nodeGroup.append("rect")
+                            .attr("width", 140)
+                            .attr("height", 50)
+                            .attr("x", -70)
+                            .attr("y", -25)
+                            .attr("rx", 8)
+                            .attr("ry", 8)
+                            .attr("fill", "#fff")
+                            .attr("stroke", "#999")
+                            .attr("stroke-width", 2);
+
+                        nodeGroup.append("text")
+                            .attr("dy", ".35em")
+                            .attr("text-anchor", "middle")
+                            .style("pointer-events", "none")
+                            .style("font-size", "14px")
+                            .text(d => d.name);
+                        
+                        return nodeGroup;
+                    },
+                    update => update.transition().duration(500)
+                                    .attr("transform", d => `translate(${d.x}, ${d.y})`)
+                );
+            
+            node.select("text").text(d => d.name);
+
+            // Link data join
+            link = link.data(links, d => `${d.source.id}-${d.target.id}`)
+                .join(
+                    enter => enter.append("path")
+                        .attr("class", "link")
+                        .attr("fill", "none")
+                        .attr("stroke", d => d.type === 'partner' ? '#aaa' : '#999')
+                        .attr("stroke-width", d => d.type === 'partner' ? 1.5 : 2)
+                        .attr("stroke-dasharray", d => d.type === 'partner' ? "5,5" : "none"),
+                    update => update
+                );
+            
+            // Apply transitions to nodes and links
+            node.transition().duration(500)
+                .attr("transform", d => `translate(${d.x}, ${d.y})`);
+
+            link.transition().duration(500)
+                .attr("d", d => {
+                    const source = nodes.find(n => n.id === d.source);
+                    const target = nodes.find(n => n.id === d.target);
+                    if (d.type === 'partner') {
+                        return `M${source.x},${source.y}L${target.x},${target.y}`;
+                    }
+                    // Use a vertical link generator for parent-child relationships
+                    return d3.linkVertical()({
+                        source: [source.x, source.y],
+                        target: [target.x, target.y]
+                    });
+                });
+        }
+        
+        // --- LAYOUT CALCULATION ---
+        function updateLayout() {
+            if (nodes.length === 0) return;
+
+            const nodeMap = new Map(nodes.map(n => [n.id, n]));
+            
+            // Clear previous relationships
+            nodes.forEach(n => {
+                n._parents = [];
+                n._children = [];
+                n._partners = [];
+                delete n.depth;
+            });
+
+            // Build relationship graph
+            links.forEach(l => {
+                const source = nodeMap.get(l.source);
+                const target = nodeMap.get(l.target);
+                if (!source || !target) return;
+
+                if (l.type === 'parent-child') {
+                    source._children.push(target);
+                    target._parents.push(source);
+                } else if (l.type === 'partner') {
+                    source._partners.push(target);
+                    target._partners.push(source);
+                }
+            });
+
+            // Calculate depth (generation) for each node
+            let maxDepth = 0;
+            const depths = new Map();
+            function getDepth(node) {
+                if (depths.has(node.id)) return depths.get(node.id);
+                if (node._parents.length === 0) {
+                    depths.set(node.id, 0);
+                    return 0;
+                }
+                const parentDepths = node._parents.map(p => getDepth(p));
+                const depth = 1 + Math.max(...parentDepths);
+                depths.set(node.id, depth);
+                if (depth > maxDepth) maxDepth = depth;
+                return depth;
+            }
+            nodes.forEach(n => n.depth = getDepth(n));
+
+            // Position nodes vertically by depth
+            nodes.forEach(n => n.y = n.depth * 120 + 50);
+
+            // Position nodes horizontally
+            const levels = Array.from({ length: maxDepth + 1 }, () => []);
+            nodes.forEach(n => levels[n.depth].push(n));
+            
+            levels.forEach((level, i) => {
+                const levelWidth = level.length * 160;
+                const startX = (width - levelWidth) / 2;
+                level.forEach((n, j) => {
+                    n.x = startX + j * 160 + 80;
+                });
+            });
+
+            // Simple iteration to center children under parents
+            for (let i = 0; i < 3; i++) {
+                for(let d = 1; d <= maxDepth; d++) {
+                    levels[d].forEach(n => {
+                        if (n._parents.length > 0) {
+                           const avgParentX = d3.mean(n._parents, p => p.x);
+                           if (avgParentX) n.x = avgParentX;
+                        }
+                    });
+                }
+                // Resolve overlaps
+                levels.forEach(level => {
+                    for (let j = 0; j < level.length - 1; j++) {
+                        const node1 = level[j];
+                        const node2 = level[j+1];
+                        const gap = node2.x - node1.x;
+                        if (gap < 160) {
+                            const shift = (160 - gap) / 2;
+                            node1.x -= shift;
+                            node2.x += shift;
+                        }
+                    }
+                });
+            }
+        }
+
+        // --- DATA MANIPULATION ---
+        function addPerson(name, sourceNode = null, relationship = null) {
+            const newNode = { id: nodeIdCounter++, name: name || "New Person", birth: "", death: "" };
+            nodes.push(newNode);
+
+            if (sourceNode && relationship) {
+                if (relationship === 'child') {
+                    links.push({ source: sourceNode.id, target: newNode.id, type: 'parent-child' });
+                } else if (relationship === 'parent') {
+                    links.push({ source: newNode.id, target: sourceNode.id, type: 'parent-child' });
+                } else if (relationship === 'partner') {
+                    links.push({ source: sourceNode.id, target: newNode.id, type: 'partner' });
+                }
+            }
+            update();
+            return newNode;
+        }
+
+        function deletePerson(nodeToDelete) {
+            nodes = nodes.filter(d => d.id !== nodeToDelete.id);
+            links = links.filter(l => l.source !== nodeToDelete.id && l.target !== nodeToDelete.id);
+            update();
+        }
+
+        function editPerson(nodeToEdit) {
+            const newName = prompt("Enter new name:", nodeToEdit.name);
+            const newBirth = prompt("Enter birth date:", nodeToEdit.birth);
+            const newDeath = prompt("Enter death date:", nodeToEdit.death);
+
+            if (newName !== null) nodeToEdit.name = newName;
+            if (newBirth !== null) nodeToEdit.birth = newBirth;
+            if (newDeath !== null) nodeToEdit.death = newDeath;
+            
+            update();
+        }
+
+        // --- RELATIONSHIP HELPERS ---
+        const getParents = (node) => links.filter(l => l.target === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.source));
+        const getChildren = (node) => links.filter(l => l.source === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.target));
+        const getPartners = (node) => links.filter(l => l.type === 'partner' && (l.source === node.id || l.target === node.id)).map(l => nodes.find(n => n.id === (l.source === node.id ? l.target : l.source)));
+
+
+        // --- EVENT HANDLERS ---
+        function handleNodeClick(event, d) {
+            event.stopPropagation();
+            selectedNode = d;
+            contextMenu
+                .style("visibility", "visible")
+                .style("top", `${event.pageY}px`)
+                .style("left", `${event.pageX}px`);
+        }
+        
+        d3.select('body').on('click', () => contextMenu.style("visibility", "hidden"));
+
+        function handleMouseOver(event, d) {
+            tooltip
+                .style("visibility", "visible").style("opacity", 1)
+                .style("top", `${event.pageY - 10}px`).style("left", `${event.pageX + 10}px`)
+                .html(`Born: ${d.birth || 'N/A'}<br>Died: ${d.death || 'N/A'}`);
+        }
+
+        function handleMouseOut() {
+            tooltip.style("visibility", "hidden").style("opacity", 0);
+        }
+
+        // --- CONTEXT MENU ACTIONS ---
+        document.getElementById('addParent').addEventListener('click', () => {
+            if (!selectedNode) return;
+            const name = prompt("Enter parent's name:");
+            if (!name) return;
+
+            const newParent = addPerson(name, selectedNode, 'parent');
+            const existingParents = getParents(selectedNode).filter(p => p.id !== newParent.id);
+            if(existingParents.length > 0) {
+                 links.push({ source: newParent.id, target: existingParents[0].id, type: 'partner' });
+            }
+            update();
+        });
+
+        document.getElementById('addChild').addEventListener('click', () => {
+            if (!selectedNode) return;
+            const name = prompt("Enter child's name:");
+            if (name) addPerson(name, selectedNode, 'child');
+        });
+
+        document.getElementById('addPartner').addEventListener('click', () => {
+            if (!selectedNode) return;
+            const name = prompt("Enter partner's name:");
+            if (!name) return;
+            
+            const newPartner = addPerson(name, selectedNode, 'partner');
+            const children = getChildren(selectedNode);
+            children.forEach(child => {
+                links.push({ source: newPartner.id, target: child.id, type: 'parent-child' });
+            });
+            update();
+        });
+
+        document.getElementById('addSibling').addEventListener('click', () => {
+            if (!selectedNode) return;
+            const name = prompt("Enter sibling's name:");
+            if (!name) return;
+            
+            const newSibling = addPerson(name);
+            const parents = getParents(selectedNode);
+            parents.forEach(parent => {
+                links.push({ source: parent.id, target: newSibling.id, type: 'parent-child' });
+            });
+            update();
+        });
+
+        document.getElementById('editNode').addEventListener('click', () => {
+            if (selectedNode) editPerson(selectedNode);
+        });
+        
+        document.getElementById('deleteNode').addEventListener('click', () => {
+            if (selectedNode) deletePerson(selectedNode);
+        });
+
+        // --- IMPORT/EXPORT FUNCTIONALITY ---
+        exportBtn.addEventListener('click', () => {
+            const dataStr = JSON.stringify({ nodes, links, nodeIdCounter });
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'family-tree.json';
+            a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
+        
+        importFile.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.nodes && data.links) {
+                        nodes = data.nodes; links = data.links;
+                        nodeIdCounter = data.nodeIdCounter || (Math.max(...nodes.map(n => n.id)) + 1);
+                        update();
+                    } else { alert("Invalid JSON file format for family tree."); }
+                } catch (error) { alert("Error parsing JSON file."); console.error(error); }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
+        });
+
+        // --- INITIALIZE THE APPLICATION ---
+        function initialize() {
+            if (nodes.length === 0) {
+                const initialNode = { id: nodeIdCounter++, name: "You", birth: "", death: "" };
+                nodes.push(initialNode);
+            }
+            update();
+        }
+
+        initialize();
+    </script>
 </body>
 </html>
+
