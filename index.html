@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.2";
+        const version = "v2.3";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -206,7 +206,7 @@
                     enter => {
                         const nodeGroup = enter.append("g")
                             .attr("class", "node")
-                            .attr("transform", d => `translate(${d.x}, ${d.y})`)
+                            .attr("transform", d => `translate(${d.x || width/2}, ${d.y || height/2})`) // Initial position before transition
                             .on("click", handleNodeClick)
                             .on("mouseover", handleMouseOver)
                             .on("mouseout", handleMouseOut);
@@ -261,8 +261,8 @@
             const depths = new Map();
             function getDepth(node) {
                 if (depths.has(node.id)) return depths.get(node.id);
-                if (node._parents.length === 0) {
-                    depths.set(node.id, 0); return 0;
+                if (!node || node._parents.length === 0) {
+                    depths.set(node ? node.id : -1, 0); return 0;
                 }
                 const parentDepths = node._parents.map(p => getDepth(nodeMap.get(p)));
                 const depth = 1 + Math.max(...parentDepths);
@@ -275,47 +275,67 @@
             // Position nodes vertically by depth
             nodes.forEach(n => n.y = n.depth * (nodeHeight + verticalSpacing) + 50);
 
-            // Position nodes horizontally
+            // --- HORIZONTAL POSITIONING ---
             const levels = Array.from({ length: maxDepth + 1 }, () => []);
             nodes.forEach(n => levels[n.depth].push(n));
             
-            // Position from bottom up
-            for (let i = maxDepth; i >= 0; i--) {
-                levels[i].forEach(n => {
-                    if (n._children.length > 0) {
-                        const childrenNodes = n._children.map(cid => nodeMap.get(cid));
-                        n.x = d3.mean(childrenNodes, c => c.x);
-                    }
+            // 1. Initial, simple positioning for all nodes to avoid undefined coordinates
+            levels.forEach(level => {
+                level.forEach((n, i) => {
+                    n.x = i * (nodeWidth + horizontalSpacing);
                 });
-                
-                // Group partners and position them together
-                const positioned = new Set();
-                levels[i].forEach(n => {
-                    if (positioned.has(n.id)) return;
-                    const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
-                    if (partner && partner.depth === i && !positioned.has(partner.id)) {
-                        const avgChildX = d3.mean([...n._children, ...partner._children].map(cid => nodeMap.get(cid)), c => c.x);
-                        const baseX = avgChildX || n.x || partner.x;
-                        n.x = baseX - (nodeWidth + horizontalSpacing) / 2;
-                        partner.x = baseX + (nodeWidth + horizontalSpacing) / 2;
-                        positioned.add(n.id);
-                        positioned.add(partner.id);
-                    }
-                });
+            });
 
-                // Resolve overlaps
-                const sortedLevel = levels[i].sort((a,b) => a.x - b.x);
-                for (let j = 0; j < sortedLevel.length - 1; j++) {
-                    const node1 = sortedLevel[j];
-                    const node2 = sortedLevel[j+1];
-                    const gap = node2.x - node1.x;
-                    const minGap = nodeWidth + horizontalSpacing;
-                    if (gap < minGap) {
-                        const shift = (minGap - gap) / 2;
-                        node1.x -= shift;
-                        node2.x += shift;
-                    }
+            // 2. Iteratively refine positions for a better layout
+            for (let iter = 0; iter < 5; iter++) {
+                // Bottom-up pass: center parents over their children
+                for (let i = maxDepth - 1; i >= 0; i--) {
+                    levels[i].forEach(n => {
+                        if (n._children.length > 0) {
+                            const childrenNodes = n._children.map(cid => nodeMap.get(cid));
+                            const meanX = d3.mean(childrenNodes, c => c.x);
+                            if (meanX !== undefined) {
+                                const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
+                                if (partner && partner.depth === i) {
+                                    // Center the couple over their children
+                                    n.x = meanX - (nodeWidth + horizontalSpacing) / 2;
+                                    partner.x = meanX + (nodeWidth + horizontalSpacing) / 2;
+                                } else {
+                                    n.x = meanX;
+                                }
+                            }
+                        }
+                    });
                 }
+                
+                // Resolve overlaps within each level
+                levels.forEach(level => {
+                    const sortedLevel = level.sort((a,b) => a.x - b.x);
+                    for (let j = 0; j < sortedLevel.length - 1; j++) {
+                        const node1 = sortedLevel[j];
+                        const node2 = sortedLevel[j+1];
+                        const gap = node2.x - node1.x;
+                        const minGap = nodeWidth + horizontalSpacing;
+
+                        if (gap < minGap) {
+                            // Push the right node and all nodes after it
+                            const shift = minGap - gap;
+                            for (let k = j + 1; k < sortedLevel.length; k++) {
+                                sortedLevel[k].x += shift;
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Center the whole tree
+            const allX = nodes.map(n => n.x);
+            if(allX.length > 0){
+                const minX = d3.min(allX);
+                const maxX = d3.max(allX);
+                const treeWidth = maxX - minX;
+                const shiftX = (width - treeWidth) / 2 - minX;
+                nodes.forEach(n => n.x += shiftX);
             }
         }
         
@@ -373,11 +393,10 @@
                 if (handledChildren.has(child.id)) return;
 
                 const parent = nodeMap.get(l.source);
+                if(!child || !parent) return;
+                
                 linkGroup.append('path')
-                    .attr('d', d3.linkVertical()({
-                        source: [parent.x, parent.y],
-                        target: [child.x, child.y]
-                    }))
+                    .attr('d', `M${parent.x},${parent.y + nodeHeight/2} L${child.x},${child.y - nodeHeight/2}`)
                     .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
             });
         }
@@ -421,14 +440,17 @@
 
         // --- RELATIONSHIP HELPERS ---
         const getParents = (node, returnId = false) => {
+            if(!node) return [];
             const parents = links.filter(l => l.target === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.source));
             return returnId ? parents.map(p => p.id) : parents;
         }
         const getChildren = (node, returnId = false) => {
+            if(!node) return [];
             const children = links.filter(l => l.source === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.target));
             return returnId ? children.map(c => c.id) : children;
         }
         const getPartners = (node, returnId = false) => {
+            if(!node) return [];
             const partners = links.filter(l => l.type === 'partner' && (l.source === node.id || l.target === node.id)).map(l => nodes.find(n => n.id === (l.source === node.id ? l.target : l.source)));
             return returnId ? partners.map(p => p.id) : partners;
         }
@@ -469,7 +491,7 @@
             if (!name) return;
 
             const newParent = addPerson(name, selectedNode, 'parent');
-            const existingParents = getParents(selectedNode).filter(p => p.id !== newParent.id);
+            const existingParents = getParents(selectedNode).filter(p => p && p.id !== newParent.id);
             if(existingParents.length > 0) {
                  links.push({ source: newParent.id, target: existingParents[0].id, type: 'partner' });
             }
@@ -479,7 +501,13 @@
         document.getElementById('addChild').addEventListener('click', () => {
             if (!selectedNode) return;
             const name = prompt("Enter child's name:");
-            if (name) addPerson(name, selectedNode, 'child');
+            if(!name) return;
+
+            const newChild = addPerson(name, selectedNode, 'child');
+            const partners = getPartners(selectedNode);
+            if (partners.length > 0) {
+                 links.push({ source: partners[0].id, target: newChild.id, type: 'parent-child' });
+            }
         });
 
         document.getElementById('addPartner').addEventListener('click', () => {
@@ -491,7 +519,7 @@
             const children = getChildren(selectedNode);
             children.forEach(child => {
                 const childParents = getParents(child);
-                if (!childParents.some(p => p.id === newPartner.id)) {
+                if (!childParents.some(p => p && p.id === newPartner.id)) {
                     links.push({ source: newPartner.id, target: child.id, type: 'parent-child' });
                 }
             });
@@ -506,7 +534,9 @@
             const newSibling = addPerson(name);
             const parents = getParents(selectedNode);
             parents.forEach(parent => {
-                links.push({ source: parent.id, target: newSibling.id, type: 'parent-child' });
+                if (parent) {
+                    links.push({ source: parent.id, target: newSibling.id, type: 'parent-child' });
+                }
             });
             update();
         });
