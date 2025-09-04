@@ -195,7 +195,7 @@
         const debugOutput = document.getElementById('debugOutput');
 
         // --- VERSION INDICATOR ---
-        const version = "v3.3 (Debug + Stable Layout)";
+        const version = "v3.4 (Final Layout Engine)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -323,63 +323,81 @@
 
             nodes.forEach(n => n.y = n.depth * (nodeHeight + verticalSpacing) + 50);
 
-            // --- HORIZONTAL POSITIONING ---
+            // --- HORIZONTAL POSITIONING (FINAL ALGORITHM) ---
             const levels = Array.from({ length: maxDepth + 1 }, () => []);
             nodes.forEach(n => {
                 if(levels[n.depth]) levels[n.depth].push(n);
             });
-
+            
             // Position nodes from bottom up
             for (let i = maxDepth; i >= 0; i--) {
                 const level = levels[i];
                 if (!level) continue;
 
-                // Set initial target X for each node/couple based on their children
+                // 1. Group nodes into family units
+                const familyUnits = [];
+                const handled = new Set();
                 level.forEach(n => {
-                    const children = getChildren(n);
+                    if (handled.has(n.id)) return;
                     const partner = getPartners(n)[0];
-                    if (partner && partner.depth === n.depth && n.id < partner.id) {
-                         const familyChildren = [...new Set([...children, ...getChildren(partner)])];
-                         if (familyChildren.length > 0) {
-                             const meanX = d3.mean(familyChildren, c => c.x);
-                             n.targetX = meanX - (nodeWidth + horizontalSpacing) / 2;
-                             partner.targetX = meanX + (nodeWidth + horizontalSpacing) / 2;
-                         }
-                    } else if (children.length > 0 && !partner) {
-                        n.targetX = d3.mean(children, c => c.x);
+                    const unit = {
+                        nodes: [n],
+                        children: getChildren(n, true)
+                    };
+                    if (partner && partner.depth === i && !handled.has(partner.id)) {
+                        unit.nodes.push(partner);
+                        unit.children = [...new Set([...unit.children, ...getChildren(partner, true)])];
+                        handled.add(partner.id);
                     }
+                    familyUnits.push(unit);
+                    handled.add(n.id);
                 });
 
-                // Sort the level by targetX to group families
-                level.sort((a,b) => (a.targetX || a.id) - (b.targetX || b.id));
-
-                // Place nodes and resolve overlaps with cascading shift
-                level.forEach((n, idx) => {
-                    if (idx === 0) {
-                        n.x = n.targetX || 0;
-                        return;
+                // 2. Calculate target X for each unit based on children
+                familyUnits.forEach(unit => {
+                    if (unit.children.length > 0) {
+                        const childrenNodes = unit.children.map(cid => nodeMap.get(cid));
+                        unit.targetX = d3.mean(childrenNodes, c => c.x);
+                    } else {
+                        unit.targetX = 0; // Default for childless units
                     }
-                    const prevNode = level[idx-1];
-                    const desiredX = prevNode.x + nodeWidth + horizontalSpacing;
-                    
-                    // If the node has a target position, try to respect it, otherwise place it next to previous
-                    const baseX = n.targetX !== undefined ? Math.max(n.targetX, desiredX) : desiredX;
-                    n.x = baseX;
-                    
-                    // Cascade shift if there is still an overlap
-                    if (n.x < desiredX) {
-                        const shift = desiredX - n.x;
-                        for (let k = idx; k < level.length; k++) {
-                            levels[i][k].x += shift;
+                });
+                
+                // 3. Sort units by target X
+                familyUnits.sort((a, b) => a.targetX - b.targetX);
+
+                // 4. Position units and resolve overlaps
+                familyUnits.forEach((unit, idx) => {
+                    const unitWidth = unit.nodes.length * nodeWidth + (unit.nodes.length > 1 ? horizontalSpacing : 0);
+                    let desiredX = unit.targetX;
+
+                    if (idx > 0) {
+                        const prevUnit = familyUnits[idx - 1];
+                        const prevUnitWidth = prevUnit.nodes.length * nodeWidth + (prevUnit.nodes.length > 1 ? horizontalSpacing : 0);
+                        const minAllowedX = prevUnit.x + prevUnitWidth / 2 + horizontalSpacing + unitWidth / 2;
+                        if (desiredX < minAllowedX) {
+                            desiredX = minAllowedX;
                         }
+                    }
+                    unit.x = desiredX;
+
+                    // Position individual nodes within their unit
+                    if (unit.nodes.length === 1) {
+                        unit.nodes[0].x = unit.x;
+                    } else {
+                        // Ensure consistent ordering for couples
+                        unit.nodes.sort((a, b) => a.id - b.id);
+                        const offset = (nodeWidth + horizontalSpacing) / 2;
+                        unit.nodes[0].x = unit.x - offset;
+                        unit.nodes[1].x = unit.x + offset;
                     }
                 });
             }
 
-
             // Center the whole tree
             if (nodes.length > 0) {
                 const allX = nodes.map(n => n.x);
+                if (allX.some(x => x === undefined)) return; // Failsafe
                 const minX = d3.min(allX);
                 const maxX = d3.max(allX);
                 const treeWidth = maxX - minX;
