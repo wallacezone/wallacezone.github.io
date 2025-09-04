@@ -68,7 +68,6 @@
             flex-grow: 1;
             width: 100%;
             height: 100%;
-            position: relative; /* Needed for debug view positioning */
         }
 
         /* SVG styling */
@@ -117,37 +116,6 @@
         .context-menu-item:hover {
             background-color: #f0f2f5;
         }
-
-        /* Debug Log Styling */
-        .debug-container {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            width: 350px;
-            max-height: 200px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        #errorLog {
-            flex-grow: 1;
-            overflow-y: auto;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            padding: 8px;
-            border-radius: 4px;
-        }
-        .error-message {
-            color: #f48771;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -165,11 +133,6 @@
     <!-- Main SVG Container -->
     <div class="tree-container">
         <svg id="tree-svg"></svg>
-        <!-- Automated Debug Log -->
-        <div class="debug-container">
-            <strong>Registro Errori di Layout:</strong>
-            <div id="errorLog">Nessun errore rilevato.</div>
-        </div>
     </div>
 
     <!-- Tooltip Element -->
@@ -198,10 +161,9 @@
         const contextMenu = d3.select("#contextMenu");
         const exportBtn = document.getElementById('exportBtn');
         const importFile = document.getElementById('importFile');
-        const errorLog = document.getElementById('errorLog');
 
         // --- VERSION INDICATOR ---
-        const version = "v4.0 (Automated Debugging)";
+        const version = "v5.0 (Final & Stable Engine)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -210,7 +172,7 @@
         const nodeWidth = 140;
         const nodeHeight = 50;
         const horizontalSpacing = 40;
-        const verticalSpacing = 70;
+        const verticalSpacing = 100; // Increased spacing for clarity
 
 
         let nodes = [];
@@ -221,7 +183,7 @@
         // SVG containers for links and nodes
         const g = svg.append("g");
         let linkGroup = g.append("g").attr("class", "links");
-        let node = g.append("g").attr("class", "nodes").selectAll(".node");
+        let nodeGroup = g.append("g").attr("class", "nodes");
 
         // --- ZOOM & PAN FUNCTIONALITY ---
         const zoom = d3.zoom().on("zoom", (event) => {
@@ -235,238 +197,193 @@
          * Main update function to re-render the tree.
          */
         function update() {
-            // 1. Calculate the layout
-            updateLayout();
+            // Calculate the new layout
+            const { treeNodes, treeLinks } = updateLayout();
 
-            // Node data join
-            node = node.data(nodes, d => d.id)
-                .join(
-                    enter => {
-                        const nodeGroup = enter.append("g")
-                            .attr("class", "node")
-                            .attr("transform", d => `translate(${d.x || width/2}, ${d.y || height/2})`)
-                            .on("click", handleNodeClick)
-                            .on("mouseover", handleMouseOver)
-                            .on("mouseout", handleMouseOut);
+            // Render Links
+            renderLinks(treeLinks);
 
-                        nodeGroup.append("rect")
-                            .attr("width", nodeWidth)
-                            .attr("height", nodeHeight)
-                            .attr("x", -nodeWidth / 2)
-                            .attr("y", -nodeHeight / 2)
-                            .attr("rx", 8)
-                            .attr("ry", 8)
-                            .attr("fill", "#fff")
-                            .attr("stroke", "#999")
-                            .attr("stroke-width", 2);
-
-                        nodeGroup.append("text")
-                            .attr("dy", ".35em")
-                            .attr("text-anchor", "middle")
-                            .style("pointer-events", "none")
-                            .style("font-size", "14px")
-                            .text(d => d.name);
-                        
-                        return nodeGroup;
-                    },
-                    update => update
-                );
-            
-            node.select("text").text(d => d.name);
-            node.transition().duration(500)
-                .attr("transform", d => `translate(${d.x}, ${d.y})`);
-
-            // Link rendering
-            renderLinks();
-            
-            // Run automatic checks after rendering
-            runSanityChecks();
+            // Render Nodes
+            renderNodes(treeNodes);
         }
         
-        // --- LAYOUT CALCULATION ---
+        // --- LAYOUT ENGINE (REWRITTEN) ---
         function updateLayout() {
-            if (nodes.length === 0) return;
-
-            const nodeMap = new Map(nodes.map(n => [n.id, n]));
-            
-            nodes.forEach(n => {
-                n._parents = getParents(n, true);
-                n._children = getChildren(n, true);
-                n._partners = getPartners(n, true);
-            });
-
-            // --- DEPTH CALCULATION (VERTICAL POSITION) ---
-            nodes.forEach(n => delete n.depth);
-            let changedInLoop;
-            do {
-                changedInLoop = false;
-                nodes.forEach(node => {
-                    let currentDepth = node.depth;
-                    let newDepth;
-
-                    if (node._parents.length > 0) {
-                        const parentDepths = node._parents.map(pId => nodeMap.get(pId)?.depth);
-                        if (parentDepths.every(d => d !== undefined)) {
-                            newDepth = Math.max(...parentDepths) + 1;
-                        }
-                    } else {
-                        newDepth = 0;
-                    }
-
-                    if (node._partners.length > 0) {
-                        const partner = nodeMap.get(node._partners[0]);
-                        if (partner && partner.depth !== undefined) {
-                            newDepth = newDepth === undefined ? partner.depth : Math.max(newDepth, partner.depth);
-                        }
-                    }
-                    
-                    if (newDepth !== undefined && newDepth !== currentDepth) {
-                        node.depth = newDepth;
-                        changedInLoop = true;
-                    }
-                });
-            } while (changedInLoop);
-
-            nodes.forEach(n => { if (n.depth === undefined) n.depth = 0; });
-            const maxDepth = d3.max(nodes, n => n.depth) || 0;
-
-            nodes.forEach(n => n.y = n.depth * (nodeHeight + verticalSpacing) + 50);
-
-            // --- HORIZONTAL POSITIONING ---
-            const levels = Array.from({ length: maxDepth + 1 }, () => []);
-            nodes.forEach(n => {
-                if(levels[n.depth]) levels[n.depth].push(n);
-            });
-            
-            // Position nodes from bottom up
-            for (let i = maxDepth; i >= 0; i--) {
-                const level = levels[i];
-                if (!level) continue;
-
-                const familyUnits = [];
-                const handled = new Set();
-                level.forEach(n => {
-                    if (handled.has(n.id)) return;
-                    const partner = getPartners(n)[0];
-                    const unit = { nodes: [n], children: getChildren(n, true) };
-                    if (partner && partner.depth === i && !handled.has(partner.id)) {
-                        unit.nodes.push(partner);
-                        unit.children = [...new Set([...unit.children, ...getChildren(partner, true)])];
-                        handled.add(partner.id);
-                    }
-                    familyUnits.push(unit);
-                    handled.add(n.id);
-                });
-
-                familyUnits.forEach(unit => {
-                    if (unit.children.length > 0) {
-                        const childrenNodes = unit.children.map(cid => nodeMap.get(cid));
-                        unit.targetX = d3.mean(childrenNodes, c => c.x);
-                    } else {
-                        unit.targetX = null;
-                    }
-                });
-                
-                familyUnits.sort((a, b) => {
-                    if (a.targetX !== null && b.targetX !== null) return a.targetX - b.targetX;
-                    if (a.targetX !== null) return -1;
-                    if (b.targetX !== null) return 1;
-                    return d3.min(a.nodes, n => n.id) - d3.min(b.nodes, n => n.id);
-                });
-
-
-                let lastUnitRightEdge = -Infinity;
-                familyUnits.forEach((unit) => {
-                    const unitWidth = unit.nodes.length * nodeWidth + (unit.nodes.length > 1 ? horizontalSpacing : 0);
-                    let unitCenterX = unit.targetX;
-                    
-                    const minCenterX = lastUnitRightEdge + horizontalSpacing + unitWidth / 2;
-
-                    if (unitCenterX === null || unitCenterX < minCenterX) {
-                        unitCenterX = minCenterX;
-                    }
-                    
-                    if (unit.nodes.length === 1) {
-                        unit.nodes[0].x = unitCenterX;
-                    } else {
-                        unit.nodes.sort((a, b) => a.id - b.id);
-                        const offset = (nodeWidth + horizontalSpacing) / 2;
-                        unit.nodes[0].x = unitCenterX - offset;
-                        unit.nodes[1].x = unitCenterX + offset;
-                    }
-                    lastUnitRightEdge = unitCenterX + unitWidth / 2;
-                });
+            if (nodes.length === 0) {
+                return { treeNodes: [], treeLinks: [] };
             }
 
-            // Center the whole tree
-            if (nodes.length > 0) {
-                const allX = nodes.map(n => n.x);
-                if (allX.some(x => x === undefined)) return;
-                const minX = d3.min(allX);
-                const maxX = d3.max(allX);
+            const nodeMap = new Map(nodes.map(n => [n.id, n]));
+
+            // 1. Create data suitable for d3.stratify
+            const stratifyData = [];
+            nodes.forEach(n => {
+                const parents = getParents(n).sort((a,b) => a.id - b.id);
+                // The first parent (by ID) is the "structural" parent for layout
+                const parentId = parents.length > 0 ? parents[0].id : null;
+                stratifyData.push({ id: n.id, parentId: parentId, data: n });
+            });
+
+            // 2. Handle multiple roots by creating a dummy root
+            const roots = stratifyData.filter(d => d.parentId === null);
+            const dummyRootId = -1;
+            if (roots.length > 1) {
+                stratifyData.push({ id: dummyRootId, parentId: null, data: { name: "ROOT" } });
+                roots.forEach(r => r.parentId = dummyRootId);
+            }
+            
+            // 3. Create the hierarchy
+            const root = d3.stratify()
+                .id(d => d.id)
+                .parentId(d => d.parentId)
+                (stratifyData);
+
+            // 4. Create and apply the tree layout
+            const treeLayout = d3.tree()
+                .nodeSize([nodeWidth + horizontalSpacing, verticalSpacing]);
+            
+            treeLayout(root);
+
+            // 5. Extract nodes and links, filtering out the dummy root
+            let treeNodes = root.descendants().filter(d => d.id != dummyRootId);
+            let treeLinks = root.links().filter(l => l.source.id != dummyRootId && l.target.id != dummyRootId);
+
+            // 6. Post-process to position partners next to each other
+            const handledPartners = new Set();
+            treeNodes.forEach(n => {
+                const nodeData = n.data.data;
+                const partner = getPartners(nodeData)[0];
+                if (partner && !handledPartners.has(partner.id) && !handledPartners.has(nodeData.id)) {
+                    const partnerNode = treeNodes.find(tn => tn.id == partner.id);
+                    if (partnerNode) {
+                        // Position partner relative to the node in the tree structure
+                        partnerNode.x = n.x + nodeWidth + horizontalSpacing;
+                        partnerNode.y = n.y; // Keep them on the same level
+
+                        // Shift all subsequent nodes on the same level to avoid overlap
+                        treeNodes.forEach(otherNode => {
+                            if (otherNode.y === n.y && otherNode.x > n.x) {
+                                otherNode.x += nodeWidth + horizontalSpacing;
+                            }
+                        });
+                        handledPartners.add(nodeData.id);
+                        handledPartners.add(partner.id);
+                    }
+                }
+            });
+            
+            // 7. Center the tree
+            if (treeNodes.length > 0) {
+                const xCoords = treeNodes.map(n => n.x);
+                const minX = d3.min(xCoords);
+                const maxX = d3.max(xCoords);
                 const treeWidth = maxX - minX;
                 const shiftX = (width - treeWidth) / 2 - minX;
-                nodes.forEach(n => n.x += shiftX);
+                treeNodes.forEach(n => n.x += shiftX);
             }
-        }
-        
-        // --- LINK RENDERING ---
-        function renderLinks() {
-            linkGroup.selectAll("*").remove();
 
-            const nodeMap = new Map(nodes.map(n => [n.id, n]));
-            const handledChildren = new Set();
-            
-            links.filter(l => l.type === 'partner').forEach(l => {
-                const p1 = nodeMap.get(l.source);
-                const p2 = nodeMap.get(l.target);
-                if (!p1 || !p2) return;
-                
-                linkGroup.append('path')
-                    .attr('d', `M${p1.x},${p1.y} L${p2.x},${p2.y}`)
-                    .attr('stroke', '#999').attr('stroke-width', 2);
-
-                const children1 = getChildren(p1, true);
-                const children2 = getChildren(p2, true);
-                const commonChildren = children1.filter(c => children2.includes(c)).map(cid => nodeMap.get(cid)).filter(Boolean);
-
-                if (commonChildren.length > 0) {
-                    const parentMidX = (p1.x + p2.x) / 2;
-                    const midY = p1.y + nodeHeight / 2 + verticalSpacing / 2;
-                    
-                    linkGroup.append('path')
-                         .attr('d', `M${parentMidX},${p1.y + nodeHeight/2} L${parentMidX},${midY}`)
-                         .attr('fill', 'none')
-                         .attr('stroke', '#999').attr('stroke-width', 2);
-
-                    const allX = [parentMidX, ...commonChildren.map(c => c.x)];
-                    const minX = d3.min(allX);
-                    const maxX = d3.max(allX);
-
-                    linkGroup.append('path')
-                        .attr('d', `M${minX},${midY} L${maxX},${midY}`)
-                        .attr('stroke', '#999').attr('stroke-width', 2);
-
-                    commonChildren.forEach(child => {
-                        linkGroup.append('path')
-                            .attr('d', `M${child.x},${midY} L${child.x},${child.y - nodeHeight/2}`)
-                            .attr('stroke', '#999').attr('stroke-width', 2);
-                        handledChildren.add(child.id);
-                    });
+            // Apply calculated positions back to original nodes
+            treeNodes.forEach(tn => {
+                const originalNode = nodeMap.get(parseInt(tn.id));
+                if (originalNode) {
+                    originalNode.x = tn.x;
+                    originalNode.y = tn.y;
                 }
             });
 
-            links.filter(l => l.type === 'parent-child').forEach(l => {
-                const child = nodeMap.get(l.target);
-                if (!child || handledChildren.has(child.id)) return;
+            return { treeNodes, treeLinks };
+        }
+        
+        // --- RENDERING FUNCTIONS ---
+        function renderNodes(treeNodes) {
+            const node = nodeGroup.selectAll(".node")
+                .data(treeNodes, d => d.id);
+            
+            // Enter
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${d.x}, ${d.y})`)
+                .on("click", handleNodeClick)
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut);
 
-                const parent = nodeMap.get(l.source);
-                if(!parent) return;
-                
-                linkGroup.append('path')
-                    .attr('d', `M${parent.x},${parent.y + nodeHeight/2} L${child.x},${child.y - nodeHeight/2}`)
-                    .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
+            nodeEnter.append("rect")
+                .attr("width", nodeWidth)
+                .attr("height", nodeHeight)
+                .attr("x", -nodeWidth / 2)
+                .attr("y", -nodeHeight / 2)
+                .attr("rx", 8)
+                .attr("ry", 8)
+                .attr("fill", "#fff")
+                .attr("stroke", "#999")
+                .attr("stroke-width", 2);
+
+            nodeEnter.append("text")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .style("pointer-events", "none")
+                .style("font-size", "14px")
+                .text(d => d.data.data.name);
+
+            // Update
+            node.transition().duration(500)
+                .attr("transform", d => `translate(${d.x}, ${d.y})`);
+            node.select("text").text(d => d.data.data.name);
+
+            // Exit
+            node.exit().remove();
+        }
+
+        function renderLinks(treeLinks) {
+            linkGroup.selectAll("*").remove();
+            const nodeMap = new Map(nodes.map(n => [n.id, n]));
+
+            // Draw all parent-child and partner links based on the final positions
+            links.forEach(link => {
+                const sourceNode = nodeMap.get(link.source);
+                const targetNode = nodeMap.get(link.target);
+                if (!sourceNode || !targetNode) return;
+
+                if (link.type === 'partner') {
+                    linkGroup.append('path')
+                        .attr('d', `M${sourceNode.x},${sourceNode.y} L${targetNode.x},${targetNode.y}`)
+                        .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
+                } else if (link.type === 'parent-child') {
+                    // Custom path for parent-child to create hubs
+                    const parent1 = sourceNode;
+                    const child = targetNode;
+                    const otherParent = getPartners(parent1)[0];
+                    
+                    if (otherParent && getParents(child).some(p => p.id === otherParent.id)) {
+                        // This is a couple, draw a hub link if we are the first parent
+                        if (parent1.id < otherParent.id) {
+                            drawFamilyHub(parent1, otherParent, child);
+                        }
+                    } else {
+                        // Single parent link
+                        drawSingleParentLink(parent1, child);
+                    }
+                }
             });
+        }
+        
+        function drawFamilyHub(p1, p2, child) {
+             const parentMidX = (p1.x + p2.x) / 2;
+             const midY = p1.y + nodeHeight / 2 + verticalSpacing / 4;
+             
+             linkGroup.append('path')
+                  .attr('d', `M${parentMidX},${p1.y} L${parentMidX},${midY}`)
+                  .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
+
+             linkGroup.append('path')
+                 .attr('d', `M${child.x},${midY} L${child.x},${child.y - nodeHeight/2}`)
+                 .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
+        }
+        
+        function drawSingleParentLink(parent, child) {
+             linkGroup.append('path')
+                 .attr('d', `M${parent.x},${parent.y + nodeHeight/2} L${parent.x},${parent.y + nodeHeight/2 + verticalSpacing/4} L${child.x},${parent.y + nodeHeight/2 + verticalSpacing/4} L${child.x},${child.y - nodeHeight/2}`)
+                 .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
         }
 
 
@@ -516,10 +433,10 @@
         // --- EVENT HANDLERS ---
         function handleNodeClick(event, d) {
             event.stopPropagation();
-            selectedNode = d;
+            selectedNode = nodes.find(n => n.id === parseInt(d.id));
             
-            d3.select('#addParent').style('display', getParents(d).length >= 2 ? 'none' : 'block');
-            d3.select('#addPartner').style('display', getPartners(d).length >= 1 ? 'none' : 'block');
+            d3.select('#addParent').style('display', getParents(selectedNode).length >= 2 ? 'none' : 'block');
+            d3.select('#addPartner').style('display', getPartners(selectedNode).length >= 1 ? 'none' : 'block');
 
             contextMenu
                 .style("visibility", "visible")
@@ -530,10 +447,11 @@
         d3.select('body').on('click', () => contextMenu.style("visibility", "hidden"));
 
         function handleMouseOver(event, d) {
+            const nodeData = d.data.data;
             tooltip
                 .style("visibility", "visible").style("opacity", 1)
                 .style("top", `${event.pageY - 10}px`).style("left", `${event.pageX + 10}px`)
-                .html(`Born: ${d.birth || 'N/A'}<br>Died: ${d.death || 'N/A'}`);
+                .html(`Born: ${nodeData.birth || 'N/A'}<br>Died: ${nodeData.death || 'N/A'}`);
         }
 
         function handleMouseOut() {
@@ -648,52 +566,6 @@
             reader.readAsText(file);
             event.target.value = ''; 
         });
-
-        // --- AUTOMATED SANITY CHECKS ---
-        function runSanityChecks() {
-            const errors = [];
-            const nodeMap = new Map(nodes.map(n => [n.id, n]));
-
-            // Group nodes by depth for easier comparison
-            const levels = d3.group(nodes, d => d.depth);
-
-            levels.forEach((levelNodes, depth) => {
-                // Check for overlaps
-                for (let i = 0; i < levelNodes.length; i++) {
-                    for (let j = i + 1; j < levelNodes.length; j++) {
-                        const n1 = levelNodes[i];
-                        const n2 = levelNodes[j];
-                        if (Math.abs(n1.x - n2.x) < nodeWidth) {
-                            errors.push(`<span class="error-message">ERRORE:</span> I nodi '${n1.name}' e '${n2.name}' si sovrappongono.`);
-                        }
-                    }
-                }
-            });
-
-            nodes.forEach(n => {
-                // Check for broken couples
-                const partner = getPartners(n)[0];
-                if (partner && n.id < partner.id) { // Check each couple once
-                    if (Math.abs(n.x - partner.x) > nodeWidth + horizontalSpacing + 10) {
-                         errors.push(`<span class="error-message">ERRORE:</span> La coppia '${n.name}' e '${partner.name}' è separata.`);
-                    }
-                }
-                // Check for hierarchy inversion
-                const parents = getParents(n);
-                parents.forEach(p => {
-                    if (p.depth >= n.depth) {
-                        errors.push(`<span class="error-message">ERRORE:</span> '${n.name}' (gen. ${n.depth}) è sopra o allo stesso livello del genitore '${p.name}' (gen. ${p.depth}).`);
-                    }
-                });
-            });
-
-            // Display errors
-            if (errors.length > 0) {
-                errorLog.innerHTML = errors.join('<br>');
-            } else {
-                errorLog.innerHTML = 'Nessun errore rilevato.';
-            }
-        }
 
 
         // --- INITIALIZE THE APPLICATION ---
