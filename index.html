@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v3.1 (Stable Layout)";
+        const version = "v3.2 (Corrected Layout)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -318,10 +318,14 @@
                 // 2. Calculate the desired center for each family unit based on its children's positions
                 familyUnits.forEach(unit => {
                     if (unit.children.length > 0) {
-                        unit.targetX = d3.mean(unit.children.map(cid => nodeMap.get(cid)), d => d.x);
+                        const childrenNodes = unit.children.map(cid => nodeMap.get(cid)).filter(Boolean);
+                        if(childrenNodes.length > 0) {
+                           unit.targetX = d3.mean(childrenNodes, d => d.x);
+                        } else {
+                           unit.targetX = 0;
+                        }
                     } else {
-                        // If no children, use the node's own current position as a rough starting point
-                        unit.targetX = unit.nodes[0].x || 0;
+                        unit.targetX = 0; // Default for childless units
                     }
                 });
 
@@ -336,8 +340,9 @@
                     if (index > 0) {
                         const prevUnit = familyUnits[index - 1];
                         const prevUnitWidth = prevUnit.nodes.length * nodeWidth + (prevUnit.nodes.length - 1) * horizontalSpacing;
-                        // Place with a gap after the previous unit
                         currentX = prevUnit.x + prevUnitWidth/2 + horizontalSpacing + unitWidth/2;
+                    } else {
+                        currentX = 0;
                     }
                     unit.x = currentX;
 
@@ -346,8 +351,9 @@
                         unit.nodes[0].x = unit.x;
                     } else {
                         unit.nodes.sort((a, b) => a.id - b.id); // Consistent ordering
-                        unit.nodes[0].x = unit.x - (horizontalSpacing / 2);
-                        unit.nodes[1].x = unit.x + (horizontalSpacing / 2);
+                        const offset = (nodeWidth + horizontalSpacing) / 2;
+                        unit.nodes[0].x = unit.x - offset;
+                        unit.nodes[1].x = unit.x + offset;
                     }
                 });
             }
