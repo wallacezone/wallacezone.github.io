@@ -122,7 +122,7 @@
 
     <!-- Header Section -->
     <div class="header">
-        <h1>Family Tree Builder</h1>
+        <h1>Family Tree Builder <span id="version-indicator" style="font-size: 0.6em; color: #888; font-weight: normal;"></span></h1>
         <div class="controls">
             <button id="exportBtn" class="btn">Export Tree (JSON)</button>
             <label for="importFile" class="btn">Import Tree (JSON)</label>
@@ -161,6 +161,10 @@
         const contextMenu = d3.select("#contextMenu");
         const exportBtn = document.getElementById('exportBtn');
         const importFile = document.getElementById('importFile');
+
+        // --- VERSION INDICATOR ---
+        const version = "v2.1";
+        document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
         const width = container.clientWidth;
@@ -229,7 +233,7 @@
             node.select("text").text(d => d.name);
 
             // Link data join
-            link = link.data(links, d => `${d.source.id}-${d.target.id}`)
+            link = link.data(links, d => `${d.source}-${d.target}`)
                 .join(
                     enter => enter.append("path")
                         .attr("class", "link")
@@ -248,6 +252,7 @@
                 .attr("d", d => {
                     const source = nodes.find(n => n.id === d.source);
                     const target = nodes.find(n => n.id === d.target);
+                    if(!source || !target) return "";
                     if (d.type === 'partner') {
                         return `M${source.x},${source.y}L${target.x},${target.y}`;
                     }
@@ -315,18 +320,26 @@
             levels.forEach((level, i) => {
                 const levelWidth = level.length * 160;
                 const startX = (width - levelWidth) / 2;
-                level.forEach((n, j) => {
+                level.sort((a,b) => a.id - b.id).forEach((n, j) => {
                     n.x = startX + j * 160 + 80;
                 });
             });
 
             // Simple iteration to center children under parents
             for (let i = 0; i < 3; i++) {
-                for(let d = 1; d <= maxDepth; d++) {
+                for(let d = maxDepth; d >= 1; d--) {
                     levels[d].forEach(n => {
                         if (n._parents.length > 0) {
                            const avgParentX = d3.mean(n._parents, p => p.x);
                            if (avgParentX) n.x = avgParentX;
+                        }
+                    });
+                }
+                 for(let d = 0; d < maxDepth; d++) {
+                    levels[d].forEach(n => {
+                        if (n._children.length > 0) {
+                           const avgChildX = d3.mean(n._children, p => p.x);
+                           if (avgChildX) n.x = avgChildX;
                         }
                     });
                 }
@@ -439,7 +452,11 @@
             const newPartner = addPerson(name, selectedNode, 'partner');
             const children = getChildren(selectedNode);
             children.forEach(child => {
-                links.push({ source: newPartner.id, target: child.id, type: 'parent-child' });
+                 // Check if the child doesn't already have this new partner as a parent
+                const childParents = getParents(child);
+                if (!childParents.some(p => p.id === newPartner.id)) {
+                    links.push({ source: newPartner.id, target: child.id, type: 'parent-child' });
+                }
             });
             update();
         });
