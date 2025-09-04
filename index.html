@@ -68,6 +68,7 @@
             flex-grow: 1;
             width: 100%;
             height: 100%;
+            position: relative; /* Needed for debug view positioning */
         }
 
         /* SVG styling */
@@ -116,6 +117,30 @@
         .context-menu-item:hover {
             background-color: #f0f2f5;
         }
+
+        /* Debug View Styling */
+        .debug-container {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        #debugOutput {
+            width: 300px;
+            height: 150px;
+            font-family: monospace;
+            font-size: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: both;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +158,11 @@
     <!-- Main SVG Container -->
     <div class="tree-container">
         <svg id="tree-svg"></svg>
+        <!-- Debug View -->
+        <div class="debug-container">
+            <button id="debugBtn" class="btn" style="background-color: #f0ad4e;">Mostra Info di Debug</button>
+            <textarea id="debugOutput" readonly placeholder="I dati di debug appariranno qui..."></textarea>
+        </div>
     </div>
 
     <!-- Tooltip Element -->
@@ -161,9 +191,11 @@
         const contextMenu = d3.select("#contextMenu");
         const exportBtn = document.getElementById('exportBtn');
         const importFile = document.getElementById('importFile');
+        const debugBtn = document.getElementById('debugBtn');
+        const debugOutput = document.getElementById('debugOutput');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.9";
+        const version = "v3.0 (Debug Build)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -206,7 +238,7 @@
                     enter => {
                         const nodeGroup = enter.append("g")
                             .attr("class", "node")
-                            .attr("transform", d => `translate(${d.x || width/2}, ${d.y || height/2})`) // Initial position before transition
+                            .attr("transform", d => `translate(${d.x || width/2}, ${d.y || height/2})`)
                             .on("click", handleNodeClick)
                             .on("mouseover", handleMouseOver)
                             .on("mouseout", handleMouseOut);
@@ -248,7 +280,6 @@
 
             const nodeMap = new Map(nodes.map(n => [n.id, n]));
             
-            // Build relationship graph
             nodes.forEach(n => {
                 n._parents = getParents(n, true);
                 n._children = getChildren(n, true);
@@ -299,7 +330,6 @@
             levels.forEach(level => level.forEach((n, i) => { n.x = i * (nodeWidth + horizontalSpacing); }));
 
             for (let iter = 0; iter < 5; iter++) {
-                // Pass to position family units (couples and single parents)
                 for (let i = maxDepth; i >= 0; i--) {
                     const level = levels[i];
                     const handled = new Set();
@@ -332,9 +362,7 @@
                     });
                 }
                 
-                // Resolve overlaps within each level
                 levels.forEach(level => {
-                    // CRITICAL FIX: Sort a COPY of the array, not the original, to prevent data corruption.
                     const sortedLevel = [...level].sort((a,b) => a.x - b.x);
                     for (let j = 0; j < sortedLevel.length - 1; j++) {
                         const node1 = sortedLevel[j];
@@ -350,7 +378,6 @@
                 });
             }
 
-            // Center the whole tree
             if (nodes.length > 0) {
                 const allX = nodes.map(n => n.x);
                 const minX = d3.min(allX);
@@ -363,7 +390,7 @@
         
         // --- LINK RENDERING ---
         function renderLinks() {
-            linkGroup.selectAll("*").remove(); // Clear previous links
+            linkGroup.selectAll("*").remove();
 
             const nodeMap = new Map(nodes.map(n => [n.id, n]));
             const handledChildren = new Set();
@@ -572,7 +599,7 @@
             }
         });
 
-        // --- IMPORT/EXPORT FUNCTIONALITY ---
+        // --- IMPORT/EXPORT/DEBUG FUNCTIONALITY ---
         exportBtn.addEventListener('click', () => {
             const dataStr = JSON.stringify({ nodes, links, nodeIdCounter });
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -598,6 +625,21 @@
             };
             reader.readAsText(file);
             event.target.value = ''; 
+        });
+
+        debugBtn.addEventListener('click', () => {
+            const cleanNodes = nodes.map(n => ({
+                id: n.id,
+                name: n.name,
+                depth: n.depth,
+                x: n.x,
+                y: n.y,
+                _parents: n._parents,
+                _children: n._children,
+                _partners: n._partners
+            }));
+            const debugInfo = `NODES:\n${JSON.stringify(cleanNodes, null, 2)}\n\nLINKS:\n${JSON.stringify(links, null, 2)}`;
+            debugOutput.value = debugInfo;
         });
 
         // --- INITIALIZE THE APPLICATION ---
