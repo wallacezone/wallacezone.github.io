@@ -68,7 +68,6 @@
             flex-grow: 1;
             width: 100%;
             height: 100%;
-            position: relative; /* Needed for debug view positioning */
         }
 
         /* SVG styling */
@@ -117,30 +116,6 @@
         .context-menu-item:hover {
             background-color: #f0f2f5;
         }
-
-        /* Debug View Styling */
-        .debug-container {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        #debugOutput {
-            width: 300px;
-            height: 150px;
-            font-family: monospace;
-            font-size: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: both;
-        }
     </style>
 </head>
 <body>
@@ -158,11 +133,6 @@
     <!-- Main SVG Container -->
     <div class="tree-container">
         <svg id="tree-svg"></svg>
-        <!-- Debug View -->
-        <div class="debug-container">
-            <button id="debugBtn" class="btn" style="background-color: #f0ad4e;">Mostra Info di Debug</button>
-            <textarea id="debugOutput" readonly placeholder="I dati di debug appariranno qui..."></textarea>
-        </div>
     </div>
 
     <!-- Tooltip Element -->
@@ -191,11 +161,9 @@
         const contextMenu = d3.select("#contextMenu");
         const exportBtn = document.getElementById('exportBtn');
         const importFile = document.getElementById('importFile');
-        const debugBtn = document.getElementById('debugBtn');
-        const debugOutput = document.getElementById('debugOutput');
 
         // --- VERSION INDICATOR ---
-        const version = "v3.4 (Final Layout Engine)";
+        const version = "v3.6 (Final Stable Build)";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -359,33 +327,39 @@
                         const childrenNodes = unit.children.map(cid => nodeMap.get(cid));
                         unit.targetX = d3.mean(childrenNodes, c => c.x);
                     } else {
-                        unit.targetX = 0; // Default for childless units
+                        unit.targetX = null; // No children, no preference
                     }
                 });
                 
-                // 3. Sort units by target X
-                familyUnits.sort((a, b) => a.targetX - b.targetX);
+                // 3. Stable sort units by target X, then by min ID
+                familyUnits.sort((a, b) => {
+                    if (a.targetX !== null && b.targetX !== null) {
+                        return a.targetX - b.targetX;
+                    }
+                    if (a.targetX !== null) return -1;
+                    if (b.targetX !== null) return 1;
+                    return d3.min(a.nodes, n => n.id) - d3.min(b.nodes, n => n.id);
+                });
+
 
                 // 4. Position units and resolve overlaps
+                let currentX = 0;
                 familyUnits.forEach((unit, idx) => {
                     const unitWidth = unit.nodes.length * nodeWidth + (unit.nodes.length > 1 ? horizontalSpacing : 0);
-                    let desiredX = unit.targetX;
-
+                    
                     if (idx > 0) {
                         const prevUnit = familyUnits[idx - 1];
                         const prevUnitWidth = prevUnit.nodes.length * nodeWidth + (prevUnit.nodes.length > 1 ? horizontalSpacing : 0);
-                        const minAllowedX = prevUnit.x + prevUnitWidth / 2 + horizontalSpacing + unitWidth / 2;
-                        if (desiredX < minAllowedX) {
-                            desiredX = minAllowedX;
-                        }
+                        currentX = prevUnit.x + prevUnitWidth / 2 + horizontalSpacing + unitWidth / 2;
+                    } else {
+                        currentX = unitWidth / 2;
                     }
-                    unit.x = desiredX;
+                    unit.x = currentX;
 
                     // Position individual nodes within their unit
                     if (unit.nodes.length === 1) {
                         unit.nodes[0].x = unit.x;
                     } else {
-                        // Ensure consistent ordering for couples
                         unit.nodes.sort((a, b) => a.id - b.id);
                         const offset = (nodeWidth + horizontalSpacing) / 2;
                         unit.nodes[0].x = unit.x - offset;
@@ -397,7 +371,7 @@
             // Center the whole tree
             if (nodes.length > 0) {
                 const allX = nodes.map(n => n.x);
-                if (allX.some(x => x === undefined)) return; // Failsafe
+                if (allX.some(x => x === undefined)) return;
                 const minX = d3.min(allX);
                 const maxX = d3.max(allX);
                 const treeWidth = maxX - minX;
@@ -617,7 +591,7 @@
             }
         });
 
-        // --- IMPORT/EXPORT/DEBUG FUNCTIONALITY ---
+        // --- IMPORT/EXPORT FUNCTIONALITY ---
         exportBtn.addEventListener('click', () => {
             const dataStr = JSON.stringify({ nodes, links, nodeIdCounter });
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -643,21 +617,6 @@
             };
             reader.readAsText(file);
             event.target.value = ''; 
-        });
-
-        debugBtn.addEventListener('click', () => {
-            const cleanNodes = nodes.map(n => ({
-                id: n.id,
-                name: n.name,
-                depth: n.depth,
-                x: n.x,
-                y: n.y,
-                _parents: n._parents,
-                _children: n._children,
-                _partners: n._partners
-            }));
-            const debugInfo = `NODES:\n${JSON.stringify(cleanNodes, null, 2)}\n\nLINKS:\n${JSON.stringify(links, null, 2)}`;
-            debugOutput.value = debugInfo;
         });
 
 
