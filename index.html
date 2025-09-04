@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.5";
+        const version = "v2.6";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -256,7 +256,6 @@
             });
 
             // --- DEPTH CALCULATION (VERTICAL POSITION) ---
-            // A robust, iterative approach to correctly handle complex family structures.
             nodes.forEach(n => delete n.depth);
             let changedInLoop;
             do {
@@ -266,12 +265,12 @@
                     let newDepth;
 
                     if (node._parents.length > 0) {
-                        const parentDepths = node._parents.map(pId => nodeMap.get(pId).depth);
+                        const parentDepths = node._parents.map(pId => nodeMap.get(pId)?.depth);
                         if (parentDepths.every(d => d !== undefined)) {
                             newDepth = Math.max(...parentDepths) + 1;
                         }
                     } else {
-                        newDepth = 0; // Root node of a subtree
+                        newDepth = 0;
                     }
 
                     if (node._partners.length > 0) {
@@ -288,42 +287,55 @@
                 });
             } while (changedInLoop);
 
-            // Assign depth 0 to any remaining disconnected nodes
             nodes.forEach(n => { if (n.depth === undefined) n.depth = 0; });
             const maxDepth = d3.max(nodes, n => n.depth) || 0;
 
-            // Position nodes vertically by depth
             nodes.forEach(n => n.y = n.depth * (nodeHeight + verticalSpacing) + 50);
 
             // --- HORIZONTAL POSITIONING ---
             const levels = Array.from({ length: maxDepth + 1 }, () => []);
             nodes.forEach(n => levels[n.depth].push(n));
             
-            // 1. Initial positioning
             levels.forEach(level => level.forEach((n, i) => { n.x = i * (nodeWidth + horizontalSpacing); }));
 
-            // 2. Iteratively refine positions
             for (let iter = 0; iter < 5; iter++) {
-                // Bottom-up pass: center parents over their children
-                for (let i = maxDepth - 1; i >= 0; i--) {
-                    levels[i].forEach(n => {
-                        if (n._children.length > 0) {
-                            const childrenNodes = n._children.map(cid => nodeMap.get(cid));
-                            const meanX = d3.mean(childrenNodes, c => c.x);
-                            if (meanX !== undefined) {
-                                const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
-                                if (partner && partner.depth === i) {
-                                    n.x = meanX - (nodeWidth + horizontalSpacing) / 2;
-                                    partner.x = meanX + (nodeWidth + horizontalSpacing) / 2;
-                                } else {
-                                    n.x = meanX;
-                                }
+                // Pass to position family units (couples and single parents)
+                for (let i = maxDepth; i >= 0; i--) {
+                    const level = levels[i];
+                    const handled = new Set();
+
+                    level.forEach(n => {
+                        if (handled.has(n.id)) return;
+
+                        const partner = n._partners.length > 0 ? nodeMap.get(n._partners[0]) : null;
+
+                        // Case 1: Node is part of a couple.
+                        if (partner && partner.depth === i) {
+                            const familyChildren = [...new Set([...n._children, ...partner._children])].map(cid => nodeMap.get(cid));
+                            
+                            if (familyChildren.length > 0) {
+                                const meanX = d3.mean(familyChildren, c => c.x);
+                                n.x = meanX - (nodeWidth + horizontalSpacing) / 2;
+                                partner.x = meanX + (nodeWidth + horizontalSpacing) / 2;
+                            } else {
+                                // Childless couple: ensure they are adjacent. Overlap resolver will space them.
+                                partner.x = n.x + nodeWidth + horizontalSpacing; 
                             }
+                            handled.add(n.id);
+                            handled.add(partner.id);
+                        } 
+                        // Case 2: Node is single.
+                        else {
+                            if (n._children.length > 0) {
+                                const childrenNodes = n._children.map(cid => nodeMap.get(cid));
+                                n.x = d3.mean(childrenNodes, c => c.x);
+                            }
+                            handled.add(n.id);
                         }
                     });
                 }
                 
-                // Resolve overlaps within each level more gracefully
+                // Resolve overlaps within each level
                 levels.forEach(level => {
                     const sortedLevel = level.sort((a,b) => a.x - b.x);
                     for (let j = 0; j < sortedLevel.length - 1; j++) {
@@ -334,7 +346,7 @@
 
                         if (gap < minGap) {
                             const shift = minGap - gap;
-                            node2.x += shift; // Push the conflicting node
+                            node2.x += shift;
                         }
                     }
                 });
@@ -358,13 +370,11 @@
             const nodeMap = new Map(nodes.map(n => [n.id, n]));
             const handledChildren = new Set();
             
-            // Draw family hub links
             links.filter(l => l.type === 'partner').forEach(l => {
                 const p1 = nodeMap.get(l.source);
                 const p2 = nodeMap.get(l.target);
                 if (!p1 || !p2) return;
                 
-                // Draw partner line
                 linkGroup.append('path')
                     .attr('d', `M${p1.x},${p1.y} L${p2.x},${p2.y}`)
                     .attr('stroke', '#999').attr('stroke-width', 2);
@@ -377,23 +387,19 @@
                     const parentMidX = (p1.x + p2.x) / 2;
                     const midY = p1.y + nodeHeight / 2 + verticalSpacing / 2;
                     
-                    // Vertical line from parents' midpoint down to the connection level
                     linkGroup.append('path')
                          .attr('d', `M${parentMidX},${p1.y + nodeHeight/2} L${parentMidX},${midY}`)
                          .attr('fill', 'none')
                          .attr('stroke', '#999').attr('stroke-width', 2);
 
-                    // Find the full horizontal extent needed for the connection bar
                     const allX = [parentMidX, ...commonChildren.map(c => c.x)];
                     const minX = d3.min(allX);
                     const maxX = d3.max(allX);
 
-                    // The main horizontal bar
                     linkGroup.append('path')
                         .attr('d', `M${minX},${midY} L${maxX},${midY}`)
                         .attr('stroke', '#999').attr('stroke-width', 2);
 
-                    // Lines from horizontal bar to each child
                     commonChildren.forEach(child => {
                         linkGroup.append('path')
                             .attr('d', `M${child.x},${midY} L${child.x},${child.y - nodeHeight/2}`)
@@ -403,7 +409,6 @@
                 }
             });
 
-            // Draw single-parent links
             links.filter(l => l.type === 'parent-child').forEach(l => {
                 const child = nodeMap.get(l.target);
                 if (!child || handledChildren.has(child.id)) return;
@@ -419,7 +424,6 @@
 
 
         // --- DATA MANIPULATION ---
-        // Does not call update() anymore. This is done by the action handlers.
         function addPerson(name, sourceNode = null, relationship = null) {
             const newNode = { id: nodeIdCounter++, name: name || "New Person", birth: "", death: "" };
             nodes.push(newNode);
@@ -477,7 +481,6 @@
             event.stopPropagation();
             selectedNode = d;
             
-            // Show/hide context menu items based on relationship limits
             d3.select('#addParent').style('display', getParents(d).length >= 2 ? 'none' : 'block');
             d3.select('#addPartner').style('display', getPartners(d).length >= 1 ? 'none' : 'block');
 
@@ -501,7 +504,6 @@
         }
 
         // --- CONTEXT MENU ACTIONS ---
-        // Each action now calls update() at the end to render the changes.
         document.getElementById('addParent').addEventListener('click', () => {
             if (!selectedNode || getParents(selectedNode).length >= 2) return;
             const name = prompt("Enter parent's name:");
