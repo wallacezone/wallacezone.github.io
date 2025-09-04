@@ -163,7 +163,7 @@
         const importFile = document.getElementById('importFile');
 
         // --- VERSION INDICATOR ---
-        const version = "v2.8";
+        const version = "v2.9";
         document.getElementById('version-indicator').textContent = version;
 
         // --- INITIAL SETUP ---
@@ -334,7 +334,8 @@
                 
                 // Resolve overlaps within each level
                 levels.forEach(level => {
-                    const sortedLevel = level.sort((a,b) => a.x - b.x);
+                    // CRITICAL FIX: Sort a COPY of the array, not the original, to prevent data corruption.
+                    const sortedLevel = [...level].sort((a,b) => a.x - b.x);
                     for (let j = 0; j < sortedLevel.length - 1; j++) {
                         const node1 = sortedLevel[j];
                         const node2 = sortedLevel[j+1];
