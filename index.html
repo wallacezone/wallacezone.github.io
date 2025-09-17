@@ -1,581 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Family Tree Builder</title>
+    <title>Alessandro Barbieri</title>
     <style>
-        /* General body styling for a modern, clean look */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+            background-color: #f6f8fa;
+            color: #24292e;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            color: #333;
         }
-
-        /* Header styling */
-        .header {
-            background-color: #ffffff;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.5em;
-            color: #1c1e21;
-        }
-
-        /* Controls styling for import/export buttons */
-        .controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            padding: 8px 16px;
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
-        .btn:hover {
-            background-color: #166fe5;
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
         }
-
-        /* Hide the default file input */
-        input[type="file"] {
-            display: none;
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid #e1e4e8;
         }
-
-        /* Main container for the SVG canvas */
-        .tree-container {
-            flex-grow: 1;
-            width: 100%;
-            height: 100%;
+        .profile h1 {
+            margin: 15px 0;
+            font-size: 2.2em;
         }
-
-        /* SVG styling */
-        svg {
-            width: 100%;
-            height: 100%;
-            cursor: grab;
+        .profile p {
+            color: #586069;
+            font-size: 1.1em;
         }
-        svg:active {
-            cursor: grabbing;
+        .section {
+            margin-bottom: 20px;
         }
-
-        /* Tooltip styling */
-        .tooltip {
-            position: absolute;
-            visibility: hidden;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            opacity: 0;
+        .section-title {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            color: #24292e;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 5px;
         }
-
-        /* Context menu for node actions */
-        .context-menu {
-            position: absolute;
-            visibility: hidden;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 5px 0;
-            min-width: 120px;
-            z-index: 10;
+        ul {
+            list-style: none;
+            padding: 0;
         }
-
-        .context-menu-item {
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 14px;
+        li {
+            margin-bottom: 8px;
+            font-size: 1em;
+            line-height: 1.5;
         }
-
-        .context-menu-item:hover {
-            background-color: #f0f2f5;
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .navbar {
+            background-color: #24292e;
+            padding: 10px;
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <div class="header">
-        <h1>Family Tree Builder <span id="version-indicator" style="font-size: 0.6em; color: #888; font-weight: normal;"></span></h1>
-        <div class="controls">
-            <button id="exportBtn" class="btn">Export Tree (JSON)</button>
-            <label for="importFile" class="btn">Import Tree (JSON)</label>
-            <input type="file" id="importFile" accept=".json">
+    <div class="container">
+        <div class="profile">
+            <img src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri">
+            <h1>Alessandro Barbieri</h1>
+            Medico Chirurgo Specialista in Ortopedia e Traumatologia
         </div>
+
+        <div class="section experience">
+            <div class="section-title"></div>
+            <ul>
+            <li><a href="diritti_medico_genitore.html">Diritti Genitorialità Medico SSN [Gemini AI]</a></li>
+                <li><a href="diritti_medico_genitore_link.html">Diritti Genitorialità Medico SSN (link utili)</a></li>
+                <li><a href="diritti_genitori.html">Diritti dei Genitori 2025 [Gemini AI]</a></li>
+                <li><a href="equally_weighted.html">Allocazione Geografica Strategica per un Portafoglio Globale di ETF Azionari [Gemini AI]</a></li>
+                <li><a href="etf_vs_fondi.html">Gestione Passiva (ETF) vs. Gestione Attiva (Fondi Comuni) [Gemini AI]</a></li>
+                <li><a href="fkt.html">L'Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica [Gemini AI]</a></li>
+                <li><a href="stagionalita.html">Stagionalità Frutta e Verdura in Italia e in Veneto [Gemini AI]</a></li>
+                
+            </ul>
+        </div>
+
     </div>
-
-    <!-- Main SVG Container -->
-    <div class="tree-container">
-        <svg id="tree-svg"></svg>
-    </div>
-
-    <!-- Tooltip Element -->
-    <div id="tooltip" class="tooltip"></div>
-
-    <!-- Context Menu Element -->
-    <div id="contextMenu" class="context-menu">
-        <div class="context-menu-item" id="addParent">Add Parent</div>
-        <div class="context-menu-item" id="addChild">Add Child</div>
-        <div class="context-menu-item" id="addPartner">Add Partner</div>
-        <div class="context-menu-item" id="addSibling">Add Sibling</div>
-        <hr style="margin: 5px 0; border: none; border-top: 1px solid #eee;">
-        <div class="context-menu-item" id="editNode">Edit</div>
-        <div class="context-menu-item" id="deleteNode">Delete</div>
-    </div>
-
-
-    <!-- D3.js Library -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-
-    <script>
-        // --- DOM ELEMENT SELECTION ---
-        const svg = d3.select("#tree-svg");
-        const container = document.querySelector('.tree-container');
-        const tooltip = d3.select("#tooltip");
-        const contextMenu = d3.select("#contextMenu");
-        const exportBtn = document.getElementById('exportBtn');
-        const importFile = document.getElementById('importFile');
-
-        // --- VERSION INDICATOR ---
-        const version = "v5.0 (Final & Stable Engine)";
-        document.getElementById('version-indicator').textContent = version;
-
-        // --- INITIAL SETUP ---
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        const nodeWidth = 140;
-        const nodeHeight = 50;
-        const horizontalSpacing = 40;
-        const verticalSpacing = 100; // Increased spacing for clarity
-
-
-        let nodes = [];
-        let links = [];
-        let nodeIdCounter = 0;
-        let selectedNode = null;
-
-        // SVG containers for links and nodes
-        const g = svg.append("g");
-        let linkGroup = g.append("g").attr("class", "links");
-        let nodeGroup = g.append("g").attr("class", "nodes");
-
-        // --- ZOOM & PAN FUNCTIONALITY ---
-        const zoom = d3.zoom().on("zoom", (event) => {
-            g.attr("transform", event.transform);
-        });
-        svg.call(zoom);
-
-        // --- CORE FUNCTIONS ---
-
-        /**
-         * Main update function to re-render the tree.
-         */
-        function update() {
-            // Calculate the new layout
-            const { treeNodes, treeLinks } = updateLayout();
-
-            // Render Links
-            renderLinks(treeLinks);
-
-            // Render Nodes
-            renderNodes(treeNodes);
-        }
-        
-        // --- LAYOUT ENGINE (REWRITTEN) ---
-        function updateLayout() {
-            if (nodes.length === 0) {
-                return { treeNodes: [], treeLinks: [] };
-            }
-
-            const nodeMap = new Map(nodes.map(n => [n.id, n]));
-
-            // 1. Create data suitable for d3.stratify
-            const stratifyData = [];
-            nodes.forEach(n => {
-                const parents = getParents(n).sort((a,b) => a.id - b.id);
-                // The first parent (by ID) is the "structural" parent for layout
-                const parentId = parents.length > 0 ? parents[0].id : null;
-                stratifyData.push({ id: n.id, parentId: parentId, data: n });
-            });
-
-            // 2. Handle multiple roots by creating a dummy root
-            const roots = stratifyData.filter(d => d.parentId === null);
-            const dummyRootId = -1;
-            if (roots.length > 1) {
-                stratifyData.push({ id: dummyRootId, parentId: null, data: { name: "ROOT" } });
-                roots.forEach(r => r.parentId = dummyRootId);
-            }
-            
-            // 3. Create the hierarchy
-            const root = d3.stratify()
-                .id(d => d.id)
-                .parentId(d => d.parentId)
-                (stratifyData);
-
-            // 4. Create and apply the tree layout
-            const treeLayout = d3.tree()
-                .nodeSize([nodeWidth + horizontalSpacing, verticalSpacing]);
-            
-            treeLayout(root);
-
-            // 5. Extract nodes and links, filtering out the dummy root
-            let treeNodes = root.descendants().filter(d => d.id != dummyRootId);
-            let treeLinks = root.links().filter(l => l.source.id != dummyRootId && l.target.id != dummyRootId);
-
-            // 6. Post-process to position partners next to each other
-            const handledPartners = new Set();
-            treeNodes.forEach(n => {
-                const nodeData = n.data.data;
-                const partner = getPartners(nodeData)[0];
-                if (partner && !handledPartners.has(partner.id) && !handledPartners.has(nodeData.id)) {
-                    const partnerNode = treeNodes.find(tn => tn.id == partner.id);
-                    if (partnerNode) {
-                        // Position partner relative to the node in the tree structure
-                        partnerNode.x = n.x + nodeWidth + horizontalSpacing;
-                        partnerNode.y = n.y; // Keep them on the same level
-
-                        // Shift all subsequent nodes on the same level to avoid overlap
-                        treeNodes.forEach(otherNode => {
-                            if (otherNode.y === n.y && otherNode.x > n.x) {
-                                otherNode.x += nodeWidth + horizontalSpacing;
-                            }
-                        });
-                        handledPartners.add(nodeData.id);
-                        handledPartners.add(partner.id);
-                    }
-                }
-            });
-            
-            // 7. Center the tree
-            if (treeNodes.length > 0) {
-                const xCoords = treeNodes.map(n => n.x);
-                const minX = d3.min(xCoords);
-                const maxX = d3.max(xCoords);
-                const treeWidth = maxX - minX;
-                const shiftX = (width - treeWidth) / 2 - minX;
-                treeNodes.forEach(n => n.x += shiftX);
-            }
-
-            // Apply calculated positions back to original nodes
-            treeNodes.forEach(tn => {
-                const originalNode = nodeMap.get(parseInt(tn.id));
-                if (originalNode) {
-                    originalNode.x = tn.x;
-                    originalNode.y = tn.y;
-                }
-            });
-
-            return { treeNodes, treeLinks };
-        }
-        
-        // --- RENDERING FUNCTIONS ---
-        function renderNodes(treeNodes) {
-            const node = nodeGroup.selectAll(".node")
-                .data(treeNodes, d => d.id);
-            
-            // Enter
-            const nodeEnter = node.enter().append("g")
-                .attr("class", "node")
-                .attr("transform", d => `translate(${d.x}, ${d.y})`)
-                .on("click", handleNodeClick)
-                .on("mouseover", handleMouseOver)
-                .on("mouseout", handleMouseOut);
-
-            nodeEnter.append("rect")
-                .attr("width", nodeWidth)
-                .attr("height", nodeHeight)
-                .attr("x", -nodeWidth / 2)
-                .attr("y", -nodeHeight / 2)
-                .attr("rx", 8)
-                .attr("ry", 8)
-                .attr("fill", "#fff")
-                .attr("stroke", "#999")
-                .attr("stroke-width", 2);
-
-            nodeEnter.append("text")
-                .attr("dy", ".35em")
-                .attr("text-anchor", "middle")
-                .style("pointer-events", "none")
-                .style("font-size", "14px")
-                .text(d => d.data.data.name);
-
-            // Update
-            node.transition().duration(500)
-                .attr("transform", d => `translate(${d.x}, ${d.y})`);
-            node.select("text").text(d => d.data.data.name);
-
-            // Exit
-            node.exit().remove();
-        }
-
-        function renderLinks(treeLinks) {
-            linkGroup.selectAll("*").remove();
-            const nodeMap = new Map(nodes.map(n => [n.id, n]));
-
-            // Draw all parent-child and partner links based on the final positions
-            links.forEach(link => {
-                const sourceNode = nodeMap.get(link.source);
-                const targetNode = nodeMap.get(link.target);
-                if (!sourceNode || !targetNode) return;
-
-                if (link.type === 'partner') {
-                    linkGroup.append('path')
-                        .attr('d', `M${sourceNode.x},${sourceNode.y} L${targetNode.x},${targetNode.y}`)
-                        .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
-                } else if (link.type === 'parent-child') {
-                    // Custom path for parent-child to create hubs
-                    const parent1 = sourceNode;
-                    const child = targetNode;
-                    const otherParent = getPartners(parent1)[0];
-                    
-                    if (otherParent && getParents(child).some(p => p.id === otherParent.id)) {
-                        // This is a couple, draw a hub link if we are the first parent
-                        if (parent1.id < otherParent.id) {
-                            drawFamilyHub(parent1, otherParent, child);
-                        }
-                    } else {
-                        // Single parent link
-                        drawSingleParentLink(parent1, child);
-                    }
-                }
-            });
-        }
-        
-        function drawFamilyHub(p1, p2, child) {
-             const parentMidX = (p1.x + p2.x) / 2;
-             const midY = p1.y + nodeHeight / 2 + verticalSpacing / 4;
-             
-             linkGroup.append('path')
-                  .attr('d', `M${parentMidX},${p1.y} L${parentMidX},${midY}`)
-                  .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
-
-             linkGroup.append('path')
-                 .attr('d', `M${child.x},${midY} L${child.x},${child.y - nodeHeight/2}`)
-                 .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
-        }
-        
-        function drawSingleParentLink(parent, child) {
-             linkGroup.append('path')
-                 .attr('d', `M${parent.x},${parent.y + nodeHeight/2} L${parent.x},${parent.y + nodeHeight/2 + verticalSpacing/4} L${child.x},${parent.y + nodeHeight/2 + verticalSpacing/4} L${child.x},${child.y - nodeHeight/2}`)
-                 .attr('fill', 'none').attr('stroke', '#999').attr('stroke-width', 2);
-        }
-
-
-        // --- DATA MANIPULATION ---
-        function addPerson(name) {
-            const newNode = { id: nodeIdCounter++, name: name || "New Person", birth: "", death: "" };
-            nodes.push(newNode);
-            return newNode;
-        }
-
-        function deletePerson(nodeToDelete) {
-            nodes = nodes.filter(d => d.id !== nodeToDelete.id);
-            links = links.filter(l => l.source !== nodeToDelete.id && l.target !== nodeToDelete.id);
-        }
-
-        function editPerson(nodeToEdit) {
-            const newName = prompt("Enter new name:", nodeToEdit.name);
-            const newBirth = prompt("Enter birth date:", nodeToEdit.birth);
-            const newDeath = prompt("Enter death date:", nodeToEdit.death);
-
-            if (newName !== null) nodeToEdit.name = newName;
-            if (newBirth !== null) nodeToEdit.birth = newBirth;
-            if (newDeath !== null) nodeToEdit.death = newDeath;
-        }
-
-        // --- RELATIONSHIP HELPERS ---
-        const getParents = (node, returnId = false) => {
-            if(!node) return [];
-            const parents = links.filter(l => l.target === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.source)).filter(Boolean);
-            return returnId ? parents.map(p => p.id) : parents;
-        }
-        const getChildren = (node, returnId = false) => {
-            if(!node) return [];
-            const children = links.filter(l => l.source === node.id && l.type === 'parent-child').map(l => nodes.find(n => n.id === l.target)).filter(Boolean);
-            return returnId ? children.map(c => c.id) : children;
-        }
-        const getPartners = (node, returnId = false) => {
-            if(!node) return [];
-            const partners = links.filter(l => l.type === 'partner' && (l.source === node.id || l.target === node.id)).map(l => {
-                const partnerId = l.source === node.id ? l.target : l.source;
-                return nodes.find(n => n.id === partnerId);
-            }).filter(Boolean);
-            return returnId ? partners.map(p => p.id) : partners;
-        }
-
-
-        // --- EVENT HANDLERS ---
-        function handleNodeClick(event, d) {
-            event.stopPropagation();
-            selectedNode = nodes.find(n => n.id === parseInt(d.id));
-            
-            d3.select('#addParent').style('display', getParents(selectedNode).length >= 2 ? 'none' : 'block');
-            d3.select('#addPartner').style('display', getPartners(selectedNode).length >= 1 ? 'none' : 'block');
-
-            contextMenu
-                .style("visibility", "visible")
-                .style("top", `${event.pageY}px`)
-                .style("left", `${event.pageX}px`);
-        }
-        
-        d3.select('body').on('click', () => contextMenu.style("visibility", "hidden"));
-
-        function handleMouseOver(event, d) {
-            const nodeData = d.data.data;
-            tooltip
-                .style("visibility", "visible").style("opacity", 1)
-                .style("top", `${event.pageY - 10}px`).style("left", `${event.pageX + 10}px`)
-                .html(`Born: ${nodeData.birth || 'N/A'}<br>Died: ${nodeData.death || 'N/A'}`);
-        }
-
-        function handleMouseOut() {
-            tooltip.style("visibility", "hidden").style("opacity", 0);
-        }
-
-        // --- CONTEXT MENU ACTIONS ---
-        document.getElementById('addParent').addEventListener('click', () => {
-            if (!selectedNode || getParents(selectedNode).length >= 2) return;
-            const name = prompt("Enter parent's name:");
-            if (!name) return;
-
-            const newParent = addPerson(name);
-            links.push({ source: newParent.id, target: selectedNode.id, type: 'parent-child' });
-
-            const existingParents = getParents(selectedNode).filter(p => p && p.id !== newParent.id);
-            if(existingParents.length > 0) {
-                 links.push({ source: newParent.id, target: existingParents[0].id, type: 'partner' });
-            }
-            update();
-        });
-
-        document.getElementById('addChild').addEventListener('click', () => {
-            if (!selectedNode) return;
-            const name = prompt("Enter child's name:");
-            if(!name) return;
-
-            const newChild = addPerson(name);
-            links.push({ source: selectedNode.id, target: newChild.id, type: 'parent-child' });
-
-            const partners = getPartners(selectedNode);
-            if (partners.length > 0) {
-                 links.push({ source: partners[0].id, target: newChild.id, type: 'parent-child' });
-            }
-            update();
-        });
-
-        document.getElementById('addPartner').addEventListener('click', () => {
-            if (!selectedNode || getPartners(selectedNode).length >= 1) return;
-            const name = prompt("Enter partner's name:");
-            if (!name) return;
-            
-            const newPartner = addPerson(name);
-            links.push({ source: selectedNode.id, target: newPartner.id, type: 'partner' });
-
-            const children = getChildren(selectedNode);
-            children.forEach(child => {
-                const childParents = getParents(child);
-                if (!childParents.some(p => p && p.id === newPartner.id)) {
-                    links.push({ source: newPartner.id, target: child.id, type: 'parent-child' });
-                }
-            });
-            update();
-        });
-
-        document.getElementById('addSibling').addEventListener('click', () => {
-            if (!selectedNode) return;
-            const name = prompt("Enter sibling's name:");
-            if (!name) return;
-
-            const parents = getParents(selectedNode);
-            if (parents.length === 0) {
-                console.warn("Adding a sibling to a node with no parents. The new node will be disconnected.");
-                addPerson(name);
-            } else {
-                const newSibling = addPerson(name);
-                parents.forEach(parent => {
-                    links.push({ source: parent.id, target: newSibling.id, type: 'parent-child' });
-                });
-            }
-            update();
-        });
-
-        document.getElementById('editNode').addEventListener('click', () => {
-            if (selectedNode) {
-                editPerson(selectedNode);
-                update();
-            }
-        });
-        
-        document.getElementById('deleteNode').addEventListener('click', () => {
-            if (selectedNode) {
-                deletePerson(selectedNode);
-                update();
-            }
-        });
-
-        // --- IMPORT/EXPORT FUNCTIONALITY ---
-        exportBtn.addEventListener('click', () => {
-            const dataStr = JSON.stringify({ nodes, links, nodeIdCounter });
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'family-tree.json';
-            a.click(); a.remove(); URL.revokeObjectURL(url);
-        });
-        
-        importFile.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.nodes && data.links) {
-                        nodes = data.nodes; links = data.links;
-                        nodeIdCounter = data.nodeIdCounter || (Math.max(...nodes.map(n => n.id)) + 1);
-                        update();
-                    } else { alert("Invalid JSON file format for family tree."); }
-                } catch (error) { alert("Error parsing JSON file."); console.error(error); }
-            };
-            reader.readAsText(file);
-            event.target.value = ''; 
-        });
-
-
-        // --- INITIALIZE THE APPLICATION ---
-        if (nodes.length === 0) {
-            const initialNode = { id: nodeIdCounter++, name: "You", birth: "", death: "" };
-            nodes.push(initialNode);
-        }
-        update();
-
-    </script>
 </body>
 </html>
-
