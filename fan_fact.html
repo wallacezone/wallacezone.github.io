@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Facts</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Stile di base e reset */
+        :root {
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #212529;
+            --accent-color: #6c757d;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Il contenitore principale */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            background-color: var(--card-background);
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            opacity: 0; /* Inizia invisibile per l'animazione */
+            transform: translateY(20px); /* Spostato in basso per l'animazione */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stili per la tipografia */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .fact {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            font-weight: 400;
+            border: none; /* Rimuoviamo lo stile di default del blockquote */
+            margin: 0;
+            font-style: italic;
+            color: #343a40;
+        }
+
+        /* Media query per la responsività su schermi piccoli */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .fact {
+                font-size: 1.2rem;
+            }
+            .container {
+                padding: 30px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <h1>Fan Fact of the Day</h1>
+        <p id="date-display" class="date"></p>
+        
+        <blockquote id="fact-display" class="fact">
+            Caricamento...
+        </blockquote>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Lista completa dei 366 Fatti Curiosi
+            const facts = [
+                `Un polpo ha tre cuori. Due pompano il sangue nelle branchie, mentre il terzo lo fa circolare nel resto del corpo.`,
+                `La Gioconda non ha le sopracciglia perché era moda nel Rinascimento a Firenze radersi le sopracciglia.`,
+                `Il verso dell'anatra non produce eco, e nessuno sa perché.`,
+                `Cleopatra visse in un'epoca più vicina all'invenzione dell'iPhone che alla costruzione della Grande Piramide di Giza.`,
+                `Il miele non scade mai. Hanno trovato anfore di miele in tombe egizie vecchie di migliaia di anni, ancora perfettamente commestibile.`,
+                `Le capre hanno pupille rettangolari.`,
+                `Il segno di cancelletto (#) non si chiama hashtag, ma tecnicamente "octothorpe".`,
+                `La probabilità che nel tuo bicchiere d'acqua ci sia almeno una molecola d'acqua passata attraverso un dinosauro è quasi del 100%.`,
+                `In Svizzera è illegale possedere una sola cavia (porcellino d'India) perché soffrono la solitudine.`,
+                `Il cuore di una balenottera azzurra è così grande che un essere umano potrebbe nuotare nelle sue arterie.`,
+                `L'accendino è stato inventato prima del fiammifero.`,
+                `La parola "avocado" deriva da una parola azteca che significa "testicolo".`,
+                `Gli esseri umani condividono il 50% del loro DNA con le banane.`,
+                `Un fulmine è circa 5 volte più caldo della superficie del Sole.`,
+                `I Wombat (vombati) fanno la cacca a forma di cubo per marcare il territorio ed evitare che rotoli via.`,
+                `La Francia usava ancora la ghigliottina quando il primo film di Star Wars uscì al cinema (1977).`,
+                `I pinguini si propongono alla partner regalandole un sassolino.`,
+                `La creatura più letale al mondo non è uno squalo o un leone, ma la zanzara, a causa delle malattie che trasmette.`,
+                `Il nome originale di Pac-Man era Puck-Man. Fu cambiato per evitare che in America la gente sostituisse la 'P' con una 'F'.`,
+                `C'è un pianeta, a 40 anni luce di distanza, fatto interamente di diamante. Si chiama 55 Cancri e.`,
+                `Le lontre marine si tengono per mano quando dormono per non allontanarsi a causa della corrente.`,
+                `La Torre Eiffel può essere più alta di 15 cm durante l'estate a causa della dilatazione termica del metallo.`,
+                `In origine, le carote erano viola, non arancioni.`,
+                `Il suono che senti quando schiocchi le dita non è causato dall'urto tra le dita, ma dallo scoppio di una bolla di gas nell'articolazione.`,
+                `La Scozia ha scelto l'unicorno come animale nazionale.`,
+                `Se potessi piegare un foglio di carta 42 volte, il suo spessore raggiungerebbe la Luna.`,
+                `L'inventore del Pringles è stato sepolto nel famoso tubo di Pringles.`,
+                `Il cervello umano opera con circa 10-12 watt di potenza.`,
+                `I funghi sono geneticamente più simili agli animali che alle piante.`,
+                `Esiste una medusa, la Turritopsis dohrnii, che è biologicamente immortale.`,
+                `La parola "quarantena" deriva dai 40 giorni ("quaranta giorni") che le navi dovevano attendere prima di sbarcare a Venezia durante la Peste Nera.`,
+                `I maiali non possono guardare fisicamente verso il cielo.`,
+                `Il "braccio di ferro" è uno sport ufficiale con tanto di federazioni e campionati mondiali.`,
+                `La Coca-Cola sarebbe verde se non venissero aggiunti coloranti.`,
+                `I corvi sono così intelligenti da potersi fare scherzi a vicenda.`,
+                `È impossibile canticchiare (humming) mentre ci si tappa il naso. Prova!`,
+                `Nintendo è stata fondata nel 1889 come azienda produttrice di carte da gioco.`,
+                `Lo stato americano più vicino all'Africa è il Maine.`,
+                `La Russia ha una superficie più grande di Plutone.`,
+                `Il rumore che senti quando avvicini una conchiglia all'orecchio non è l'oceano, ma il suono del sangue che scorre nei vasi sanguigni del tuo orecchio.`,
+                `L'Australia è più larga della Luna.`,
+                `"Arachibutyrophobia" è la paura che il burro d'arachidi si attacchi al palato.`,
+                `La Grande Muraglia Cinese non è visibile dallo spazio a occhio nudo.`,
+                `La Danimarca ha più del doppio delle biciclette rispetto alle auto.`,
+                `In media, una persona ride circa 13 volte al giorno.`,
+                `Le formiche non dormono. Si riposano con "pisolini" di 8 minuti due volte al giorno.`,
+                `Il vero nome di Topolino (Mickey Mouse) doveva essere Mortimer Mouse.`,
+                `Il cervello è più attivo di notte che di giorno.`,
+                `Le stelle marine non hanno un cervello.`,
+                `La parola "nerd" è stata coniata per la prima volta dal Dr. Seuss nel suo libro "If I Ran the Zoo".`,
+                `Il primo film ad aver mai usato un bagno con sciacquone è stato "Psycho" di Alfred Hitchcock.`,
+                `Le mucche hanno migliori amiche e si stressano quando vengono separate.`,
+                `Il tempo più lungo tra la nascita di due gemelli è di 87 giorni.`,
+                `Gli astronauti diventano più alti nello spazio a causa dell'assenza di gravità che decomprime la colonna vertebrale.`,
+                `Il Monte Everest, la montagna più alta del mondo, continua a crescere di circa 4 millimetri ogni anno.`,
+                `La maggior parte della polvere in casa tua è composta da cellule morte della tua pelle.`,
+                `La banana è tecnicamente una bacca, mentre la fragola no.`,
+                `Il tuo naso può ricordare circa 50.000 odori diversi.`,
+                `Il simbolo del cuore (❤️) non deriva dal cuore umano, ma probabilmente dalla forma del frutto del silfio, una pianta usata come contraccettivo nell'antichità.`,
+                `L'alfabeto hawaiano ha solo 13 lettere.`,
+                `Il verso di un gatto ("miao") è un comportamento sviluppato quasi esclusivamente per comunicare con gli esseri umani.`,
+                `I koala dormono fino a 22 ore al giorno.`,
+                `Il primo prodotto venduto online, in una transazione tra studenti negli anni '70, fu un sacchetto di marijuana.`,
+                `"OMG" (Oh My God) è stato usato per la prima volta in una lettera a Winston Churchill nel 1917.`,
+                `Lo struzzo ha gli occhi più grandi del suo cervello.`,
+                `È fisicamente impossibile per te leccarti il gomito. (Probabilmente ci hai appena provato).`,
+                `Il suono non si propaga nel vuoto dello spazio.`,
+                `L'ippopotamo secerne un fluido rossastro che funziona come crema solare e idratante.`,
+                `Un gamberetto mantide può colpire con le sue chele così velocemente da far bollire l'acqua circostante, creando bolle di cavitazione.`,
+                `I castori hanno denti arancioni perché contengono ferro, che li rende più forti.`,
+                `Il colibrì è l'unico uccello in grado di volare all'indietro.`,
+                `Il nome completo della bambola Barbie è Barbara Millicent Roberts.`,
+                `L'inventore del Frisbee fu cremato e le sue ceneri trasformate in Frisbee commemorativi.`,
+                `La lingua di una giraffa è così lunga (fino a 50 cm) che può usarla per pulirsi le orecchie.`,
+                `La Finlandia ha il maggior numero di band heavy metal pro capite al mondo.`,
+                `Il 90% della popolazione mondiale vive nell'emisfero settentrionale.`,
+                `Un singolo filamento di spaghetti si chiama "spaghetto".`,
+                `L'odore dell'erba appena tagliata è in realtà un segnale di soccorso chimico emesso dalla pianta.`,
+                `La volpe artica può sopravvivere a temperature fino a -50°C.`,
+                `Il Canada ha più laghi di tutti gli altri paesi del mondo messi insieme.`,
+                `La forchetta era considerata scandalosa e blasfema quando fu introdotta in Italia, perché vista come un "dono artificiale di Dio".`,
+                `Gli anacardi crescono su un frutto chiamato mela di anacardio, ma il seme (la noce che mangiamo) è esterno al frutto.`,
+                `Le pecore possono riconoscere fino a 50 volti diversi di altre pecore e ricordarli per anni.`,
+                `Il Viagra fu originariamente sviluppato per trattare l'angina pectoris (un dolore al petto).`,
+                `In Giappone, i gatti neri sono considerati un portafortuna.`,
+                `Il primo romanzo della storia, "Genji monogatari", è stato scritto da una nobildonna giapponese, Murasaki Shikibu, nell'XI secolo.`,
+                `Gli elefanti sono gli unici mammiferi che non possono saltare.`,
+                `I lecca-lecca sono stati inventati da un uomo che voleva dare ai bambini una caramella su un bastoncino per non farli sporcare.`,
+                `Il deserto del Sahara era una lussureggiante foresta pluviale circa 6.000 anni fa.`,
+                `Il "cinque" (high five) è stato inventato nel 1977 da due giocatori di baseball.`,
+                `Se la Terra non avesse la Luna, un giorno durerebbe solo 6 ore.`,
+                `I cavallucci marini sono monogami e si tengono per la coda quando nuotano.`,
+                `I Beatles usarono la parola "love" 613 volte nelle loro canzoni.`,
+                `La luce del Sole impiega circa 8 minuti e 20 secondi per raggiungere la Terra.`,
+                `Il tuo stomaco deve produrre un nuovo strato di mucosa ogni due settimane, altrimenti si auto-digerirebbe.`,
+                `Esistono più stelle nell'universo che granelli di sabbia su tutte le spiagge della Terra.`,
+                `I fenicotteri sono rosa perché mangiano gamberetti e alghe ricche di carotenoidi. Nascono grigi.`,
+                `La Statua della Libertà era originariamente del colore del rame, ma è diventata verde a causa dell'ossidazione.`,
+                `Il kilt è stato inventato da un inglese, non da uno scozzese.`,
+                `In media, trascorriamo circa 6 mesi della nostra vita in attesa che il semaforo diventi verde.`,
+                `L'ornitorinco non ha stomaco. Il suo esofago si collega direttamente all'intestino.`,
+                `La parola "sincronicità" è stata coniata dallo psicologo Carl Jung.`,
+                `I calamari giganti hanno gli occhi più grandi di qualsiasi creatura vivente, grandi quanto un pallone da basket.`,
+                `In Antartide c'è solo un bancomat (ATM).`,
+                `Le impronte digitali dei koala sono quasi indistinguibili da quelle umane, tanto da aver confuso scene del crimine.`,
+                `Le nuvole possono pesare tonnellate. Una nuvola di cumulo media pesa circa 500.000 kg.`,
+                `Il primo videogioco a essere giocato nello spazio è stato Tetris.`,
+                `Il nome "LEGO" deriva dalle parole danesi "leg godt", che significano "gioca bene".`,
+                `I delfini si danno dei nomi a vicenda usando fischi unici.`,
+                `In Islanda non ci sono zanzare.`,
+                `I denti umani sono l'unica parte del corpo che non può auto-ripararsi.`,
+                `Il grattacielo più stretto del mondo si trova a New York ed è largo solo 13 metri.`,
+                `La "sindrome di Stendhal" è un disturbo psicosomatico che provoca tachicardia e vertigini quando si è esposti a opere d'arte di straordinaria bellezza.`,
+                `La "Guerra Anglo-Zanzibariana" del 1896 è stata la guerra più breve della storia, durata tra i 38 e i 45 minuti.`,
+                `La maggior parte del wasabi che mangi non è vero wasabi, ma rafano tinto di verde.`,
+                `Le formiche legionarie sono cieche e cacciano usando feromoni e il suono.`,
+                `Il primo allarme per auto fu inventato da un prigioniero in una prigione del Colorado nel 1913.`,
+                `Il bradipo può trattenere il respiro più a lungo di un delfino.`,
+                `La parola "cimitero" deriva dal greco "koimeterion", che significa "luogo per dormire".`,
+                `In Corea del Sud esiste un parco a tema dedicato ai bagni e alle toilette.`,
+                `La pressione nella Fossa delle Marianne è così forte che sarebbe come avere 50 jumbo jet impilati su di te.`,
+                `Il seme di un avocado è tossico per la maggior parte degli animali, inclusi cani e gatti.`,
+                `Il primo logo di Apple raffigurava Isaac Newton seduto sotto un albero.`,
+                `I chicchi di caffè non sono chicchi, ma semi di un frutto simile a una ciliegia.`,
+                `Il cranio umano è composto da 22 ossa separate.`,
+                `I conigli non possono vomitare.`,
+                `L'inventore dei corn flakes li creò sperando che una dieta blanda curasse la masturbazione.`,
+                `I canguri non possono camminare all'indietro.`,
+                `In media, una persona produce abbastanza saliva nella sua vita da riempire due piscine.`,
+                `I topi ridono quando gli si fa il solletico.`,
+                `Il suono più forte mai registrato in natura fu l'eruzione del vulcano Krakatoa nel 1883.`,
+                `Le giraffe non hanno corde vocali.`,
+                `Il "cervello" di una pianta di mimosa pudica si trova nelle radici.`,
+                `Il termine "deadline" (scadenza) deriva dalle linee tracciate attorno alle prigioni durante la Guerra Civile Americana, oltre le quali i prigionieri potevano essere fucilati.`,
+                `Le lumache possono dormire per tre anni di seguito.`,
+                `Il colore arancione prende il nome dal frutto (arancia), non viceversa.`,
+                `I piccioni possono distinguere i dipinti di Picasso da quelli di Monet.`,
+                `Il Mar Morto si sta abbassando di circa un metro all'anno.`,
+                `La parola "robot" deriva da una parola ceca, "robota", che significa "lavoro forzato".`,
+                `I pipistrelli vampiro non succhiano il sangue, lo leccano.`,
+                `Il ketchup era venduto come medicinale nel 1830.`,
+                `L'Antartide è il continente più secco, ventoso, freddo e con l'altitudine media più elevata.`,
+                `Il 99% dei microbi che vivono dentro di noi è sconosciuto alla scienza.`,
+                `L'inventore del microonde, Percy Spencer, si accorse del suo potenziale quando una barretta di cioccolato gli si sciolse in tasca.`,
+                `I tardigradi, o "orsi d'acqua", possono sopravvivere nel vuoto dello spazio, a radiazioni estreme e a temperature vicine allo zero assoluto.`,
+                `A Tokyo c'è un hotel la cui reception è gestita da dinosauri robot.`,
+                `I camaleonti non cambiano colore per mimetizzarsi, ma per comunicare, regolare la temperatura e mostrare le loro emozioni.`,
+                `Il pesce pagliaccio può cambiare sesso. Se la femmina dominante muore, il maschio dominante diventa femmina.`,
+                `Il cuore umano batte circa 100.000 volte al giorno.`,
+                `I primi occhiali da sole furono inventati in Cina per i giudici, per nascondere le loro espressioni facciali in tribunale.`,
+                `Il libro più rubato dalle biblioteche è la Bibbia.`,
+                `Le nuvole di Giove sono fatte di ammoniaca.`,
+                `La Svezia ricicla così bene i suoi rifiuti che deve importare spazzatura da altri paesi per alimentare i suoi impianti energetici.`,
+                `L'unghia del dito medio cresce più velocemente di tutte le altre.`,
+                `In Ohio è illegale far ubriacare un pesce.`,
+                `La parola "whisky" significa "acqua della vita" in gaelico.`,
+                `La Regina Elisabetta II era una meccanica addestrata durante la Seconda Guerra Mondiale.`,
+                `Il sudore in sé è inodore. L'odore è causato dai batteri sulla pelle che lo decompongono.`,
+                `La prima bomba sganciata su Berlino dagli Alleati nella Seconda Guerra Mondiale uccise l'unico elefante dello zoo di Berlino.`,
+                `I ratti si moltiplicano così rapidamente che in 18 mesi, due ratti possono avere oltre un milione di discendenti.`,
+                `Il verso di un'anatra in un tunnel produce un eco complesso che il nostro orecchio fatica a percepire, da qui il mito che non ne faccia.`,
+                `I papiri nell'antica Roma erano così costosi che gli scrittori usavano tavolette di cera per le bozze.`,
+                `La maggior parte dei diamanti ha almeno 3 miliardi di anni.`,
+                `Il 20% dell'ossigeno terrestre è prodotto dalla foresta amazzonica.`,
+                `Un coccodrillo non può tirare fuori la lingua.`,
+                `Le api possono riconoscere i volti umani.`,
+                `L'Empire State Building ha un suo codice postale.`,
+                `Un quarto di tutte le ossa del corpo umano si trova nei piedi.`,
+                `L'acqua calda congela più velocemente dell'acqua fredda in determinate condizioni (Effetto Mpemba).`,
+                `La cacca di un gufo non è cacca, ma un "borra", un rigurgito di parti indigeribili come ossa e pelo.`,
+                `I gatti domestici condividono il 95.6% del loro DNA con le tigri.`,
+                `Il primo film con un punteggio di 100% su Rotten Tomatoes è stato "Frankenstein" del 1931.`,
+                `Il punto più profondo degli oceani, la Fossa delle Marianne, è così profondo che se ci mettessi il Monte Everest, la sua cima sarebbe ancora a più di 2 km sott'acqua.`,
+                `Esistono più organismi viventi in un cucchiaino di terra che persone sulla Terra.`,
+                `Il nome del motore di ricerca "Google" è un errore di ortografia di "Googol", il termine matematico per 1 seguito da 100 zeri.`,
+                `La Terra è l'unico pianeta del nostro sistema solare non intitolato a una divinità greco-romana.`,
+                `I calamari hanno un cervello a forma di ciambella.`,
+                `Un ippopotamo può aprire la bocca così tanto da poterci infilare un bambino di 4 anni.`,
+                `La più grande nevicata singola registrata in 24 ore è stata di 1,9 metri.`,
+                `La parola "disastro" deriva dal greco e significa "cattiva stella".`,
+                `Gli squali esistono da prima degli alberi.`,
+                `Il naso e le orecchie continuano a crescere per tutta la vita.`,
+                `Le banane crescono verso l'alto, non pendono verso il basso.`,
+                `In media, un guidatore suonerà il clacson 32.850 volte nella sua vita.`,
+                `Il più grande ingorgo stradale della storia è durato 12 giorni e si è esteso per 100 km.`,
+                `Il suono di una frusta che schiocca è un piccolo boom sonico.`,
+                `I maiali possono giocare ai videogiochi.`,
+                `L'odore di "auto nuova" è composto da oltre 50 composti organici volatili.`,
+                `Le nuvole che vedi sono bianche perché riflettono la luce del Sole.`,
+                `L'oro è commestibile.`,
+                `Il primo tweet è stato inviato da Jack Dorsey il 21 marzo 2006.`,
+                `La "Grande Macchia Rossa" di Giove è una tempesta che dura da almeno 350 anni.`,
+                `L'inventore del telefono, Alexander Graham Bell, si rifiutava di avere un telefono nel suo studio.`,
+                `Le formiche non hanno polmoni.`,
+                `La maggior parte dei film di James Bond ha un titolo che non ha nulla a che fare con la trama.`,
+                `Il tuo cervello usa il 20% dell'ossigeno e delle calorie totali del tuo corpo.`,
+                `Le zanzare sono attratte dal colore blu.`,
+                `I ricci di mare mangiano con un apparato boccale chiamato "lanterna di Aristotele".`,
+                `La parola "tatuaggio" deriva dalla parola polinesiana "tatau".`,
+                `Il più grande deserto del mondo non è il Sahara, ma l'Antartide.`,
+                `I gatti non possono percepire il sapore dolce.`,
+                `L'inventore del cruise control era cieco.`,
+                `Il primo film a colori fu proiettato nel 1912.`,
+                `I peli del naso filtrano circa 20.000 litri d'aria al giorno.`,
+                `Il nome del Bluetooth deriva da un re vichingo del X secolo, Harald "Bluetooth" Gormsson.`,
+                `Le tartarughe possono respirare attraverso il loro sedere.`,
+                `Il film "Titanic" è costato più della nave Titanic stessa.`,
+                `I suoni di R2-D2 in Star Wars sono stati creati mescolando suoni di bambini e sintetizzatori.`,
+                `L'animale più velenoso al mondo è la rana dorata.`,
+                `La maggior parte degli astronauti sperimenta la "malattia dello spazio", simile al mal d'auto.`,
+                `La prima e-mail è stata inviata nel 1971 da Ray Tomlinson.`,
+                `I gatti possono fare oltre 100 suoni diversi, mentre i cani ne fanno solo circa 10.`,
+                `Il primo oggetto a superare la barriera del suono fu la punta di una frusta.`,
+                `I picchi possono beccare il legno fino a 20 volte al secondo.`,
+                `In Giappone, lasciare una mancia è considerato un insulto.`,
+                `La parola "shampoo" deriva da una parola hindi, "champo", che significa "massaggiare".`,
+                `I pesci rossi hanno una memoria che può durare mesi.`,
+                `I primi chewing gum commerciali furono venduti nel 1848.`,
+                `La "paura dei pagliacci" si chiama coulrofobia.`,
+                `Il cuore di un colibrì batte fino a 1.260 volte al minuto.`,
+                `La maggior parte delle risate registrate nelle sitcom risale agli anni '50.`,
+                `La Finlandia ha più saune che automobili.`,
+                `Le unghie delle mani crescono circa 4 volte più velocemente di quelle dei piedi.`,
+                `Il nome "sandwich" viene da John Montagu, 4° Conte di Sandwich, che non voleva smettere di giocare a carte per mangiare.`,
+                `La polvere di stelle di cui siamo fatti è stata forgiata nel cuore di stelle esplose miliardi di anni fa.`,
+                `In media, un essere umano sbadiglia circa 250.000 volte nella sua vita.`,
+                `La parola "assassino" deriva da "Hashshashin", una setta persiana i cui membri si diceva consumassero hashish prima di compiere omicidi.`,
+                `Il 75% del cervello umano è composto da acqua.`,
+                `Le zanzare hanno i denti.`,
+                `Il primo distributore automatico della storia, inventato nell'antico Egitto, erogava acqua santa.`,
+                `Le giraffe emettono un ronzio a bassa frequenza di notte per comunicare tra loro.`,
+                `Il pianeta Urano ruota su un fianco.`,
+                `La parola "checkmate" (scacco matto) deriva dalla frase persiana "Shah Mat", che significa "il re è morto".`,
+                `I cammelli hanno tre palpebre per proteggersi dalla sabbia.`,
+                `La città di Roma ha più fontane di qualsiasi altra città al mondo.`,
+                `La prima persona accusata di eccesso di velocità guidava a 13 km/h.`,
+                `I gatti usano i baffi per determinare se possono passare attraverso uno spazio stretto.`,
+                `Le libellule hanno sei zampe ma non possono camminare.`,
+                `Il nome del personaggio di "Wendy" è stato inventato per il libro "Peter Pan".`,
+                `I pipistrelli partoriscono a testa in giù e afferrano il piccolo al volo.`,
+                `La "sindrome di Gerusalemme" è un fenomeno in cui i turisti in visita a Gerusalemme sviluppano ossessioni e deliri di natura religiosa.`,
+                `Il paradosso del gatto di Schrödinger fu concepito come un esperimento mentale per illustrare i problemi della meccanica quantistica.`,
+                `L'odore della pioggia sull'asfalto asciutto si chiama "petricore".`,
+                `Le balene franche hanno i testicoli più grandi del regno animale, pesando circa 500 kg ciascuno.`,
+                `La più grande onda mai surfata era alta quanto un palazzo di 10 piani.`,
+                `I polli sono i parenti viventi più stretti del Tyrannosaurus Rex.`,
+                `Il primo "bug" informatico fu una vera falena trovata incastrata in un computer nel 1947.`,
+                `La "Guerra del maiale" del 1859 tra Stati Uniti e Regno Unito iniziò perché un maiale mangiò le patate di un contadino. Fu l'unica vittima.`,
+                `La maggior parte delle persone non può sognare i volti di persone che non ha mai visto.`,
+                `Le api da miele comunicano danzando.`,
+                `Il termine "spa" deriva dalla città di Spa in Belgio, famosa per le sue sorgenti curative.`,
+                `La pelle è l'organo più grande del corpo umano.`,
+                `L'orso polare ha la pelle nera sotto la pelliccia bianca.`,
+                `Il primo film a vincere l'Oscar per il Miglior Film fu "Ali" (Wings) nel 1929.`,
+                `La maggior parte dei rossetti contiene scaglie di pesce.`,
+                `La parola "malaria" significa "aria cattiva" in italiano medievale.`,
+                `L'isola di Pasqua è così chiamata perché fu scoperta il giorno di Pasqua del 1722.`,
+                `Il tuo stomaco produce acido cloridrico, così forte da poter sciogliere una lametta.`,
+                `Le formiche si stiracchiano quando si svegliano.`,
+                `Il punto più isolato della Terra si chiama Punto Nemo, nell'Oceano Pacifico. Gli esseri umani più vicini sono spesso gli astronauti sulla Stazione Spaziale Internazionale.`,
+                `Il cervello di Albert Einstein fu conservato dopo la sua morte e studiato per decenni.`,
+                `La parola "quarantine" (quarantena) deriva dall'italiano "quaranta giorni".`,
+                `I koala hanno due pollici su ciascuna mano.`,
+                `La "Grande Guerra degli Emu" fu un'operazione militare australiana del 1932 per sterminare gli emù. L'esercito perse.`,
+                `Un giorno su Venere dura più di un anno su Venere.`,
+                `Il più grande fiocco di neve mai registrato misurava 38 cm di diametro.`,
+                `La "Sindrome dell'accento straniero" è una rara condizione medica in cui i pazienti parlano la loro lingua madre con un accento straniero.`,
+                `Il primo messaggio di testo (SMS) inviato nel 1992 diceva "Merry Christmas".`,
+                `I gatti possono sopravvivere a cadute da grandi altezze grazie al loro "riflesso di raddrizzamento".`,
+                `Il termine "hipster" originariamente si riferiva agli appassionati di jazz degli anni '40.`,
+                `I delfini possono dormire con un occhio aperto.`,
+                `Il primo film di animazione in computer grafica fu "Toy Story".`,
+                `La "pioggia di animali" è un raro fenomeno meteorologico in cui animali come rane, pesci o uccelli cadono dal cielo.`,
+                `La parola "muscle" (muscolo) deriva dal latino "musculus", che significa "piccolo topo".`,
+                `La "paura delle parole lunghe" si chiama, ironicamente, "hippopotomonstrosesquippedaliophobia".`,
+                `Le orecchie di un grillo si trovano sulle ginocchia.`,
+                `Il primo videogioco arcade fu "Computer Space" nel 1971.`,
+                `Il cuore di una balena azzurra batte solo 8-10 volte al minuto.`,
+                `La maggior parte delle persone respira prevalentemente da una narice alla volta, alternandole ogni poche ore.`,
+                `La "biblioteca umana" è un evento in cui le persone possono "prendere in prestito" altre persone per ascoltare le loro storie di vita.`,
+                `Il primo logo di Amazon era una A con un fiume che la attraversava.`,
+                `Le capre hanno imparato a belare con "accenti" diversi a seconda del gruppo sociale.`,
+                `Il primo film a incassare un miliardo di dollari fu "Titanic".`,
+                `L'odore di un libro vecchio è dovuto alla decomposizione chimica dei composti nella carta.`,
+                `Il "déjà vu" potrebbe essere causato da un piccolo "cortocircuito" nel cervello che fa sì che un'esperienza venga immagazzinata nella memoria a lungo termine prima che la coscienza la elabori.`,
+                `I gatti non possono scendere dagli alberi a testa in giù a causa della struttura dei loro artigli.`,
+                `Il primo mouse per computer era fatto di legno.`,
+                `La "risata" di una iena non è un segno di divertimento, ma di stress o frustrazione.`,
+                `Il 90% delle banconote americane contiene tracce di cocaina.`,
+                `L'inventore del tostapane elettrico fu anche l'inventore del primo fucile mitragliatore di successo.`,
+                `La "sindrome di Cotard" è una rara condizione in cui una persona crede di essere morta o di non esistere.`,
+                `I corvi possono ricordare i volti delle persone che li hanno minacciati e nutrire rancore.`,
+                `Il primo programma televisivo trasmesso a colori fu il Torneo delle Rose del 1954.`,
+                `Le meduse sono composte per il 95% di acqua.`,
+                `L'inventore della vaselina la mangiava a cucchiaiate ogni giorno.`,
+                `La "danza di San Vito" fu un'epidemia di ballo che colpì l'Europa nel XIV-XVII secolo, portando le persone a ballare fino alla morte.`,
+                `Il primo aereo a reazione fu sviluppato in Germania durante la Seconda Guerra Mondiale.`,
+                `I gatti possono bere acqua di mare per sopravvivere.`,
+                `La "sindrome di Capgras" è una condizione in cui una persona crede che un suo caro sia stato sostituito da un impostore identico.`,
+                `Il primo film horror fu "Le Manoir du Diable" del 1896, dura 3 minuti.`,
+                `La sonda spaziale Voyager 1, lanciata nel 1977, contiene un disco d'oro con suoni e immagini della Terra, destinato a eventuali civiltà aliene.`,
+                `Le gocce di pioggia non hanno la forma a lacrima. Sono sferiche quando si formano, ma diventano piatte come un panino da hamburger mentre cadono a causa della resistenza dell'aria.`,
+                `Lo squalo della Groenlandia può vivere fino a 500 anni, rendendolo il vertebrato più longevo conosciuto.`,
+                `La parola "mortgage" (mutuo) deriva da una radice francese che significa "patto di morte", riferendosi al fatto che l'accordo "muore" quando il debito è pagato.`,
+                `I buchi neri non "risucchiano" le cose. La loro immensa gravità deforma lo spazio-tempo, e gli oggetti semplicemente "cadono" dentro seguendo questa curvatura.`,
+                `L'inventrice dei biscotti con gocce di cioccolato, Ruth Wakefield, vendette la sua ricetta a Nestlé in cambio di una fornitura a vita di cioccolato.`,
+                `Il nome "Wi-Fi" non significa assolutamente nulla. È stato creato da un'agenzia di marketing perché suonava bene; non è un'abbreviazione di "Wireless Fidelity".`,
+                `Il punto sopra le lettere "i" e "j" ha un nome: si chiama "apice" o, in inglese, "tittle".`,
+                `Esiste un fenomeno chiamato "luna di miele" (in inglese "honeymoon"), ma si riferisce alla prima luna piena dopo il solstizio d'estate, che storicamente coincideva con la raccolta del miele.`,
+                `Il cervello non sente dolore. Ecco perché i chirurghi possono operare su un cervello con il paziente sveglio.`,
+                `In Giappone, i denti storti o "yaeba" sono considerati un segno di bellezza e giovinezza.`,
+                `I narvali hanno una sola zanna che è in realtà un dente canino sinistro allungato che può crescere fino a 3 metri.`,
+                `L'effetto sonoro noto come "urlo di Wilhelm" è stato utilizzato in oltre 400 film e serie TV dal 1951.`,
+                `La Giamaica è l'unico paese al mondo la cui bandiera non contiene i colori rosso, bianco o blu.`,
+                `Gli alberi di sequoia sono così alti che possono creare il proprio microclima, inclusa la pioggia che generano dalla nebbia che catturano.`,
+                `Il gatto delle sabbie è l'unico felino che vive prevalentemente nel deserto e le sue zampe pelose lo proteggono dalla sabbia rovente.`,
+                `Il "paradosso del nonno" è un concetto teorico sui viaggi nel tempo in cui un paradosso si verificherebbe se si tornasse indietro nel tempo per uccidere il proprio nonno.`,
+                `I polmoni umani contengono circa 2.400 chilometri di vie aeree.`,
+                `L'uomo che ha prestato la voce a Topolino (Wayne Allwine) era sposato con la donna che prestava la voce a Minni (Russi Taylor).`,
+                `Il termine "spam" per le email indesiderate deriva da uno sketch dei Monty Python in cui la parola "spam" viene ripetuta all'infinito.`,
+                `Il passaporto svizzero è considerato uno dei più "potenti" al mondo, ma anche uno dei più difficili da ottenere.`,
+                `Il colore "magenta" non esiste nello spettro della luce. È un'invenzione del nostro cervello per colmare il divario tra il rosso e il viola.`,
+                `I castelli di sabbia più complessi vengono costruiti utilizzando sabbia bagnata con una proporzione esatta: otto parti di sabbia per una parte di acqua.`,
+                `Il Kentucky ha più barili di bourbon in invecchiamento che abitanti.`,
+                `Il primo selfie della storia fu scattato nel 1839 da Robert Cornelius.`,
+                `Le formiche tagliafoglie non mangiano le foglie, ma le usano per coltivare un fungo specifico di cui si nutrono.`,
+                `L'ultimo uomo a camminare sulla Luna, Eugene Cernan, scrisse le iniziali di sua figlia ("TDC") sulla superficie lunare. Essendo un ambiente senza atmosfera, sono ancora lì.`,
+                `La Statua della Libertà doveva originariamente essere collocata in Egitto, all'ingresso del Canale di Suez.`,
+                `I raggi di una ruota di bicicletta funzionano per tensione (tirano il cerchio verso il mozzo), non per compressione.`,
+                `Esiste una città in Norvegia chiamata "Hell" (Inferno), che si ghiaccia regolarmente in inverno.`,
+                `Il "Principio di Peter" è una teoria manageriale secondo cui le persone in una gerarchia tendono a essere promosse fino al loro livello di incompetenza.`,
+                `Il pesce palla contiene una tossina, la tetrodotossina, che è 1.200 volte più velenosa del cianuro.`,
+                `La parola "cliché" deriva dal gergo tipografico francese e indicava una lastra di stampa che riproduceva parole o frasi usate di frequente.`,
+                `L'Oceano Atlantico è più salato del Pacifico.`,
+                `Un "jiffy" è un'unità di tempo scientifica reale, che corrisponde al tempo che la luce impiega per percorrere un centimetro nel vuoto.`,
+                `Il film "A Quiet Place" non ha dialoghi udibili per i primi 25 minuti.`,
+                `Le zebre sono nere con strisce bianche, non il contrario.`,
+                `In Corea del Nord, solo i militari e i funzionari governativi possono possedere un'auto.`,
+                `L'effetto Dunning-Kruger è un pregiudizio cognitivo per cui le persone incompetenti tendono a sovrastimare le proprie capacità.`,
+                `Il gioco "Sasso, carta, forbici" è stato inventato in Cina circa 2000 anni fa.`,
+                `Il Vaticano ha la più alta percentuale di consumo di vino pro capite al mondo.`,
+                `La "Legge di Brandolini" afferma che la quantità di energia necessaria per confutare una sciocchezza è un ordine di grandezza superiore a quella necessaria per produrla.`,
+                `Il "suono" che si sente nello spazio (come nei film di fantascienza) è impossibile, ma i fisici hanno scoperto che le onde di plasma possono essere convertite in onde sonore, rivelando che lo spazio "canta".`,
+                `I koala si abbracciano agli alberi non solo per arrampicarsi, ma anche per rinfrescarsi, poiché i tronchi sono più freddi dell'aria.`,
+                `La parola "triage" deriva dal verbo francese "trier", che significa "scegliere" o "ordinare".`,
+                `Il primo oggetto scannerizzato con un codice a barre fu un pacchetto di gomme da masticare nel 1974.`,
+                `L'inventore del microonde ricevette un brevetto che gli fruttò solo 2 dollari.`,
+                `Esistono "autostrade per animali" (corridoi ecologici) costruite sopra o sotto le autostrade per permettere alla fauna di attraversare in sicurezza.`,
+                `L'aroma del cioccolato aumenta le onde cerebrali theta, che inducono il rilassamento.`,
+                `Il "gomito della vedova" non è un osso, ma il nervo ulnare che passa vicino alla superficie della pelle.`,
+                `Le Isole Diomede, tra Russia e USA, sono separate da 4 km e 21 ore di fuso orario. Si può letteralmente vedere il "domani".`,
+                `Il "canto delle dune" è un fenomeno naturale in cui la sabbia che scivola lungo le dune produce un suono profondo e rimbombante.`,
+                `La maggior parte dei peperoncini piccanti ottiene la sua piccantezza dalla capsaicina, che non è una sostanza chimica, ma un irritante che inganna il cervello facendogli credere di bruciare.`,
+                `I baffi di Salvador Dalí erano così iconici che, quando il suo corpo fu riesumato nel 2017, erano ancora perfettamente intatti nella loro famosa posizione "a ore dieci e dieci".`,
+                `Il ghiaccio secco non si scioglie, ma "sublima", passando direttamente dallo stato solido a quello gassoso.`,
+                `I mattoncini LEGO sono costruiti con una precisione tale che solo 18 mattoncini su un milione vengono scartati.`,
+                `La "Regola del 72" è un modo rapido per stimare quanti anni ci vogliono per raddoppiare un investimento: basta dividere 72 per il tasso di interesse annuo.`,
+                `Il personaggio di Shrek è basato su un lottatore professionista francese degli anni '40 di nome Maurice Tillet, che soffriva di acromegalia.`,
+                `La "camera anecoica" dei laboratori Orfield nel Minnesota è il luogo più silenzioso della Terra. Il silenzio è così profondo che si può sentire il proprio battito cardiaco e il rumore dei polmoni.`,
+                `Il termine "hacker" in origine era un complimento al MIT e significava qualcuno che poteva far fare a un sistema qualcosa per cui non era stato progettato.`,
+                `L'animale con la pressione sanguigna più alta è la giraffa, necessaria per pompare il sangue fino al cervello.`,
+                `La plastica a bolle (bubble wrap) fu originariamente inventata come carta da parati tridimensionale. Fu un fallimento.`,
+                `L'imperatore romano Caligola nominò senatore il suo cavallo preferito, Incitatus.`,
+                `La "sindrome della mano aliena" è un disturbo neurologico in cui una delle mani della persona agisce per conto proprio, senza il suo controllo cosciente.`,
+                `Il suono di una porta che si chiude nella serie "Law & Order" ("chung-chung") è una combinazione di dodici suoni diversi, tra cui quello di una cella di prigione che si chiude e il tonfo di un monaco su una panca di legno.`,
+                `Ogni due minuti, oggi scattiamo più fotografie di quante ne abbia scattate l'intera umanità nel corso del XIX secolo.`
+            ];
+
+            // Seleziona gli elementi HTML
+            const factDisplay = document.getElementById('fact-display');
+            const dateDisplay = document.getElementById('date-display');
+            const container = document.querySelector('.container');
+
+            // Calcola il giorno dell'anno (da 1 a 366)
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+
+            // Formatta la data odierna in italiano
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateDisplay.textContent = now.toLocaleDateString('it-IT', options);
+
+            // Seleziona il fatto del giorno. L'array è a base 0, quindi sottraiamo 1.
+            const factIndex = (dayOfYear - 1);
+            
+            // Controlla se l'indice è valido prima di accedere all'array
+            if (factIndex >= 0 && factIndex < facts.length) {
+                 factDisplay.textContent = facts[factIndex];
+            } else {
+                 factDisplay.textContent = "Nessun fatto disponibile per oggi. Torna domani!";
+            }
+           
+            // Rende visibile il contenitore con una transizione fluida
+            setTimeout(() => {
+                container.classList.add('visible');
+            }, 100); // Un piccolo ritardo per assicurare che la transizione avvenga
+
+        });
+    </script>
+    
+</body>
+</html>
