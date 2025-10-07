@@ -30,7 +30,6 @@ function init() {
     resetBtn = document.getElementById('reset-btn');
     shareLinkContainer = document.getElementById('share-link-container');
     shareLinkInput = document.getElementById('share-link-input');
-    copyLinkBtn = document.getElementById('copy-link-btn');
     readOnlyBanner = document.getElementById('read-only-banner');
     
     // Initialize prefecture states
@@ -44,11 +43,12 @@ function init() {
         loadStateFromLocalStorage();
     }
     
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Update counter
-    updateCounter();
+    // ASPETTA che la mappa sia caricata PRIMA di setup listeners
+    window.addEventListener('mapLoaded', () => {
+        console.log('✓ Map ready, setting up event listeners...');
+        setupEventListeners();
+        updateCounter();
+    });
     
     console.log('✓ Application initialized');
 }
