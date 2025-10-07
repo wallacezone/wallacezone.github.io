@@ -13,7 +13,7 @@ async function initializeMap() {
     
     try {
         // Option 1: Load from local file (recommended for production)
-        const response = await fetch('map-japan.svg');
+        const response = await fetch('./map-japan.svg');
         
         if (!response.ok) {
             throw new Error(`Failed to load map: ${response.status}`);
