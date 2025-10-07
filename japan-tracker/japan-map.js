@@ -1,5 +1,5 @@
 /**
- * Japan SVG Map - Carica direttamente da Wikimedia Commons
+ * Japan SVG Map - Carica file con ID già corretti
  */
 
 async function initializeMap() {
@@ -11,8 +11,8 @@ async function initializeMap() {
     }
     
     try {
-        // Carica direttamente da Wikimedia Commons
-        const response = await fetch('https://upload.wikimedia.org/wikipedia/commons/d/db/Japan_prefectures.svg');
+        // Carica il file SVG con ID corretti
+        const response = await fetch('japan-tracker/japan-map.svg');
         
         if (!response.ok) {
             throw new Error(`Failed to load map: ${response.status}`);
@@ -27,98 +27,62 @@ async function initializeMap() {
             throw new Error('Invalid SVG structure');
         }
         
-        console.log('SVG loaded, analyzing structure...');
-        
-        // Wikimedia può avere diverse strutture, proviamo vari selettori
-        let prefecturePaths = [];
-        
-        // Opzione 1: path con id JP-XX
-        prefecturePaths = loadedSvg.querySelectorAll('path[id^="JP-"]');
-        console.log(`Opzione 1 (id^="JP-"): found ${prefecturePaths.length} paths`);
-        
-        // Opzione 2: path in un gruppo specifico
-        if (prefecturePaths.length === 0) {
-            const groups = loadedSvg.querySelectorAll('g');
-            console.log(`Found ${groups.length} groups, searching for prefecture paths...`);
-            
-            groups.forEach(g => {
-                const paths = g.querySelectorAll('path');
-                if (paths.length > 40) { // Probabile gruppo delle prefetture
-                    prefecturePaths = paths;
-                    console.log(`Found group with ${paths.length} paths`);
-                }
-            });
-        }
-        
-        // Opzione 3: tutti i path
-        if (prefecturePaths.length === 0) {
-            prefecturePaths = loadedSvg.querySelectorAll('path');
-            console.log(`Opzione 3 (all paths): found ${prefecturePaths.length} paths`);
-        }
+        // Trova tutti i path con id="JP-XX"
+        const prefecturePaths = loadedSvg.querySelectorAll('path[id^="JP-"]');
+        console.log(`Found ${prefecturePaths.length} prefecture paths`);
         
         if (prefecturePaths.length === 0) {
-            throw new Error('No prefecture paths found in SVG');
+            throw new Error('No prefecture paths found');
         }
         
         // Crea nuovo gruppo
         const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         prefecturesGroup.setAttribute('id', 'prefectures');
         
-        let processedCount = 0;
-        
-        prefecturePaths.forEach((path, index) => {
-            // Prova a estrarre l'ID dal path stesso
-            let prefId = path.getAttribute('id');
-            
-            // Se l'id non è nel formato JP-XX, usa l'indice
-            if (!prefId || !prefId.startsWith('JP-')) {
-                const prefCode = String(index + 1).padStart(2, '0');
-                prefId = `JP-${prefCode}`;
-            }
+        prefecturePaths.forEach((path) => {
+            const prefId = path.getAttribute('id');
+            const prefCode = prefId.replace('JP-', '');
             
             const newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             
+            // Copia il path data
             const pathData = path.getAttribute('d');
-            if (!pathData) return; // Salta path vuoti
+            if (pathData) {
+                newPath.setAttribute('d', pathData);
+            }
             
-            newPath.setAttribute('d', pathData);
-            
-            const prefCode = prefId.replace('JP-', '');
+            // Imposta attributi
             newPath.setAttribute('id', prefId);
             newPath.setAttribute('data-code', prefCode);
             newPath.setAttribute('data-prefecture', prefId);
             newPath.classList.add('prefecture-path');
             
-            // Copia altri attributi utili (fill, stroke, etc)
-            const fill = path.getAttribute('fill');
-            const stroke = path.getAttribute('stroke');
-            if (fill) newPath.setAttribute('data-original-fill', fill);
-            if (stroke) newPath.setAttribute('data-original-stroke', stroke);
-            
+            // Aggiungi title
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             const prefData = PREFECTURES[prefId];
             if (prefData) {
                 title.textContent = `${prefData.name} (${prefData.nameJa})`;
                 newPath.appendChild(title);
+            } else {
+                console.warn(`No data for ${prefId}`);
             }
             
             prefecturesGroup.appendChild(newPath);
-            processedCount++;
         });
         
+        // Inserisci nel DOM
         svgMap.innerHTML = '';
         svgMap.appendChild(prefecturesGroup);
         
         // Imposta viewBox
         const viewBox = loadedSvg.getAttribute('viewBox');
-        if (viewBox && viewBox !== '0 0 0 0') {
+        const width = loadedSvg.getAttribute('width');
+        const height = loadedSvg.getAttribute('height');
+        
+        if (viewBox) {
             svgMap.setAttribute('viewBox', viewBox);
-        } else {
-            // Calcola viewBox dinamicamente
-            const bbox = prefecturesGroup.getBBox();
-            const padding = 10;
-            svgMap.setAttribute('viewBox', 
-                `${bbox.x - padding} ${bbox.y - padding} ${bbox.width + padding * 2} ${bbox.height + padding * 2}`);
+        } else if (width && height) {
+            svgMap.setAttribute('viewBox', `0 0 ${width} ${height}`);
         }
         
         svgMap.removeAttribute('width');
@@ -127,14 +91,15 @@ async function initializeMap() {
         svgMap.style.height = 'auto';
         svgMap.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         
-        console.log(`✓ Wikimedia map loaded with ${processedCount} prefectures`);
+        console.log(`✓ Japan map loaded with ${prefecturePaths.length} prefectures`);
         console.log(`✓ ViewBox: ${svgMap.getAttribute('viewBox')}`);
         
+        // Notifica che la mappa è pronta
         window.dispatchEvent(new CustomEvent('mapLoaded'));
         
     } catch (error) {
         console.error('Error loading map:', error);
-        alert('Unable to load map from Wikimedia. Error: ' + error.message);
+        alert('Unable to load map. Error: ' + error.message);
     }
 }
 
