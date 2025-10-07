@@ -1,12 +1,9 @@
 /**
- * Japan SVG Map - Accurate Geographic Data
- * Uses high-quality SVG map with real prefecture boundaries
+ * Japan SVG Map - Loads High-Quality Local SVG File
  */
 
-/**
- * Initialize the SVG map by loading external accurate map data
- */
 async function initializeMap() {
+    const svgContainer = document.getElementById('map-container');
     const svgMap = document.getElementById('japan-map');
     
     if (!svgMap) {
@@ -15,11 +12,8 @@ async function initializeMap() {
     }
     
     try {
-        // Load the accurate SVG map from Geolonia's open-source project
-        // You can also use a local file: './map-japan.svg'
-        const mapUrl = 'https://geolonia.github.io/japanese-prefectures/map-full.svg';
-        
-        const response = await fetch(mapUrl);
+        // Option 1: Load from local file (recommended for production)
+        const response = await fetch('./map-japan.svg');
         
         if (!response.ok) {
             throw new Error(`Failed to load map: ${response.status}`);
@@ -27,194 +21,107 @@ async function initializeMap() {
         
         const svgText = await response.text();
         
-        // Parse the SVG
+        // Parse and inject the SVG
         const parser = new DOMParser();
-        const svgDoc = parser.parseFromString(svgText, 'image/svg+g');
+        const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
         const loadedSvg = svgDoc.querySelector('svg');
         
         if (!loadedSvg) {
             throw new Error('Invalid SVG structure');
         }
         
-        // Replace the placeholder SVG with the loaded one
-        svgMap.parentNode.innerHTML = loadedSvg.outerHTML;
+        // Replace placeholder SVG
+        svgMap.setAttribute('viewBox', loadedSvg.getAttribute('viewBox'));
+        svgMap.innerHTML = loadedSvg.innerHTML;
         
-        // Get the new SVG element
-        const newSvgMap = document.querySelector('svg');
-        newSvgMap.setAttribute('id', 'japan-map');
+        // Process prefecture paths
+        const prefecturePaths = svgMap.querySelectorAll('path[data-code]');
         
-        // Find all prefecture paths
-        const prefecturePaths = newSvgMap.querySelectorAll('path[data-code]');
-        
-        // Map the data-code attributes to our JP-XX format and add classes
         prefecturePaths.forEach(path => {
             const code = path.getAttribute('data-code');
             const prefId = `JP-${code.padStart(2, '0')}`;
             
-            // Add our attributes
-            path.setAttribute('id', prefId);
+            // Add our custom attributes
             path.setAttribute('data-prefecture', prefId);
             path.classList.add('prefecture-path');
             
-            // Update or add title
-            let title = path.querySelector('title');
-            if (!title) {
-                title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                path.insertBefore(title, path.firstChild);
-            }
-            
+            // Add accessibility title
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             const prefData = PREFECTURES[prefId];
             if (prefData) {
                 title.textContent = `${prefData.name} (${prefData.nameJa})`;
+                path.insertBefore(title, path.firstChild);
             }
         });
         
-        console.log('✓ Accurate Japan map loaded with 47 prefectures');
+        console.log('✓ High-quality Japan map loaded successfully');
         
     } catch (error) {
         console.error('Error loading map:', error);
-        
-        // Fallback: Load embedded accurate SVG data
-        loadFallbackMap();
+        console.log('Attempting fallback...');
+        loadFallbackFromCDN();
     }
 }
 
 /**
- * Fallback: Load embedded high-quality SVG map
- * This uses accurate geographic data from Wikipedia/Wikimedia Commons
- * Source: Public Domain - Regions and Prefectures of Japan.svg
+ * Fallback: Load from CDN or external source
  */
-function loadFallbackMap() {
-    const svgMap = document.getElementById('japan-map');
-    
-    // Embedded accurate SVG paths (extracted from Wikimedia Commons)
-    const accuratePaths = {
-        'JP-01': 'M468.8,27.3c-1.6,1.2-3.5,1.9-5.5,1.9h-2.8c-2.2,0-4.3-0.9-5.8-2.4l-8.5-8.5c-1.5-1.5-2.4-3.6-2.4-5.8V9.7c0-4.5,3.7-8.2,8.2-8.2h2.8c2.2,0,4.3,0.9,5.8,2.4l8.5,8.5c1.5,1.5,2.4,3.6,2.4,5.8v2.8C471.5,23.3,470.5,25.7,468.8,27.3z M520.5,89.2c-0.3,1.7-1.3,3.2-2.7,4.2l-12.7,9.5c-2.9,2.2-7,1.6-9.2-1.3l-8.5-11.4c-1-1.3-1.5-3-1.5-4.6v-15c0-4.4,3.6-8,8-8h16c4.4,0,8,3.6,8,8v16.2C517.9,87.3,517.8,88.3,520.5,89.2z',
+async function loadFallbackFromCDN() {
+    try {
+        // Try loading from public CDN sources
+        const cdnUrls = [
+            'https://raw.githubusercontent.com/geolonia/japanese-prefectures/master/map-full.svg',
+            'https://upload.wikimedia.org/wikipedia/commons/c/cf/Japan_prefectures.svg'
+        ];
         
-        'JP-02': 'M496.2,112.8l-6.4,3.2c-2,1-4.4,1-6.4,0l-6.4-3.2c-2.9-1.5-4.8-4.5-4.8-7.8v-8.5c0-4.8,3.9-8.7,8.7-8.7h11.4c4.8,0,8.7,3.9,8.7,8.7v8.5C501,108.3,499.1,111.3,496.2,112.8z',
+        for (const url of cdnUrls) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const svgText = await response.text();
+                    processSVG(svgText);
+                    console.log('✓ Loaded map from CDN fallback');
+                    return;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
         
-        'JP-03': 'M502.3,135.2c-1.2,2.5-3.7,4.1-6.5,4.1h-9.6c-2.8,0-5.3-1.6-6.5-4.1l-4.8-9.6c-1.2-2.4-1.2-5.3,0-7.8l4.8-9.6c1.2-2.5,3.7-4.1,6.5-4.1h9.6c2.8,0,5.3,1.6,6.5,4.1l4.8,9.6c1.2,2.4,1.2,5.3,0,7.8L502.3,135.2z',
+        throw new Error('All fallback options failed');
         
-        'JP-04': 'M505.8,158.3c-0.8,3.1-3.5,5.3-6.7,5.3h-10.2c-3.2,0-6-2.2-6.7-5.3l-2.9-11.6c-0.7-2.9,0.1-5.9,2.2-8l7.2-7.2c2.8-2.8,7.3-2.8,10.1,0l7.2,7.2c2.1,2.1,2.9,5.1,2.2,8L505.8,158.3z',
-        
-        'JP-05': 'M475.2,118.7l-5.6,2.8c-2.5,1.2-5.4,1.2-7.8,0l-5.6-2.8c-2.5-1.2-4.1-3.7-4.1-6.5v-8c0-3.9,3.2-7.1,7.1-7.1h13c3.9,0,7.1,3.2,7.1,7.1v8C479.3,115,477.7,117.4,475.2,118.7z',
-        
-        'JP-06': 'M476.8,142.5c-0.6,2.3-2.6,3.9-5,3.9h-13.6c-2.4,0-4.4-1.6-5-3.9l-2.4-9.6c-0.6-2.3,0.1-4.7,1.9-6.4l6.8-6.8c2.2-2.2,5.7-2.2,7.9,0l6.8,6.8c1.8,1.8,2.5,4.2,1.9,6.4L476.8,142.5z',
-        
-        'JP-07': 'M504.5,178.8c-1.5,2.2-4,3.5-6.7,3.5h-11.6c-2.7,0-5.2-1.3-6.7-3.5l-7.4-11.1c-1.5-2.2-1.5-5.1,0-7.3l7.4-11.1c1.5-2.2,4-3.5,6.7-3.5h11.6c2.7,0,5.2,1.3,6.7,3.5l7.4,11.1c1.5,2.2,1.5,5.1,0,7.3L504.5,178.8z',
-        
-        'JP-08': 'M527.3,212.5c-1.1,3.2-4.1,5.4-7.5,5.4h-11.6c-3.4,0-6.4-2.2-7.5-5.4l-4.3-12.9c-1.1-3.2,0.1-6.7,2.9-8.7l10.1-7.6c2.8-2.1,6.6-2.1,9.4,0l10.1,7.6c2.8,2.1,4,5.5,2.9,8.7L527.3,212.5z',
-        
-        'JP-09': 'M499.7,190.2c-2.1,1.6-4.8,2.5-7.5,2.5h-8.4c-3.5,0-6.7-1.8-8.5-4.8l-5.6-9.4c-1.8-3-1.8-6.7,0-9.7l5.6-9.4c1.8-3,5-4.8,8.5-4.8h8.4c3.5,0,6.7,1.8,8.5,4.8l5.6,9.4c1.8,3,1.8,6.7,0,9.7L499.7,190.2z',
-        
-        'JP-10': 'M477.5,183.2c-1.8,1.8-4.2,2.8-6.7,2.8h-9.6c-2.5,0-4.9-1-6.7-2.8l-6.7-6.7c-1.8-1.8-2.8-4.2-2.8-6.7v-9.6c0-2.5,1-4.9,2.8-6.7l6.7-6.7c1.8-1.8,4.2-2.8,6.7-2.8h9.6c2.5,0,4.9,1,6.7,2.8l6.7,6.7c1.8,1.8,2.8,4.2,2.8,6.7v9.6c0,2.5-1,4.9-2.8,6.7L477.5,183.2z',
-        
-        'JP-11': 'M518.2,225.8c-2.3,0.9-4.8,0.9-7.1,0l-10.6-4.2c-3.5-1.4-5.8-4.8-5.8-8.6v-11.5c0-5.1,4.1-9.2,9.2-9.2h11.5c5.1,0,9.2,4.1,9.2,9.2V213c0,3.8-2.3,7.2-5.8,8.6L518.2,225.8z',
-        
-        'JP-12': 'M554.7,232.3c-1.5,2.8-4.4,4.5-7.6,4.5h-14.2c-3.2,0-6.1-1.7-7.6-4.5l-7.1-13.3c-1.5-2.8-1.5-6.1,0-8.9l7.1-13.3c1.5-2.8,4.4-4.5,7.6-4.5h14.2c3.2,0,6.1,1.7,7.6,4.5l7.1,13.3c1.5,2.8,1.5,6.1,0,8.9L554.7,232.3z',
-        
-        'JP-13': 'M539.8,252.6c-1.9,2.1-4.6,3.3-7.5,3.3h-12.6c-2.9,0-5.6-1.2-7.5-3.3l-9.3-10.5c-1.9-2.1-2.9-4.9-2.9-7.8v-12.6c0-2.9,1-5.7,2.9-7.8l9.3-10.5c1.9-2.1,4.6-3.3,7.5-3.3h12.6c2.9,0,5.6,1.2,7.5,3.3l9.3,10.5c1.9,2.1,2.9,4.9,2.9,7.8v12.6c0,2.9-1,5.7-2.9,7.8L539.8,252.6z',
-        
-        'JP-14': 'M526.8,273.5c-2.2,1.5-4.9,2.3-7.7,2.3h-10.2c-3.8,0-7.3-1.9-9.4-5l-8.2-12.3c-2.1-3.1-2.1-7.1,0-10.2l8.2-12.3c2.1-3.1,5.6-5,9.4-5h10.2c3.8,0,7.3,1.9,9.4,5l8.2,12.3c2.1,3.1,2.1,7.1,0,10.2l-8.2,12.3C531.1,270.7,529.1,272.4,526.8,273.5z',
-        
-        'JP-15': 'M456.2,160.3c-2.8,1.4-6,1.4-8.8,0l-11.2-5.6c-2.8-1.4-4.6-4.2-4.6-7.3v-14.8c0-4.5,3.6-8.1,8.1-8.1h13.2c4.5,0,8.1,3.6,8.1,8.1v14.8c0,3.1-1.8,5.9-4.6,7.3L456.2,160.3z',
-        
-        'JP-16': 'M439.8,183.7c-1.8,2.5-4.7,4-7.8,4h-12.5c-2.9,0-5.6-1.4-7.3-3.7l-8.5-11.9c-1.7-2.4-2-5.5-0.7-8.2l6.5-13c1.3-2.6,4-4.3,6.9-4.3h13.5c3.3,0,6.2,2,7.4,5.1l6,15.2C444.7,170.2,443.3,178.5,439.8,183.7z',
-        
-        'JP-17': 'M429.2,208.3c-2.1,2.3-5.1,3.6-8.2,3.6h-11.7c-3.1,0-6-1.3-8.1-3.6l-10.2-11.4c-2.1-2.3-3.2-5.3-3.2-8.4v-13.9c0-3.5,1.4-6.8,3.9-9.3l9.6-9.6c2.5-2.5,5.8-3.9,9.3-3.9h11.7c3.5,0,6.8,1.4,9.3,3.9l9.6,9.6c2.5,2.5,3.9,5.8,3.9,9.3v13.9c0,3.1-1.1,6.1-3.2,8.4L429.2,208.3z',
-        
-        'JP-18': 'M420.3,237.8c-2.4,1.9-5.4,3-8.5,3h-13.6c-3.1,0-6.1-1.1-8.5-3l-11.9-9.5c-2.4-1.9-3.8-4.8-3.8-7.9v-15.9c0-3.1,1.4-6,3.8-7.9l11.9-9.5c2.4-1.9,5.4-3,8.5-3h13.6c3.1,0,6.1,1.1,8.5,3l11.9,9.5c2.4,1.9,3.8,4.8,3.8,7.9v15.9c0,3.1-1.4,6-3.8,7.9L420.3,237.8z',
-        
-        'JP-19': 'M503.7,209.5c-2.6,1.3-5.6,1.3-8.2,0l-9.8-4.9c-2.6-1.3-4.2-3.9-4.2-6.8v-13c0-4.2,3.4-7.6,7.6-7.6h11.4c4.2,0,7.6,3.4,7.6,7.6v13c0,2.9-1.6,5.5-4.2,6.8L503.7,209.5z',
-        
-        'JP-20': 'M477.8,205.8c-2.2,2.2-5.2,3.5-8.3,3.5h-15.9c-3.1,0-6.1-1.2-8.3-3.5l-11.6-11.6c-2.2-2.2-3.5-5.2-3.5-8.3v-15.9c0-3.1,1.2-6.1,3.5-8.3l11.6-11.6c2.2-2.2,5.2-3.5,8.3-3.5h15.9c3.1,0,6.1,1.2,8.3,3.5l11.6,11.6c2.2,2.2,3.5,5.2,3.5,8.3v15.9c0,3.1-1.2,6.1-3.5,8.3L477.8,205.8z',
-        
-        'JP-21': 'M461.2,228.5c-2.5,1.8-5.5,2.8-8.6,2.8h-14.2c-3.1,0-6.1-1-8.6-2.8l-12.5-9c-2.5-1.8-4-4.7-4-7.8v-16.4c0-3.1,1.5-6,4-7.8l12.5-9c2.5-1.8,5.5-2.8,8.6-2.8h14.2c3.1,0,6.1,1,8.6,2.8l12.5,9c2.5,1.8,4,4.7,4,7.8v16.4c0,3.1-1.5,6-4,7.8L461.2,228.5z',
-        
-        'JP-22': 'M518.7,252.3c-1.6,3.2-4.8,5.2-8.4,5.2h-16.6c-3.6,0-6.8-2-8.4-5.2l-8.3-16.6c-1.6-3.2-1.6-6.9,0-10.1l8.3-16.6c1.6-3.2,4.8-5.2,8.4-5.2h16.6c3.6,0,6.8,2,8.4,5.2l8.3,16.6c1.6,3.2,1.6,6.9,0,10.1L518.7,252.3z',
-        
-        'JP-23': 'M481.2,253.8c-2.3,2.6-5.6,4.1-9.1,4.1h-14.2c-3.5,0-6.8-1.5-9.1-4.1l-11.3-12.9c-2.3-2.6-3.5-5.9-3.5-9.4v-16.6c0-3.5,1.3-6.8,3.5-9.4l11.3-12.9c2.3-2.6,5.6-4.1,9.1-4.1h14.2c3.5,0,6.8,1.5,9.1,4.1l11.3,12.9c2.3,2.6,3.5,5.9,3.5,9.4v16.6c0,3.5-1.3,6.8-3.5,9.4L481.2,253.8z',
-        
-        'JP-24': 'M491.8,281.3c-2.7,2.1-6,3.3-9.5,3.3h-12.6c-3.5,0-6.8-1.2-9.5-3.3l-13.2-10.2c-2.7-2.1-4.3-5.3-4.3-8.7v-16.8c0-3.4,1.6-6.6,4.3-8.7l13.2-10.2c2.7-2.1,6-3.3,9.5-3.3h12.6c3.5,0,6.8,1.2,9.5,3.3l13.2,10.2c2.7,2.1,4.3,5.3,4.3,8.7v16.8c0,3.4-1.6,6.6-4.3,8.7L491.8,281.3z',
-        
-        'JP-25': 'M445.8,253.2c-2.1,2.8-5.4,4.4-8.9,4.4h-13.8c-3.5,0-6.8-1.6-8.9-4.4l-10.6-14.1c-2.1-2.8-2.4-6.5-0.8-9.6l8.1-16.2c1.6-3.2,4.9-5.2,8.5-5.2h14.5c3.6,0,6.9,2,8.5,5.2l8.1,16.2c1.6,3.1,1.3,6.8-0.8,9.6L445.8,253.2z',
-        
-        'JP-26': 'M436.5,277.8c-2.6,2.3-5.9,3.6-9.4,3.6h-14.2c-3.5,0-6.8-1.3-9.4-3.6l-12.8-11.4c-2.6-2.3-4-5.6-4-9v-17.8c0-3.4,1.5-6.7,4-9l12.8-11.4c2.6-2.3,5.9-3.6,9.4-3.6h14.2c3.5,0,6.8,1.3,9.4,3.6l12.8,11.4c2.6,2.3,4,5.6,4,9v17.8c0,3.4-1.5,6.7-4,9L436.5,277.8z',
-        
-        'JP-27': 'M447.3,302.5c-2.8,2-6.2,3.1-9.7,3.1h-15.2c-3.5,0-6.9-1.1-9.7-3.1l-14.2-10.1c-2.8-2-4.5-5.2-4.5-8.6v-19.6c0-3.4,1.7-6.6,4.5-8.6l14.2-10.1c2.8-2,6.2-3.1,9.7-3.1h15.2c3.5,0,6.9,1.1,9.7,3.1l14.2,10.1c2.8,2,4.5,5.2,4.5,8.6v19.6c0,3.4-1.7,6.6-4.5,8.6L447.3,302.5z',
-        
-        'JP-28': 'M404.8,285.3c-3.1,1.6-6.7,1.6-9.8,0l-15.6-8.1c-3.1-1.6-5-4.8-5-8.3v-20.6c0-5,4.1-9.1,9.1-9.1h17.8c5,0,9.1,4.1,9.1,9.1v20.6c0,3.5-1.9,6.7-5,8.3L404.8,285.3z',
-        
-        'JP-29': 'M469.2,314.8c-2.4,2.5-5.7,3.9-9.2,3.9h-14.8c-3.5,0-6.8-1.4-9.2-3.9l-11.8-12.5c-2.4-2.5-3.7-5.8-3.7-9.3v-18.6c0-3.5,1.3-6.8,3.7-9.3l11.8-12.5c2.4-2.5,5.7-3.9,9.2-3.9h14.8c3.5,0,6.8,1.4,9.2,3.9l11.8,12.5c2.4,2.5,3.7,5.8,3.7,9.3V295c0,3.5-1.3,6.8-3.7,9.3L469.2,314.8z',
-        
-        'JP-30': 'M466.8,345.2c-2.9,2.2-6.4,3.4-10.1,3.4h-13.4c-3.7,0-7.2-1.2-10.1-3.4l-14.5-11c-2.9-2.2-4.6-5.6-4.6-9.2v-20.2c0-3.6,1.7-7,4.6-9.2l14.5-11c2.9-2.2,6.4-3.4,10.1-3.4h13.4c3.7,0,7.2,1.2,10.1,3.4l14.5,11c2.9,2.2,4.6,5.6,4.6,9.2V336c0,3.6-1.7,7-4.6,9.2L466.8,345.2z',
-        
-        'JP-31': 'M363.2,277.3c-2.3,2.7-5.7,4.3-9.3,4.3h-15.8c-3.6,0-7-1.6-9.3-4.3l-11.7-13.9c-2.3-2.7-3.5-6.2-3.5-9.8v-19.2c0-3.6,1.3-7.1,3.5-9.8l11.7-13.9c2.3-2.7,5.7-4.3,9.3-4.3h15.8c3.6,0,7,1.6,9.3,4.3l11.7,13.9c2.3,2.7,3.5,6.2,3.5,9.8v19.2c0,3.6-1.3,7.1-3.5,9.8L363.2,277.3z',
-        
-        'JP-32': 'M339.8,300.7c-2.6,2.4-6.1,3.8-9.7,3.8h-16.4c-3.6,0-7.1-1.4-9.7-3.8l-13.2-12.2c-2.6-2.4-4.1-5.8-4.1-9.3v-20.4c0-3.5,1.5-6.9,4.1-9.3l13.2-12.2c2.6-2.4,6.1-3.8,9.7-3.8h16.4c3.6,0,7.1,1.4,9.7,3.8l13.2,12.2c2.6,2.4,4.1,5.8,4.1,9.3v20.4c0,3.5-1.5,6.9-4.1,9.3L339.8,300.7z',
-        
-        'JP-33': 'M389.5,307.2c-2.7,2.2-6,3.4-9.5,3.4h-15.2c-3.5,0-6.8-1.2-9.5-3.4l-14.2-11.4c-2.7-2.2-4.3-5.5-4.3-8.9v-19.8c0-3.4,1.6-6.7,4.3-8.9l14.2-11.4c2.7-2.2,6-3.4,9.5-3.4H380c3.5,0,6.8,1.2,9.5,3.4l14.2,11.4c2.7,2.2,4.3,5.5,4.3,8.9v19.8c0,3.4-1.6,6.7-4.3,8.9L389.5,307.2z',
-        
-        'JP-34': 'M365.8,330.5c-2.9,2.1-6.5,3.3-10.2,3.3h-14.4c-3.7,0-7.3-1.2-10.2-3.3l-15.2-11.4c-2.9-2.1-4.6-5.5-4.6-9.1v-21c0-3.6,1.7-7,4.6-9.1l15.2-11.4c2.9-2.1,6.5-3.3,10.2-3.3h14.4c3.7,0,7.3,1.2,10.2,3.3l15.2,11.4c2.9,2.1,4.6,5.5,4.6,9.1v21c0,3.6-1.7,7-4.6,9.1L365.8,330.5z',
-        
-        'JP-35': 'M354.2,359.8c-3.1,1.9-6.8,3-10.6,3h-15.2c-3.8,0-7.5-1.1-10.6-3l-16.2-10.2c-3.1-1.9-5-5.3-5-8.9v-22.4c0-3.6,1.9-7,5-8.9l16.2-10.2c3.1-1.9,6.8-3,10.6-3h15.2c3.8,0,7.5,1.1,10.6,3l16.2,10.2c3.1,1.9,5,5.3,5,8.9v22.4c0,3.6-1.9,7-5,8.9L354.2,359.8z',
-        
-        'JP-36': 'M435.8,349.5c-2.5,2.7-6,4.2-9.8,4.2h-16.2c-3.8,0-7.3-1.5-9.8-4.2l-12.6-14.1c-2.5-2.7-3.8-6.3-3.8-9.9v-20.6c0-3.6,1.4-7.2,3.8-9.9l12.6-14.1c2.5-2.7,6-4.2,9.8-4.2h16.2c3.8,0,7.3,1.5,9.8,4.2l12.6,14.1c2.5,2.7,3.8,6.3,3.8,9.9v20.6c0,3.6-1.4,7.2-3.8,9.9L435.8,349.5z',
-        
-        'JP-37': 'M416.8,329.2c-2.2,2.9-5.7,4.6-9.4,4.6h-15.6c-3.7,0-7.2-1.7-9.4-4.6l-11.2-14.9c-2.2-2.9-2.8-6.6-1.5-9.9l6.5-16.4c1.3-3.3,4.4-5.5,8-5.5h16.8c3.6,0,6.7,2.2,8,5.5l6.5,16.4c1.3,3.3,0.7,7-1.5,9.9L416.8,329.2z',
-        
-        'JP-38': 'M388.2,354.8c-2.8,2.4-6.4,3.7-10.1,3.7h-16.2c-3.7,0-7.3-1.3-10.1-3.7l-13.8-12.2c-2.8-2.4-4.4-5.9-4.4-9.6v-20.4c0-3.7,1.6-7.2,4.4-9.6l13.8-12.2c2.8-2.4,6.4-3.7,10.1-3.7h16.2c3.7,0,7.3,1.3,10.1,3.7l13.8,12.2c2.8,2.4,4.4,5.9,4.4,9.6V345c0,3.7-1.6,7.2-4.4,9.6L388.2,354.8z',
-        
-        'JP-39': 'M420.2,377.5c-3,2.2-6.7,3.5-10.5,3.5h-15.4c-3.8,0-7.5-1.3-10.5-3.5l-15.4-11.7c-3-2.2-4.8-5.7-4.8-9.4v-22.2c0-3.7,1.8-7.2,4.8-9.4l15.4-11.7c3-2.2,6.7-3.5,10.5-3.5h15.4c3.8,0,7.5,1.3,10.5,3.5l15.4,11.7c3,2.2,4.8,5.7,4.8,9.4v22.2c0,3.7-1.8,7.2-4.8,9.4L420.2,377.5z',
-        
-        'JP-40': 'M285.5,394.2c-3.2,1.8-7,2.8-10.9,2.8h-17.2c-3.9,0-7.7-1-10.9-2.8l-17.2-9.9c-3.2-1.8-5.2-5.2-5.2-8.9v-23.6c0-3.7,2-7.1,5.2-8.9l17.2-9.9c3.2-1.8,7-2.8,10.9-2.8h17.2c3.9,0,7.7,1,10.9,2.8l17.2,9.9c3.2,1.8,5.2,5.2,5.2,8.9v23.6c0,3.7-2,7.1-5.2,8.9L285.5,394.2z',
-        
-        'JP-41': 'M257.8,416.5c-2.7,2.5-6.3,3.9-10.1,3.9h-17c-3.8,0-7.4-1.4-10.1-3.9l-13.5-12.7c-2.7-2.5-4.2-6-4.2-9.7v-21.2c0-3.7,1.5-7.2,4.2-9.7l13.5-12.7c2.7-2.5,6.3-3.9,10.1-3.9h17c3.8,0,7.4,1.4,10.1,3.9l13.5,12.7c2.7,2.5,4.2,6,4.2,9.7v21.2c0,3.7-1.5,7.2-4.2,9.7L257.8,416.5z',
-        
-        'JP-42': 'M230.2,439.8c-3.4,1.7-7.2,2.6-11.2,2.6h-18.2c-4,0-7.8-0.9-11.2-2.6l-18.2-9.2c-3.4-1.7-5.5-5.1-5.5-8.8v-24.4c0-3.7,2.1-7.1,5.5-8.8l18.2-9.2c3.4-1.7,7.2-2.6,11.2-2.6h18.2c4,0,7.8,0.9,11.2,2.6l18.2,9.2c3.4,1.7,5.5,5.1,5.5,8.8v24.4c0,3.7-2.1,7.1-5.5,8.8L230.2,439.8z',
-        
-        'JP-43': 'M302.8,431.5c-3.1,2.1-6.9,3.3-10.8,3.3h-16.6c-3.9,0-7.7-1.2-10.8-3.3l-16.6-11.2c-3.1-2.1-5-5.6-5-9.3v-23c0-3.7,1.9-7.2,5-9.3l16.6-11.2c3.1-2.1,6.9-3.3,10.8-3.3h16.6c3.9,0,7.7,1.2,10.8,3.3l16.6,11.2c3.1,2.1,5,5.6,5,9.3v23c0,3.7-1.9,7.2-5,9.3L302.8,431.5z',
-        
-        'JP-44': 'M333.5,411.2c-2.9,2.3-6.5,3.6-10.3,3.6h-16.8c-3.8,0-7.4-1.3-10.3-3.6l-14.8-12c-2.9-2.3-4.6-5.8-4.6-9.5v-22c0-3.7,1.7-7.2,4.6-9.5l14.8-12c2.9-2.3,6.5-3.6,10.3-3.6h16.8c3.8,0,7.4,1.3,10.3,3.6l14.8,12c2.9,2.3,4.6,5.8,4.6,9.5v22c0,3.7-1.7,7.2-4.6,9.5L333.5,411.2z',
-        
-        'JP-45': 'M325.8,448.5c-3.2,2-7.1,3.1-11.1,3.1h-17.4c-4,0-7.9-1.1-11.1-3.1l-17.4-10.8c-3.2-2-5.2-5.5-5.2-9.3v-23.6c0-3.8,2-7.3,5.2-9.3l17.4-10.8c3.2-2,7.1-3.1,11.1-3.1h17.4c4,0,7.9,1.1,11.1,3.1l17.4,10.8c3.2,2,5.2,5.5,5.2,9.3v23.6c0,3.8-2,7.3-5.2,9.3L325.8,448.5z',
-        
-        'JP-46': 'M304.5,481.2c-3.5,1.8-7.5,2.7-11.7,2.7h-19c-4.2,0-8.2-0.9-11.7-2.7l-19-9.7c-3.5-1.8-5.7-5.4-5.7-9.2v-25.4c0-3.8,2.2-7.4,5.7-9.2l19-9.7c3.5-1.8,7.5-2.7,11.7-2.7h19c4.2,0,8.2,0.9,11.7,2.7l19,9.7c3.5,1.8,5.7,5.4,5.7,9.2v25.4c0,3.8-2.2,7.4-5.7,9.2L304.5,481.2z',
-        
-        'JP-47': 'M256.2,555.8c-2.8,2.8-6.6,4.4-10.6,4.4h-18.2c-4,0-7.8-1.6-10.6-4.4l-14.2-14.2c-2.8-2.8-4.4-6.6-4.4-10.6v-18.2c0-4,1.6-7.8,4.4-10.6l14.2-14.2c2.8-2.8,6.6-4.4,10.6-4.4h18.2c4,0,7.8,1.6,10.6,4.4l14.2,14.2c2.8,2.8,4.4,6.6,4.4,10.6V545c0,4-1.6,7.8-4.4,10.6L256.2,555.8z'
-    };
-    
-    // Clear existing content
-    svgMap.innerHTML = '';
-    
-    // Create group for prefectures
-    const prefectureGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    prefectureGroup.setAttribute('id', 'prefectures-group');
-    prefectureGroup.setAttribute('transform', 'translate(-150, -5) scale(1.4)');
-    
-    // Add each prefecture
-    Object.keys(accuratePaths).forEach(prefId => {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('id', prefId);
-        path.setAttribute('d', accuratePaths[prefId]);
-        path.setAttribute('class', 'prefecture-path');
-        path.setAttribute('data-prefecture', prefId);
-        
-        // Add title
-        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-        const prefData = PREFECTURES[prefId];
-        title.textContent = prefData ? `${prefData.name} (${prefData.nameJa})` : prefId;
-        path.appendChild(title);
-        
-        prefectureGroup.appendChild(path);
-    });
-    
-    svgMap.appendChild(prefectureGroup);
-    
-    console.log('✓ Fallback map loaded with accurate prefecture boundaries');
+    } catch (error) {
+        console.error('Could not load map from any source:', error);
+        alert('Unable to load map. Please check your internet connection or ensure map-japan.svg is in the same directory.');
+    }
 }
 
-// Initialize map when DOM is ready
+/**
+ * Process SVG text and inject into page
+ */
+function processSVG(svgText) {
+    const svgMap = document.getElementById('japan-map');
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+    const loadedSvg = svgDoc.querySelector('svg');
+    
+    if (loadedSvg) {
+        svgMap.setAttribute('viewBox', loadedSvg.getAttribute('viewBox'));
+        svgMap.innerHTML = loadedSvg.innerHTML;
+        
+        // Add our classes and attributes
+        const paths = svgMap.querySelectorAll('path');
+        paths.forEach((path, index) => {
+            if (!path.getAttribute('data-prefecture')) {
+                const prefId = `JP-${String(index + 1).padStart(2, '0')}`;
+                path.setAttribute('data-prefecture', prefId);
+                path.classList.add('prefecture-path');
+            }
+        });
+    }
+}
+
+// Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeMap);
 } else {
