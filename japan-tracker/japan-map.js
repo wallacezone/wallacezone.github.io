@@ -1,5 +1,5 @@
 /**
- * Japan SVG Map - Loader for High-Quality SVG
+ * Japan SVG Map - Carica direttamente il file SimpleMaps
  */
 
 async function initializeMap() {
@@ -11,8 +11,8 @@ async function initializeMap() {
     }
     
     try {
-        // Carica il file SVG dalla sottocartella japan-tracker
-        const response = await fetch('japan-tracker/map-japan.svg');
+        // Carica il file SVG originale di SimpleMaps dalla sottocartella
+        const response = await fetch('japan-tracker/japan-simplemaps.svg');
         
         if (!response.ok) {
             throw new Error(`Failed to load map: ${response.status}`);
@@ -29,36 +29,75 @@ async function initializeMap() {
             throw new Error('Invalid SVG structure');
         }
         
-        // Inserisci il contenuto SVG
-        svgMap.setAttribute('viewBox', loadedSvg.getAttribute('viewBox'));
-        svgMap.innerHTML = loadedSvg.innerHTML;
+        // Estrai viewBox e width/height
+        const viewBox = loadedSvg.getAttribute('viewBox');
+        const width = loadedSvg.getAttribute('width');
+        const height = loadedSvg.getAttribute('height');
         
-        // Processa i path delle prefetture
-        const prefecturePaths = svgMap.querySelectorAll('path[data-code]');
+        // Imposta gli attributi sul nostro SVG
+        if (viewBox) svgMap.setAttribute('viewBox', viewBox);
+        if (width) svgMap.setAttribute('width', width);
+        if (height) svgMap.setAttribute('height', height);
         
-        prefecturePaths.forEach(path => {
-            const code = path.getAttribute('data-code');
-            const prefId = `JP-${code.padStart(2, '0')}`;
+        // Trova il gruppo "features" che contiene i path delle prefetture
+        const featuresGroup = loadedSvg.querySelector('#features');
+        
+        if (!featuresGroup) {
+            throw new Error('Features group not found in SVG');
+        }
+        
+        // Estrai tutti i path dal gruppo features
+        const paths = featuresGroup.querySelectorAll('path');
+        
+        if (paths.length !== 47) {
+            console.warn(`Expected 47 prefectures, found ${paths.length}`);
+        }
+        
+        // Crea un nuovo gruppo per le prefetture
+        const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        prefecturesGroup.setAttribute('id', 'prefectures');
+        
+        // Mappa i path alle prefetture (SimpleMaps usa l'ordine standard JP-01 a JP-47)
+        paths.forEach((path, index) => {
+            const prefCode = String(index + 1).padStart(2, '0');
+            const prefId = `JP-${prefCode}`;
             
-            // Aggiungi attributi personalizzati
-            path.setAttribute('id', prefId);
-            path.setAttribute('data-prefecture', prefId);
-            path.classList.add('prefecture-path');
+            // Crea un nuovo path con i nostri attributi
+            const newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            // Copia il path d (coordinate)
+            const pathData = path.getAttribute('d');
+            if (pathData) {
+                newPath.setAttribute('d', pathData);
+            }
+            
+            // Aggiungi i nostri attributi personalizzati
+            newPath.setAttribute('id', prefId);
+            newPath.setAttribute('data-code', prefCode);
+            newPath.setAttribute('data-prefecture', prefId);
+            newPath.classList.add('prefecture-path');
             
             // Aggiungi title per accessibilità
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             const prefData = PREFECTURES[prefId];
             if (prefData) {
                 title.textContent = `${prefData.name} (${prefData.nameJa})`;
-                path.insertBefore(title, path.firstChild);
+                newPath.appendChild(title);
             }
+            
+            prefecturesGroup.appendChild(newPath);
         });
         
-        console.log('✓ High-quality Japan map loaded with 47 prefectures');
+        // Pulisci e inserisci il nuovo contenuto
+        svgMap.innerHTML = '';
+        svgMap.appendChild(prefecturesGroup);
+        
+        console.log(`✓ Japan map loaded successfully with ${paths.length} prefectures`);
         
     } catch (error) {
         console.error('Error loading map:', error);
-        alert('Unable to load map. Please ensure map-japan.svg is in the japan-tracker folder.');
+        console.error('Make sure the SVG file is in the japan-tracker folder');
+        alert('Unable to load map. Error: ' + error.message);
     }
 }
 
