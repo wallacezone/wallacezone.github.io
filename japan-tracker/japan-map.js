@@ -1,5 +1,5 @@
 /**
- * Japan SVG Map - ViewBox impostato DOPO l'inserimento
+ * Japan SVG Map - Con callback per sincronizzazione
  */
 
 async function initializeMap() {
@@ -38,7 +38,6 @@ async function initializeMap() {
         const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         prefecturesGroup.setAttribute('id', 'prefectures');
         
-        // Crea tutti i path
         paths.forEach((path, index) => {
             const prefCode = String(index + 1).padStart(2, '0');
             const prefId = `JP-${prefCode}`;
@@ -65,11 +64,9 @@ async function initializeMap() {
             prefecturesGroup.appendChild(newPath);
         });
         
-        // Pulisci e inserisci i path
         svgMap.innerHTML = '';
         svgMap.appendChild(prefecturesGroup);
         
-        // ORA imposta il viewBox DOPO aver inserito i path
         svgMap.setAttribute('viewBox', '0 0 1000 846');
         svgMap.removeAttribute('width');
         svgMap.removeAttribute('height');
@@ -79,6 +76,9 @@ async function initializeMap() {
         
         console.log(`✓ Japan map loaded successfully with ${paths.length} prefectures`);
         console.log(`✓ ViewBox set to: ${svgMap.getAttribute('viewBox')}`);
+        
+        // IMPORTANTE: Notifica che la mappa è pronta
+        window.dispatchEvent(new CustomEvent('mapLoaded'));
         
     } catch (error) {
         console.error('Error loading map:', error);
