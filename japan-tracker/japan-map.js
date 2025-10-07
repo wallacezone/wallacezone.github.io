@@ -1,5 +1,5 @@
 /**
- * Japan SVG Map - Versione finale con viewBox forzato
+ * Japan SVG Map - ViewBox impostato DOPO l'inserimento
  */
 
 async function initializeMap() {
@@ -26,14 +26,6 @@ async function initializeMap() {
             throw new Error('Invalid SVG structure');
         }
         
-        // FORZA il viewBox corretto per SimpleMaps Japan
-        svgMap.setAttribute('viewBox', '0 0 1000 846');
-        svgMap.removeAttribute('width');
-        svgMap.removeAttribute('height');
-        svgMap.style.width = '100%';
-        svgMap.style.height = 'auto';
-        svgMap.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-        
         const featuresGroup = loadedSvg.querySelector('#features');
         
         if (!featuresGroup) {
@@ -46,7 +38,7 @@ async function initializeMap() {
         const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         prefecturesGroup.setAttribute('id', 'prefectures');
         
-        // Usa index diretto (verificheremo i nomi dopo)
+        // Crea tutti i path
         paths.forEach((path, index) => {
             const prefCode = String(index + 1).padStart(2, '0');
             const prefId = `JP-${prefCode}`;
@@ -73,10 +65,20 @@ async function initializeMap() {
             prefecturesGroup.appendChild(newPath);
         });
         
+        // Pulisci e inserisci i path
         svgMap.innerHTML = '';
         svgMap.appendChild(prefecturesGroup);
         
+        // ORA imposta il viewBox DOPO aver inserito i path
+        svgMap.setAttribute('viewBox', '0 0 1000 846');
+        svgMap.removeAttribute('width');
+        svgMap.removeAttribute('height');
+        svgMap.style.width = '100%';
+        svgMap.style.height = 'auto';
+        svgMap.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        
         console.log(`✓ Japan map loaded successfully with ${paths.length} prefectures`);
+        console.log(`✓ ViewBox set to: ${svgMap.getAttribute('viewBox')}`);
         
     } catch (error) {
         console.error('Error loading map:', error);
