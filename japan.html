@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Prefecture Tracker | 日本都道府県トラッカー</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Noto Serif JP for Japanese aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- LZ-String for compression (for shareable links) -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    
+    <style>
+        :root {
+            --color-not-marked: #f5f5f0;
+            --color-to-visit: #f4a460;
+            --color-visited: #6b9080;
+            --color-hover: #d4d4c8;
+            --color-ink: #2c2c2c;
+            --color-border: #a8a8a0;
+            --bg-primary: #fafaf7;
+            --bg-secondary: #f0f0ea;
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Serif JP', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--color-ink);
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Noto Serif JP', serif;
+        }
+        
+        .prefecture-path {
+            fill: var(--color-not-marked);
+            stroke: var(--color-border);
+            stroke-width: 0.5;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .prefecture-path:hover {
+            filter: brightness(0.9);
+            stroke-width: 1;
+        }
+        
+        .prefecture-path.to-visit {
+            fill: var(--color-to-visit);
+        }
+        
+        .prefecture-path.visited {
+            fill: var(--color-visited);
+        }
+        
+        .prefecture-path.readonly {
+            cursor: default;
+        }
+        
+        #tooltip {
+            position: fixed;
+            background: rgba(44, 44, 44, 0.95);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-family: 'Noto Serif JP', serif;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        #tooltip.show {
+            opacity: 1;
+        }
+        
+        .btn-primary {
+            background: var(--color-ink);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background: #404040;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--color-ink);
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: 2px solid var(--color-border);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--color-ink);
+            transform: translateY(-2px);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-color {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(168, 168, 160, 0.2);
+        }
+        
+        .counter-display {
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--color-visited);
+            font-family: 'Noto Serif JP', serif;
+        }
+        
+        .read-only-banner {
+            background: linear-gradient(135deg, #6b9080 0%, #5a7968 100%);
+            color: white;
+            padding: 16px;
+            text-align: center;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(107, 144, 128, 0.3);
+        }
+        
+        #map-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+        }
+        
+        @media (max-width: 768px) {
+            .counter-display {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 text-gray-800">日本都道府県トラッカー</h1>
+            <p class="text-xl text-gray-600">Japan Prefecture Travel Tracker</p>
+        </header>
+        
+        <!-- Read-Only Banner (hidden by default) -->
+        <div id="read-only-banner" class="read-only-banner hidden">
+            <span class="text-lg">👀 Viewing a shared map from a friend</span>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Counter Card -->
+            <div class="card text-center">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Prefectures Visited</h2>
+                <div class="counter-display">
+                    <span id="visited-count">0</span>
+                    <span class="text-3xl text-gray-400">/ 47</span>
+                </div>
+                <div class="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Legend Card -->
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Legend</h2>
+                <div class="space-y-3">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-not-marked);"></div>
+                        <span class="text-gray-700">Not Marked</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-to-visit);"></div>
+                        <span class="text-gray-700">Plan to Visit</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-visited);"></div>
+                        <span class="text-gray-700">Visited</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions Card -->
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Actions</h2>
+                <div class="space-y-3">
+                    <button id="share-btn" class="btn-primary w-full">
+                        📤 Share Map
+                    </button>
+                    <button id="reset-btn" class="btn-secondary w-full">
+                        🔄 Reset Map
+                    </button>
+                    <div id="share-link-container" class="hidden mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                        <p class="text-sm text-gray-700 mb-2 font-medium">Shareable Link:</p>
+                        <input type="text" id="share-link-input" readonly class="w-full p-2 text-xs bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <button id="copy-link-btn" class="mt-2 w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm">
+                            📋 Copy Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Container -->
+        <div id="map-container">
+            <svg id="japan-map" viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG paths will be loaded here from japan-map.js -->
+            </svg>
+        </div>
+        
+        <!-- Tooltip -->
+        <div id="tooltip"></div>
+        
+        <!-- Footer -->
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>Click on prefectures to cycle through: Not Marked → To Visit → Visited</p>
+            <p class="mt-2">Made with ❤️ for Japan travelers</p>
+        </footer>
+    </div>
+    
+    <!-- External Scripts -->
+    <script src="prefectures-data.js"></script>
+    <script src="japan-map.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
