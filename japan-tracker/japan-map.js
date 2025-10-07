@@ -1,6 +1,58 @@
 /**
- * Japan SVG Map - Carica direttamente il file SimpleMaps
+ * Japan SVG Map - Carica il file SimpleMaps con mappatura corretta
  */
+
+// Mappa di corrispondenza tra l'ordine dei path di SimpleMaps e i codici prefettura
+// SimpleMaps ordina geograficamente: sud-ovest (Okinawa) a nord-est (Hokkaido)
+const SIMPLEMAPS_TO_PREFECTURE = {
+    0: '47',  // Okinawa
+    1: '40',  // Fukuoka
+    2: '44',  // Oita
+    3: '43',  // Kumamoto
+    4: '41',  // Saga
+    5: '42',  // Nagasaki
+    6: '45',  // Miyazaki
+    7: '46',  // Kagoshima
+    8: '39',  // Kochi
+    9: '38',  // Ehime
+    10: '37', // Kagawa
+    11: '36', // Tokushima
+    12: '35', // Yamaguchi
+    13: '34', // Hiroshima
+    14: '33', // Okayama
+    15: '32', // Shimane
+    16: '31', // Tottori
+    17: '30', // Wakayama
+    18: '29', // Nara
+    19: '28', // Hyogo
+    20: '27', // Osaka
+    21: '26', // Kyoto
+    22: '25', // Shiga
+    23: '24', // Mie
+    24: '23', // Aichi
+    25: '21', // Gifu
+    26: '18', // Fukui
+    27: '17', // Ishikawa
+    28: '16', // Toyama
+    29: '22', // Shizuoka
+    30: '19', // Yamanashi
+    31: '20', // Nagano
+    32: '15', // Niigata
+    33: '14', // Kanagawa
+    34: '13', // Tokyo
+    35: '12', // Chiba
+    36: '11', // Saitama
+    37: '10', // Gunma
+    38: '09', // Tochigi
+    39: '08', // Ibaraki
+    40: '07', // Fukushima
+    41: '06', // Yamagata
+    42: '05', // Akita
+    43: '04', // Miyagi
+    44: '03', // Iwate
+    45: '02', // Aomori
+    46: '01'  // Hokkaido
+};
 
 async function initializeMap() {
     const svgMap = document.getElementById('japan-map');
@@ -11,7 +63,7 @@ async function initializeMap() {
     }
     
     try {
-        // Carica il file SVG originale di SimpleMaps dalla sottocartella
+        // Carica il file SVG
         const response = await fetch('japan-tracker/japan-simplemaps.svg');
         
         if (!response.ok) {
@@ -29,55 +81,60 @@ async function initializeMap() {
             throw new Error('Invalid SVG structure');
         }
         
-        // Estrai viewBox e width/height
+        // Estrai viewBox
         const viewBox = loadedSvg.getAttribute('viewBox');
-        const width = loadedSvg.getAttribute('width');
-        const height = loadedSvg.getAttribute('height');
+        if (viewBox) {
+            svgMap.setAttribute('viewBox', viewBox);
+        }
         
-        // Imposta gli attributi sul nostro SVG
-        if (viewBox) svgMap.setAttribute('viewBox', viewBox);
-        if (width) svgMap.setAttribute('width', width);
-        if (height) svgMap.setAttribute('height', height);
+        // Rimuovi width e height per renderlo responsive
+        svgMap.removeAttribute('width');
+        svgMap.removeAttribute('height');
+        svgMap.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         
-        // Trova il gruppo "features" che contiene i path delle prefetture
+        // Trova il gruppo features
         const featuresGroup = loadedSvg.querySelector('#features');
         
         if (!featuresGroup) {
             throw new Error('Features group not found in SVG');
         }
         
-        // Estrai tutti i path dal gruppo features
+        // Estrai tutti i path
         const paths = featuresGroup.querySelectorAll('path');
         
-        if (paths.length !== 47) {
-            console.warn(`Expected 47 prefectures, found ${paths.length}`);
-        }
+        console.log(`Found ${paths.length} paths in SimpleMaps file`);
         
-        // Crea un nuovo gruppo per le prefetture
+        // Crea nuovo gruppo per le prefetture
         const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         prefecturesGroup.setAttribute('id', 'prefectures');
         
-        // Mappa i path alle prefetture (SimpleMaps usa l'ordine standard JP-01 a JP-47)
+        // Mappa i path alle prefetture usando la corrispondenza
         paths.forEach((path, index) => {
-            const prefCode = String(index + 1).padStart(2, '0');
+            const prefCode = SIMPLEMAPS_TO_PREFECTURE[index];
+            
+            if (!prefCode) {
+                console.warn(`No mapping found for path index ${index}`);
+                return;
+            }
+            
             const prefId = `JP-${prefCode}`;
             
-            // Crea un nuovo path con i nostri attributi
+            // Crea nuovo path
             const newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             
-            // Copia il path d (coordinate)
+            // Copia il path d
             const pathData = path.getAttribute('d');
             if (pathData) {
                 newPath.setAttribute('d', pathData);
             }
             
-            // Aggiungi i nostri attributi personalizzati
+            // Aggiungi attributi
             newPath.setAttribute('id', prefId);
             newPath.setAttribute('data-code', prefCode);
             newPath.setAttribute('data-prefecture', prefId);
             newPath.classList.add('prefecture-path');
             
-            // Aggiungi title per accessibilità
+            // Aggiungi title
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             const prefData = PREFECTURES[prefId];
             if (prefData) {
@@ -88,7 +145,7 @@ async function initializeMap() {
             prefecturesGroup.appendChild(newPath);
         });
         
-        // Pulisci e inserisci il nuovo contenuto
+        // Pulisci e inserisci
         svgMap.innerHTML = '';
         svgMap.appendChild(prefecturesGroup);
         
@@ -96,7 +153,6 @@ async function initializeMap() {
         
     } catch (error) {
         console.error('Error loading map:', error);
-        console.error('Make sure the SVG file is in the japan-tracker folder');
         alert('Unable to load map. Error: ' + error.message);
     }
 }
