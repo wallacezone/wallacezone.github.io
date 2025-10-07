@@ -1,58 +1,6 @@
 /**
- * Japan SVG Map - Carica il file SimpleMaps con mappatura corretta
+ * Japan SVG Map - Carica il file SimpleMaps SENZA rimappatura
  */
-
-// Mappa di corrispondenza tra l'ordine dei path di SimpleMaps e i codici prefettura
-// SimpleMaps ordina geograficamente: sud-ovest (Okinawa) a nord-est (Hokkaido)
-const SIMPLEMAPS_TO_PREFECTURE = {
-    0: '47',  // Okinawa
-    1: '40',  // Fukuoka
-    2: '44',  // Oita
-    3: '43',  // Kumamoto
-    4: '41',  // Saga
-    5: '42',  // Nagasaki
-    6: '45',  // Miyazaki
-    7: '46',  // Kagoshima
-    8: '39',  // Kochi
-    9: '38',  // Ehime
-    10: '37', // Kagawa
-    11: '36', // Tokushima
-    12: '35', // Yamaguchi
-    13: '34', // Hiroshima
-    14: '33', // Okayama
-    15: '32', // Shimane
-    16: '31', // Tottori
-    17: '30', // Wakayama
-    18: '29', // Nara
-    19: '28', // Hyogo
-    20: '27', // Osaka
-    21: '26', // Kyoto
-    22: '25', // Shiga
-    23: '24', // Mie
-    24: '23', // Aichi
-    25: '21', // Gifu
-    26: '18', // Fukui
-    27: '17', // Ishikawa
-    28: '16', // Toyama
-    29: '22', // Shizuoka
-    30: '19', // Yamanashi
-    31: '20', // Nagano
-    32: '15', // Niigata
-    33: '14', // Kanagawa
-    34: '13', // Tokyo
-    35: '12', // Chiba
-    36: '11', // Saitama
-    37: '10', // Gunma
-    38: '09', // Tochigi
-    39: '08', // Ibaraki
-    40: '07', // Fukushima
-    41: '06', // Yamagata
-    42: '05', // Akita
-    43: '04', // Miyagi
-    44: '03', // Iwate
-    45: '02', // Aomori
-    46: '01'  // Hokkaido
-};
 
 async function initializeMap() {
     const svgMap = document.getElementById('japan-map');
@@ -108,15 +56,10 @@ async function initializeMap() {
         const prefecturesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         prefecturesGroup.setAttribute('id', 'prefectures');
         
-        // Mappa i path alle prefetture usando la corrispondenza
+        // I path sono GIÀ nell'ordine corretto! Index = Prefecture number
         paths.forEach((path, index) => {
-            const prefCode = SIMPLEMAPS_TO_PREFECTURE[index];
-            
-            if (!prefCode) {
-                console.warn(`No mapping found for path index ${index}`);
-                return;
-            }
-            
+            // SimpleMaps usa index diretto: 0=JP-01, 1=JP-02, etc.
+            const prefCode = String(index + 1).padStart(2, '0');
             const prefId = `JP-${prefCode}`;
             
             // Crea nuovo path
