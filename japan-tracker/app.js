@@ -30,6 +30,7 @@ function init() {
     resetBtn = document.getElementById('reset-btn');
     shareLinkContainer = document.getElementById('share-link-container');
     shareLinkInput = document.getElementById('share-link-input');
+    copyLinkBtn = document.getElementById('copy-link-btn');  // ← AGGIUNGI QUESTA RIGA
     readOnlyBanner = document.getElementById('read-only-banner');
     
     // Initialize prefecture states
@@ -52,6 +53,7 @@ function init() {
     
     console.log('✓ Application initialized');
 }
+
 
 /**
  * Initialize all prefecture states to NOT_MARKED
