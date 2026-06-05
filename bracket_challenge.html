@@ -8,572 +8,70 @@
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
   <style>
-    /* Art direction: dashboard sportiva interattiva → chiara, ordinata, leggibile su desktop e mobile
-       Palette: neutra con accento teal per focus e progressione
-       Typography: Satoshi per chiarezza, gerarchia rapida e feeling da web app
-       Density: media, con bracket visuale in alto e flusso di compilazione sotto */
-
     :root, [data-theme="light"] {
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
       --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
       --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
       --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
-
-      --space-1: 0.25rem;
-      --space-2: 0.5rem;
-      --space-3: 0.75rem;
-      --space-4: 1rem;
-      --space-5: 1.25rem;
-      --space-6: 1.5rem;
-      --space-8: 2rem;
-      --space-10: 2.5rem;
-      --space-12: 3rem;
-      --space-16: 4rem;
-
-      --color-bg: #f7f6f2;
-      --color-surface: #f9f8f5;
-      --color-surface-2: #fbfbf9;
-      --color-surface-offset: #f3f0ec;
-      --color-surface-dynamic: #e6e4df;
-      --color-divider: #dcd9d5;
-      --color-border: #d4d1ca;
-      --color-text: #28251d;
-      --color-text-muted: #6f6d68;
-      --color-text-faint: #a6a39d;
-      --color-text-inverse: #f9f8f4;
-      --color-primary: #01696f;
-      --color-primary-hover: #0c4e54;
-      --color-primary-active: #0f3638;
-      --color-primary-highlight: #d9e8e6;
-      --color-success: #437a22;
-      --color-warning: #964219;
-      --color-error: #a12c7b;
-      --radius-sm: 0.375rem;
-      --radius-md: 0.5rem;
-      --radius-lg: 0.75rem;
-      --radius-xl: 1rem;
-      --radius-full: 9999px;
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+      --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-surface-offset: #f3f0ec; --color-divider: #dcd9d5;
+      --color-text: #28251d; --color-text-muted: #6f6d68; --color-text-faint: #a6a39d; --color-text-inverse: #f9f8f4;
+      --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-active: #0f3638; --color-primary-highlight: #d9e8e6; --color-success: #437a22; --color-warning: #964219;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
       --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-      --shadow-sm: 0 1px 2px rgba(32, 28, 22, 0.06);
-      --shadow-md: 0 8px 24px rgba(32, 28, 22, 0.1);
-      --content-wide: 1440px;
-      --font-body: 'Satoshi', 'Inter', sans-serif;
-      --font-display: 'Satoshi', 'Inter', sans-serif;
+      --shadow-sm: 0 1px 2px rgba(32, 28, 22, 0.06); --shadow-md: 0 8px 24px rgba(32, 28, 22, 0.1);
+      --content-wide: 1480px; --font-body: 'Satoshi', 'Inter', sans-serif; --font-display: 'Satoshi', 'Inter', sans-serif;
     }
-
     [data-theme="dark"] {
-      --color-bg: #171614;
-      --color-surface: #1c1b19;
-      --color-surface-2: #201f1d;
-      --color-surface-offset: #1d1c1a;
-      --color-surface-dynamic: #2d2c2a;
-      --color-divider: #262523;
-      --color-border: #393836;
-      --color-text: #cdccca;
-      --color-text-muted: #9a9895;
-      --color-text-faint: #6d6b67;
-      --color-text-inverse: #171614;
-      --color-primary: #4f98a3;
-      --color-primary-hover: #67aab4;
-      --color-primary-active: #1a626b;
-      --color-primary-highlight: #2b3738;
-      --color-success: #6daa45;
-      --color-warning: #bb653b;
-      --color-error: #d163a7;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.32);
+      --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d; --color-surface-offset: #1d1c1a; --color-divider: #262523;
+      --color-text: #cdccca; --color-text-muted: #9a9895; --color-text-faint: #6d6b67; --color-text-inverse: #171614;
+      --color-primary: #4f98a3; --color-primary-hover: #67aab4; --color-primary-active: #1a626b; --color-primary-highlight: #2b3738; --color-success: #6daa45; --color-warning: #bb653b;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.18); --shadow-md: 0 8px 24px rgba(0,0,0,0.32);
     }
-
     *,:before,:after{box-sizing:border-box;margin:0;padding:0}
     html{-moz-text-size-adjust:none;-webkit-text-size-adjust:none;text-size-adjust:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
     body{min-height:100dvh;line-height:1.55;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:linear-gradient(180deg,var(--color-bg),var(--color-surface-offset))}
-    img,svg{display:block;max-width:100%;height:auto}
-    button,input,select,textarea{font:inherit;color:inherit}
-    button{cursor:pointer;border:none;background:none}
-    a,button,input,select{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive),transform var(--transition-interactive)}
+    img,svg{display:block;max-width:100%;height:auto} button,input,textarea{font:inherit;color:inherit} button{cursor:pointer;border:none;background:none}
+    a,button,input,textarea{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive),transform var(--transition-interactive)}
     :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-
-    .app {
-      max-width: var(--content-wide);
-      margin: 0 auto;
-      padding: var(--space-6) var(--space-4) var(--space-10);
-      display: grid;
-      gap: var(--space-6);
-    }
-
-    .skip-link {
-      position: absolute;
-      left: var(--space-4);
-      top: -100px;
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-md);
-      z-index: 100;
-    }
-    .skip-link:focus { top: var(--space-4); }
-
-    .panel {
-      background: var(--color-surface);
-      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .topbar {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: var(--space-4);
-      padding: var(--space-4) var(--space-5);
-      background: color-mix(in oklab, var(--color-surface) 88%, transparent);
-      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: var(--space-4);
-      z-index: 20;
-    }
-
-    .brand { display:flex; align-items:center; gap: var(--space-3); min-width:0; }
-    .brand-mark {
-      width: 2.75rem;
-      height: 2.75rem;
-      padding: var(--space-2);
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, var(--color-primary), color-mix(in oklab, var(--color-primary) 72%, white));
-      color: var(--color-text-inverse);
-      box-shadow: var(--shadow-sm);
-      flex:0 0 auto;
-    }
-    .brand-copy strong {
-      display:block;
-      font-size: var(--text-sm);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-    .brand-copy span {
-      display:block;
-      color: var(--color-text-muted);
-      font-size: var(--text-xs);
-    }
-    .topbar-actions { display:flex; align-items:center; gap: var(--space-3); flex-wrap:wrap; justify-content:flex-end; }
-
-    .btn, .theme-toggle {
-      min-height: 44px;
-      padding: 0 var(--space-4);
-      border-radius: var(--radius-full);
-      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
-      background: var(--color-surface-2);
-      color: var(--color-text);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: var(--space-2);
-      font-size: var(--text-sm);
-      font-weight: 700;
-    }
-    .btn:hover, .theme-toggle:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-    .btn.primary { background: var(--color-primary); color: var(--color-text-inverse); border-color: transparent; }
-    .btn.primary:hover { background: var(--color-primary-hover); }
-
-    .hero {
-      display:grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.85fr);
-      gap: var(--space-6);
-      align-items: stretch;
-    }
-
-    .hero-main {
-      padding: clamp(var(--space-5), 4vw, var(--space-8));
-      display:grid;
-      gap: var(--space-5);
-      background:
-        radial-gradient(circle at top right, color-mix(in oklab, var(--color-primary) 14%, transparent), transparent 36%),
-        var(--color-surface);
-    }
-
-    .eyebrow {
-      width: fit-content;
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-full);
-      background: var(--color-primary-highlight);
-      color: var(--color-primary-active);
-      font-size: var(--text-xs);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: var(--text-xl);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      max-width: 16ch;
-    }
-
-    .lead { color: var(--color-text-muted); max-width: 62ch; }
-
-    .hero-grid {
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-3);
-    }
-
-    .mini-stat {
-      background: var(--color-surface-2);
-      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
-      border-radius: var(--radius-lg);
-      padding: var(--space-4);
-      display:grid;
-      gap: var(--space-1);
-    }
-    .mini-stat strong { font-size: var(--text-lg); font-variant-numeric: tabular-nums lining-nums; }
-    .mini-stat span { color: var(--color-text-muted); font-size: var(--text-xs); }
-
-    .hero-side {
-      padding: var(--space-5);
-      display:grid;
-      gap: var(--space-4);
-      align-content:start;
-      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
-    }
-
-    .hero-side h2, .section-title { font-size: var(--text-lg); line-height: 1.15; }
-    .hero-side p, .muted { color: var(--color-text-muted); }
-
-    .next-list, .summary-list, .champion-card { display:grid; gap: var(--space-3); }
-    .next-item, .summary-item {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-2);
-      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
-    }
-    .next-item span, .summary-item span { color: var(--color-text-muted); font-size: var(--text-sm); }
-    .next-item strong, .summary-item strong { font-size: var(--text-sm); }
-
-    .visual-bracket {
-      padding: var(--space-5);
-      display:grid;
-      gap: var(--space-4);
-      overflow: hidden;
-    }
-
-    .visual-bracket-head {
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: var(--space-4);
-      flex-wrap: wrap;
-    }
-
-    .bracket-scroll {
-      overflow-x:auto;
-      padding-bottom: var(--space-2);
-    }
-
-    .bracket-grid {
-      min-width: 1120px;
-      display:grid;
-      grid-template-columns: repeat(5, minmax(190px, 1fr));
-      gap: var(--space-4);
-      align-items:start;
-    }
-
-    .bracket-column {
-      display:grid;
-      gap: var(--space-3);
-      align-content:start;
-    }
-
-    .bracket-column h3 {
-      font-size: var(--text-sm);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-text-muted);
-      position: sticky;
-      top: 0;
-      background: var(--color-surface);
-      padding-bottom: var(--space-2);
-    }
-
-    .bracket-match {
-      position: relative;
-      padding: var(--space-3);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-2);
-      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
-      display:grid;
-      gap: var(--space-2);
-      min-height: 88px;
-    }
-
-    .bracket-match::after {
-      content: '';
-      position:absolute;
-      top: 50%;
-      right: calc(-1 * var(--space-4));
-      width: var(--space-4);
-      height: 1px;
-      background: color-mix(in oklab, var(--color-text) 12%, transparent);
-    }
-
-    .bracket-column:last-child .bracket-match::after { display:none; }
-
-    .bracket-team {
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-md);
-      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
-      background: var(--color-surface);
-      font-size: var(--text-sm);
-      color: var(--color-text-muted);
-      min-height: 38px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: var(--space-2);
-    }
-
-    .bracket-team.winner {
-      background: var(--color-primary-highlight);
-      border-color: color-mix(in oklab, var(--color-primary) 34%, transparent);
-      color: var(--color-primary-active);
-      font-weight: 700;
-    }
-
-    .bracket-team.placeholder {
-      color: var(--color-text-faint);
-      font-style: italic;
-    }
-
-    .layout {
-      display:grid;
-      grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.8fr);
-      gap: var(--space-6);
-      align-items:start;
-    }
-
-    .matches-panel, .sidebar { padding: var(--space-5); display:grid; gap: var(--space-5); }
-    .sidebar { position: sticky; top: calc(var(--space-4) + 88px); }
-
-    .section-head {
-      display:flex;
-      justify-content:space-between;
-      gap: var(--space-4);
-      align-items:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .stage-tabs { display:flex; flex-wrap:wrap; gap: var(--space-2); }
-    .stage-tab {
-      min-height: 44px;
-      padding: 0 var(--space-4);
-      border-radius: var(--radius-full);
-      background: var(--color-surface-offset);
-      border: 1px solid transparent;
-      font-size: var(--text-sm);
-      font-weight: 700;
-      color: var(--color-text-muted);
-    }
-    .stage-tab.active {
-      background: var(--color-primary-highlight);
-      color: var(--color-primary-active);
-      border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
-    }
-
-    .match-list { display:grid; gap: var(--space-4); }
-    .match-card {
-      padding: var(--space-4);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-2);
-      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
-      display:grid;
-      gap: var(--space-4);
-    }
-    .match-card-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: var(--space-3);
-      flex-wrap:wrap;
-    }
-    .match-label {
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-text-muted);
-      font-weight: 700;
-    }
-    .lock-badge {
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-full);
-      font-size: var(--text-xs);
-      font-weight: 700;
-      background: color-mix(in oklab, var(--color-warning) 12%, var(--color-surface));
-      color: var(--color-warning);
-    }
-
-    .team-options, .group-options { display:grid; gap: var(--space-3); }
-
-    .team-option, .group-option {
-      width:100%;
-      min-height: 52px;
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-lg);
-      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
-      background: var(--color-surface);
-      color: var(--color-text);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: var(--space-3);
-      text-align:left;
-      font-weight: 700;
-    }
-
-    .team-option small, .group-option small {
-      display:block;
-      font-weight: 500;
-      color: var(--color-text-muted);
-      font-size: var(--text-xs);
-      margin-top: 2px;
-    }
-
-    .team-option.selected, .group-option.selected {
-      background: var(--color-primary-highlight);
-      border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
-      color: var(--color-primary-active);
-    }
-    .team-option.selected .pick-state, .group-option.selected .pick-state {
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-      border-color: transparent;
-    }
-    .team-option:disabled, .group-option:disabled { opacity:0.56; cursor:not-allowed; }
-
-    .pick-state {
-      min-width: 94px;
-      min-height: 36px;
-      padding: 0 var(--space-3);
-      border-radius: var(--radius-full);
-      border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size: var(--text-xs);
-      font-weight: 700;
-      flex:0 0 auto;
-      background: var(--color-surface-offset);
-      color: var(--color-text-muted);
-    }
-
-    .group-card {
-      padding: var(--space-4);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-2);
-      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
-      display:grid;
-      gap: var(--space-4);
-    }
-
-    .group-card-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: var(--space-3);
-      flex-wrap:wrap;
-    }
-
-    .group-picks {
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-3);
-    }
-
-    .slot-card {
-      padding: var(--space-3);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface);
-      border: 1px dashed color-mix(in oklab, var(--color-text) 12%, transparent);
-      display:grid;
-      gap: var(--space-2);
-      min-height: 88px;
-    }
-    .slot-card strong { font-size: var(--text-sm); }
-    .slot-card span { font-size: var(--text-xs); color: var(--color-text-muted); }
-
-    .progress-ring {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto;
-      position: relative;
-      display:grid;
-      place-items:center;
-    }
-    .progress-ring svg { transform: rotate(-90deg); }
-    .progress-ring .progress-text {
-      position:absolute;
-      text-align:center;
-      display:grid;
-      gap:2px;
-    }
-    .progress-ring strong { font-size: var(--text-lg); font-variant-numeric: tabular-nums lining-nums; }
-    .progress-ring span {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .champion-card {
-      padding: var(--space-4);
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, color-mix(in oklab, var(--color-primary) 12%, var(--color-surface)), var(--color-surface));
-      border: 1px solid color-mix(in oklab, var(--color-primary) 24%, transparent);
-    }
-    .champion-name { font-size: var(--text-lg); line-height:1.1; }
-
-    .path-list {
-      display:grid;
-      gap: var(--space-2);
-      list-style:none;
-    }
-    .path-list li {
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-2);
-      color: var(--color-text-muted);
-      font-size: var(--text-sm);
-    }
-
-    .footer-note { color: var(--color-text-muted); font-size: var(--text-xs); text-align:center; }
-
-    @media (max-width: 1120px) {
-      .hero, .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; top: auto; }
-    }
-
-    @media (max-width: 760px) {
-      .topbar, .topbar-actions { flex-direction:column; align-items:stretch; }
-      .topbar-actions .btn, .topbar-actions .theme-toggle { width:100%; }
-      .hero-grid, .group-picks { grid-template-columns: 1fr; }
-      .section-head, .visual-bracket-head { flex-direction:column; }
-      .team-option, .group-option { align-items:flex-start; }
-      .pick-state { min-width:78px; }
-      .bracket-grid { min-width: 900px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-    }
+    .app{max-width:var(--content-wide);margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-10);display:grid;gap:var(--space-6)}
+    .skip-link{position:absolute;left:var(--space-4);top:-100px;background:var(--color-primary);color:var(--color-text-inverse);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);z-index:100}.skip-link:focus{top:var(--space-4)}
+    .panel{background:var(--color-surface);border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) var(--space-5);background:color-mix(in oklab, var(--color-surface) 88%, transparent);border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);position:sticky;top:var(--space-4);z-index:20}
+    .brand{display:flex;align-items:center;gap:var(--space-3);min-width:0}.brand-mark{width:2.75rem;height:2.75rem;padding:var(--space-2);border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--color-primary),color-mix(in oklab, var(--color-primary) 72%, white));color:var(--color-text-inverse);box-shadow:var(--shadow-sm);flex:0 0 auto}
+    .brand-copy strong{display:block;font-size:var(--text-sm);letter-spacing:.02em;text-transform:uppercase}.brand-copy span{display:block;color:var(--color-text-muted);font-size:var(--text-xs)}
+    .topbar-actions{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;justify-content:flex-end}
+    .btn,.theme-toggle{min-height:44px;padding:0 var(--space-4);border-radius:var(--radius-full);border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);background:var(--color-surface-2);color:var(--color-text);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);font-size:var(--text-sm);font-weight:700}
+    .btn:hover,.theme-toggle:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)} .btn.primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent}.btn.primary:hover{background:var(--color-primary-hover)}
+    .hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(330px,.8fr);gap:var(--space-6);align-items:stretch}
+    .hero-main,.hero-side,.visual-bracket,.matches-panel,.sidebar,.share-panel{padding:var(--space-5);display:grid;gap:var(--space-5)}
+    .hero-main{background:radial-gradient(circle at top right,color-mix(in oklab, var(--color-primary) 14%, transparent),transparent 36%),var(--color-surface)}
+    .eyebrow{width:fit-content;padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary-active);font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    h1{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.05;letter-spacing:-.03em;max-width:16ch}.lead,.muted{color:var(--color-text-muted)} .section-title,.hero-side h2{font-size:var(--text-lg);line-height:1.15}
+    .hero-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)} .mini-stat,.summary-item,.next-item{background:var(--color-surface-2);border:1px solid color-mix(in oklab, var(--color-text) 8%, transparent);border-radius:var(--radius-lg);padding:var(--space-4);display:grid;gap:var(--space-1)} .mini-stat strong{font-size:var(--text-lg);font-variant-numeric:tabular-nums lining-nums}.mini-stat span{color:var(--color-text-muted);font-size:var(--text-xs)}
+    .visual-bracket-head,.section-head,.share-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap}
+    .bracket-scroll{overflow-x:auto;padding-bottom:var(--space-2)} .bracket-grid{min-width:1120px;display:grid;grid-template-columns:repeat(5,minmax(190px,1fr));gap:var(--space-4);align-items:start}
+    .bracket-column{display:grid;gap:var(--space-3);align-content:start}.bracket-column h3{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);position:sticky;top:0;background:var(--color-surface);padding-bottom:var(--space-2)}
+    .bracket-match{position:relative;padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid color-mix(in oklab, var(--color-text) 8%, transparent);display:grid;gap:var(--space-2);min-height:88px}.bracket-match::after{content:'';position:absolute;top:50%;right:calc(-1 * var(--space-4));width:var(--space-4);height:1px;background:color-mix(in oklab, var(--color-text) 12%, transparent)}.bracket-column:last-child .bracket-match::after{display:none}
+    .bracket-team{padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);border:1px solid color-mix(in oklab, var(--color-text) 8%, transparent);background:var(--color-surface);font-size:var(--text-sm);color:var(--color-text-muted);min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)} .bracket-team.winner{background:var(--color-primary-highlight);border-color:color-mix(in oklab, var(--color-primary) 34%, transparent);color:var(--color-primary-active);font-weight:700}.bracket-team.placeholder{color:var(--color-text-faint);font-style:italic}
+    .share-layout,.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,.8fr);gap:var(--space-6);align-items:start}.sidebar{position:sticky;top:calc(var(--space-4) + 88px)}
+    .stage-tabs{display:flex;flex-wrap:wrap;gap:var(--space-2)} .stage-tab{min-height:44px;padding:0 var(--space-4);border-radius:var(--radius-full);background:var(--color-surface-offset);border:1px solid transparent;font-size:var(--text-sm);font-weight:700;color:var(--color-text-muted)} .stage-tab.active{background:var(--color-primary-highlight);color:var(--color-primary-active);border-color:color-mix(in oklab, var(--color-primary) 35%, transparent)}
+    .match-list,.summary-list,.next-list,.path-list,.group-options,.team-options{display:grid;gap:var(--space-3)} .match-card,.group-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);display:grid;gap:var(--space-4)} .match-card-header,.group-card-header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+    .match-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);font-weight:700}.lock-badge{padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700;background:color-mix(in oklab, var(--color-warning) 12%, var(--color-surface));color:var(--color-warning)}
+    .team-option,.group-option{width:100%;min-height:52px;padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);border:1px solid color-mix(in oklab, var(--color-text) 10%, transparent);background:var(--color-surface);color:var(--color-text);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);text-align:left;font-weight:700}
+    .team-option small,.group-option small{display:block;font-weight:500;color:var(--color-text-muted);font-size:var(--text-xs);margin-top:2px}.team-option.selected,.group-option.selected{background:var(--color-primary-highlight);border-color:color-mix(in oklab, var(--color-primary) 40%, transparent);color:var(--color-primary-active)}
+    .team-option.selected .pick-state,.group-option.selected .pick-state{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent}.team-option:disabled,.group-option:disabled{opacity:.56;cursor:not-allowed}
+    .pick-state{min-width:94px;min-height:36px;padding:0 var(--space-3);border-radius:var(--radius-full);border:1px solid color-mix(in oklab, var(--color-text) 12%, transparent);display:inline-flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:700;flex:0 0 auto;background:var(--color-surface-offset);color:var(--color-text-muted)}
+    .group-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .slot-card{padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface);border:1px dashed color-mix(in oklab, var(--color-text) 12%, transparent);display:grid;gap:var(--space-2);min-height:88px}.slot-card strong{font-size:var(--text-sm)}.slot-card span{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .share-panel textarea,.share-panel input{width:100%;padding:var(--space-4);border-radius:var(--radius-lg);border:1px solid color-mix(in oklab, var(--color-text) 12%, transparent);background:var(--color-surface-2);color:var(--color-text)}
+    .share-panel textarea{min-height:120px;resize:vertical}.share-actions{display:flex;flex-wrap:wrap;gap:var(--space-2)} .share-status{padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid color-mix(in oklab, var(--color-text) 8%, transparent);color:var(--color-text-muted)}
+    .progress-ring{width:140px;height:140px;margin:0 auto;position:relative;display:grid;place-items:center}.progress-ring svg{transform:rotate(-90deg)} .progress-ring .progress-text{position:absolute;text-align:center;display:grid;gap:2px}.progress-ring strong{font-size:var(--text-lg);font-variant-numeric:tabular-nums lining-nums}.progress-ring span{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em}
+    .champion-card{padding:var(--space-4);border-radius:var(--radius-lg);background:linear-gradient(135deg,color-mix(in oklab, var(--color-primary) 12%, var(--color-surface)),var(--color-surface));border:1px solid color-mix(in oklab, var(--color-primary) 24%, transparent)} .champion-name{font-size:var(--text-lg);line-height:1.1}
+    .path-list{list-style:none}.path-list li{padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-2);color:var(--color-text-muted);font-size:var(--text-sm)} .footer-note{color:var(--color-text-muted);font-size:var(--text-xs);text-align:center}
+    @media (max-width:1160px){.hero,.share-layout,.layout{grid-template-columns:1fr}.sidebar{position:static;top:auto}}
+    @media (max-width:760px){.topbar,.topbar-actions,.share-actions{flex-direction:column;align-items:stretch}.topbar-actions .btn,.topbar-actions .theme-toggle,.share-actions .btn{width:100%}.hero-grid,.group-picks{grid-template-columns:1fr}.section-head,.visual-bracket-head,.share-head{flex-direction:column}.team-option,.group-option{align-items:flex-start}.pick-state{min-width:78px}.bracket-grid{min-width:900px}}
+    @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}
   </style>
 </head>
 <body>
@@ -581,63 +79,81 @@
   <div class="app">
     <header class="topbar panel">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo tabellone mondiale">
-            <path d="M24 5L39 14V34L24 43L9 34V14L24 5Z" stroke="currentColor" stroke-width="3"/>
-            <path d="M16 18L24 13L32 18V30L24 35L16 30V18Z" fill="currentColor" opacity="0.28"/>
-            <path d="M24 13V35M16 18L32 30M32 18L16 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="brand-copy">
-          <strong>Bracket Builder 2026</strong>
-          <span>Gironi + tabellone grafico aggiornabile</span>
-        </div>
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 5L39 14V34L24 43L9 34V14L24 5Z" stroke="currentColor" stroke-width="3"/><path d="M16 18L24 13L32 18V30L24 35L16 30V18Z" fill="currentColor" opacity="0.28"/><path d="M24 13V35M16 18L32 30M32 18L16 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+        <div class="brand-copy"><strong>Bracket Builder 2026</strong><span>Con link condivisibile e share code</span></div>
       </div>
       <div class="topbar-actions">
         <button class="btn" id="autoFillBtn" type="button">Compila esempio</button>
+        <button class="btn" id="generateShareBtn" type="button">Genera link/share code</button>
         <button class="btn" id="resetBtn" type="button">Reset completo</button>
-        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Passa al tema scuro">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          Tema
-        </button>
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Passa al tema scuro"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>Tema</button>
       </div>
     </header>
 
     <section class="hero">
       <div class="hero-main panel">
-        <div class="eyebrow">Modalità completa</div>
+        <div class="eyebrow">Salvataggio condivisibile</div>
         <div>
-          <h1>Prima scegli le qualificate dai gironi, poi costruisci il bracket fino alla finale.</h1>
-          <p class="lead">In questa versione la pagina parte dai gruppi: selezioni prima e seconda di ogni girone, il tabellone si popola automaticamente e il bracket visuale in cima si aggiorna a ogni scelta.</p>
+          <h1>Compili il tabellone, generi un link o un codice, e i tuoi amici vedono lo stesso bracket.</h1>
+          <p class="lead">La pagina salva tutto nello URL hash o in uno share code copiabile. Chi apre il link o incolla il codice ricostruisce automaticamente gironi, bracket e campione finale.</p>
         </div>
         <div class="hero-grid">
-          <div class="mini-stat">
-            <strong>12</strong>
-            <span>Gironi da compilare</span>
-          </div>
-          <div class="mini-stat">
-            <strong>32</strong>
-            <span>Posti nel tabellone finale</span>
-          </div>
-          <div class="mini-stat">
-            <strong>31</strong>
-            <span>Match a eliminazione</span>
-          </div>
+          <div class="mini-stat"><strong>12</strong><span>Gironi da compilare</span></div>
+          <div class="mini-stat"><strong>31</strong><span>Partite a eliminazione</span></div>
+          <div class="mini-stat"><strong>1</strong><span>Link per mostrare il tuo bracket</span></div>
         </div>
       </div>
-
-      <aside class="hero-side panel" aria-labelledby="how-it-works-title">
+      <aside class="hero-side panel">
         <div>
-          <h2 id="how-it-works-title">Flusso di utilizzo</h2>
-          <p class="muted">Le fasi sono progressive. Finché i gironi non sono completati, il bracket resta in attesa. Dopo, puoi avanzare turno per turno e vedere il tabellone prendere forma.</p>
+          <h2>Come si usa</h2>
+          <p class="muted">Compila il tabellone, premi il pulsante di condivisione e poi manda il link o il codice. Chi lo apre ricostruisce tutto dentro la stessa pagina.</p>
         </div>
-        <div class="next-list" id="stageHints">
-          <div class="next-item"><span>1.</span><strong>Scegli top 2 dei gironi</strong></div>
-          <div class="next-item"><span>2.</span><strong>Compila i sedicesimi</strong></div>
-          <div class="next-item"><span>3.</span><strong>Segui il bracket visuale fino al titolo</strong></div>
+        <div class="next-list">
+          <div class="next-item"><span>1.</span><strong>Compila i gironi</strong></div>
+          <div class="next-item"><span>2.</span><strong>Completa il bracket</strong></div>
+          <div class="next-item"><span>3.</span><strong>Condividi link o codice</strong></div>
         </div>
+      </aside>
+    </section>
+
+    <section class="share-layout">
+      <section class="share-panel panel" aria-labelledby="share-title">
+        <div class="share-head">
+          <div>
+            <h2 id="share-title" class="section-title">Condivisione</h2>
+            <p class="muted">Puoi generare un link pronto o usare uno share code testuale da mandare in chat.</p>
+          </div>
+          <div class="summary-item"><span>Stato condivisione</span><strong id="shareReadyBadge">Non generato</strong></div>
+        </div>
+        <div>
+          <label class="match-label" for="shareLinkOutput">Link condivisibile</label>
+          <textarea id="shareLinkOutput" readonly placeholder="Premi 'Genera link/share code' per creare un link completo."></textarea>
+        </div>
+        <div>
+          <label class="match-label" for="shareCodeOutput">Share code</label>
+          <textarea id="shareCodeOutput" readonly placeholder="Qui comparirà il codice compatto del tuo tabellone."></textarea>
+        </div>
+        <div class="share-actions">
+          <button class="btn primary" id="copyLinkBtn" type="button">Copia link</button>
+          <button class="btn" id="copyCodeBtn" type="button">Copia codice</button>
+        </div>
+        <div class="share-status" id="shareStatus">Nessun link generato ancora.</div>
+      </section>
+
+      <aside class="share-panel panel" aria-labelledby="import-title">
+        <div>
+          <h2 id="import-title" class="section-title">Ricostruisci un bracket</h2>
+          <p class="muted">Se ricevi solo il codice, incollalo qui sotto e premi il pulsante per caricare il tabellone dentro la pagina.</p>
+        </div>
+        <div>
+          <label class="match-label" for="importCodeInput">Incolla share code</label>
+          <textarea id="importCodeInput" placeholder="Incolla qui lo share code ricevuto da un amico."></textarea>
+        </div>
+        <div class="share-actions">
+          <button class="btn primary" id="loadCodeBtn" type="button">Carica codice</button>
+          <button class="btn" id="clearCodeBtn" type="button">Svuota campo</button>
+        </div>
+        <div class="share-status" id="importStatus">Puoi anche aprire direttamente un link con hash già compilato.</div>
       </aside>
     </section>
 
@@ -645,16 +161,11 @@
       <div class="visual-bracket-head">
         <div>
           <h2 id="visual-bracket-title" class="section-title">Tabellone grafico</h2>
-          <p class="muted">Questo schema si aggiorna in tempo reale man mano che scegli qualificate e vincitrici.</p>
+          <p class="muted">Il bracket visuale si aggiorna in tempo reale e viene ricostruito anche quando apri un link condiviso.</p>
         </div>
-        <div class="summary-item">
-          <span>Bracket attivo</span>
-          <strong id="bracketStatus">In attesa dei gironi</strong>
-        </div>
+        <div class="summary-item"><span>Bracket attivo</span><strong id="bracketStatus">In attesa dei gironi</strong></div>
       </div>
-      <div class="bracket-scroll">
-        <div class="bracket-grid" id="bracketGrid"></div>
-      </div>
+      <div class="bracket-scroll"><div class="bracket-grid" id="bracketGrid"></div></div>
     </section>
 
     <main id="main-content" class="layout">
@@ -662,7 +173,7 @@
         <div class="section-head">
           <div>
             <h2 id="matches-title" class="section-title">Compilazione torneo</h2>
-            <p class="muted">Usa le tab qui sotto per passare da gironi a fasi finali. Ogni selezione aggiorna stato e bracket in alto.</p>
+            <p class="muted">Passa da gironi a fasi finali. Ogni scelta aggiorna automaticamente il bracket e può essere salvata nel link.</p>
           </div>
           <nav class="stage-tabs" aria-label="Fasi del torneo" id="stageTabs"></nav>
         </div>
@@ -672,38 +183,16 @@
       <aside class="sidebar panel" aria-labelledby="summary-title">
         <div>
           <h2 id="summary-title" class="section-title">Avanzamento</h2>
-          <p class="muted">Hai sotto controllo completamento, qualificate, bracket e campione finale.</p>
+          <p class="muted">Controlli subito progresso, bracket e campione finale.</p>
         </div>
-
-        <div class="progress-ring" aria-hidden="true">
-          <svg width="140" height="140" viewBox="0 0 140 140">
-            <circle cx="70" cy="70" r="56" fill="none" stroke="color-mix(in oklab, var(--color-text) 8%, transparent)" stroke-width="12"></circle>
-            <circle id="progressCircle" cx="70" cy="70" r="56" fill="none" stroke="var(--color-primary)" stroke-width="12" stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="351.86"></circle>
-          </svg>
-          <div class="progress-text">
-            <strong id="progressValue">0%</strong>
-            <span>Completato</span>
-          </div>
-        </div>
-
+        <div class="progress-ring" aria-hidden="true"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="56" fill="none" stroke="color-mix(in oklab, var(--color-text) 8%, transparent)" stroke-width="12"></circle><circle id="progressCircle" cx="70" cy="70" r="56" fill="none" stroke="var(--color-primary)" stroke-width="12" stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="351.86"></circle></svg><div class="progress-text"><strong id="progressValue">0%</strong><span>Completato</span></div></div>
         <div class="summary-list" id="summaryList"></div>
-
-        <div class="champion-card">
-          <span class="match-label">Campione scelto</span>
-          <strong class="champion-name" id="championName">Nessuna squadra ancora</strong>
-          <p class="muted" id="championMeta">Completa i gironi e poi tutta la fase finale per vedere il vincitore.</p>
-        </div>
-
-        <div>
-          <h3 class="section-title">Percorso finale</h3>
-          <ol class="path-list" id="championPath">
-            <li>Nessun percorso ancora definito.</li>
-          </ol>
-        </div>
+        <div class="champion-card"><span class="match-label">Campione scelto</span><strong class="champion-name" id="championName">Nessuna squadra ancora</strong><p class="muted" id="championMeta">Completa i gironi e poi tutta la fase finale per vedere il vincitore.</p></div>
+        <div><h3 class="section-title">Percorso finale</h3><ol class="path-list" id="championPath"><li>Nessun percorso ancora definito.</li></ol></div>
       </aside>
     </main>
 
-    <p class="footer-note">Web app statica in HTML, CSS e JavaScript vanilla. Tutto resta dentro la pagina, senza dipendenze server.</p>
+    <p class="footer-note">Made for you by Perplexity.</p>
   </div>
 
   <script>
@@ -773,13 +262,7 @@
       final: [{ id: 'f-1', label: 'Finale', home: null, away: null, sources: ['sf-1', 'sf-2'] }]
     };
 
-    const state = {
-      activeStage: 'groups',
-      groupWinners: {},
-      groupRunners: {},
-      picks: {},
-      matches: structuredClone(initialMatches)
-    };
+    const state = { activeStage: 'groups', groupWinners: {}, groupRunners: {}, picks: {}, matches: structuredClone(initialMatches) };
 
     const stageTabs = document.getElementById('stageTabs');
     const matchList = document.getElementById('matchList');
@@ -793,14 +276,22 @@
     const autoFillBtn = document.getElementById('autoFillBtn');
     const bracketGrid = document.getElementById('bracketGrid');
     const bracketStatus = document.getElementById('bracketStatus');
+    const generateShareBtn = document.getElementById('generateShareBtn');
+    const shareLinkOutput = document.getElementById('shareLinkOutput');
+    const shareCodeOutput = document.getElementById('shareCodeOutput');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const loadCodeBtn = document.getElementById('loadCodeBtn');
+    const clearCodeBtn = document.getElementById('clearCodeBtn');
+    const importCodeInput = document.getElementById('importCodeInput');
+    const shareStatus = document.getElementById('shareStatus');
+    const importStatus = document.getElementById('importStatus');
+    const shareReadyBadge = document.getElementById('shareReadyBadge');
 
     const totalMatches = groupData.length * 2 + Object.keys(initialMatches).reduce((acc, key) => acc + initialMatches[key].length, 0);
     const circleLength = 2 * Math.PI * 56;
 
-    function getTeamMeta(team) {
-      return TEAM_META[team] || 'Scelta libera per il tuo tabellone';
-    }
-
+    function getTeamMeta(team) { return TEAM_META[team] || 'Scelta libera per il tuo tabellone'; }
     function getMatchById(matchId) {
       for (const stage of stages) {
         if (stage.id === 'groups') continue;
@@ -809,16 +300,8 @@
       }
       return null;
     }
-
-    function areGroupsComplete() {
-      return groupData.every(group => state.groupWinners[group.id] && state.groupRunners[group.id]);
-    }
-
-    function stageCompleted(stageId) {
-      if (stageId === 'groups') return areGroupsComplete();
-      return state.matches[stageId].every(match => Boolean(state.picks[match.id]));
-    }
-
+    function areGroupsComplete() { return groupData.every(group => state.groupWinners[group.id] && state.groupRunners[group.id]); }
+    function stageCompleted(stageId) { if (stageId === 'groups') return areGroupsComplete(); return state.matches[stageId].every(match => Boolean(state.picks[match.id])); }
     function isStageUnlocked(stageId) {
       if (stageId === 'groups') return true;
       if (stageId === 'round32') return areGroupsComplete();
@@ -826,7 +309,6 @@
       const prevStage = stages[index - 1];
       return prevStage ? stageCompleted(prevStage.id) : true;
     }
-
     function clearPicksFromStage(stageId) {
       const startIndex = stages.findIndex(stage => stage.id === stageId);
       stages.slice(startIndex).forEach(stage => {
@@ -834,64 +316,41 @@
         state.matches[stage.id].forEach(match => delete state.picks[match.id]);
       });
     }
-
     function syncRound32FromGroups() {
-      state.matches.round32.forEach(match => {
-        match.home = null;
-        match.away = null;
-      });
-
+      state.matches.round32.forEach(match => { match.home = null; match.away = null; });
       const directMap = {
-        '1A': state.groupWinners['A'], '2B': state.groupRunners['B'],
-        '1C': state.groupWinners['C'], '2D': state.groupRunners['D'],
-        '1E': state.groupWinners['E'], '2F': state.groupRunners['F'],
-        '1G': state.groupWinners['G'], '2H': state.groupRunners['H'],
-        '1I': state.groupWinners['I'], '2J': state.groupRunners['J'],
-        '1K': state.groupWinners['K'], '2L': state.groupRunners['L'],
-        '1B': state.groupWinners['B'], '2A': state.groupRunners['A'],
-        '1D': state.groupWinners['D'], '2C': state.groupRunners['C'],
-        '1F': state.groupWinners['F'], '2E': state.groupRunners['E'],
-        '1H': state.groupWinners['H'], '2G': state.groupRunners['G'],
-        '1J': state.groupWinners['J'], '2I': state.groupRunners['I'],
-        '1L': state.groupWinners['L'], '2K': state.groupRunners['K'],
-        '1B2': state.groupWinners['B'], '1C2': state.groupWinners['C'],
-        '1D2': state.groupWinners['D'], '1E2': state.groupWinners['E'],
-        '1F2': state.groupWinners['F'], '1G2': state.groupWinners['G'],
-        '1H2': state.groupWinners['H'], '1I2': state.groupWinners['I']
+        '1A': state.groupWinners['A'], '2B': state.groupRunners['B'], '1C': state.groupWinners['C'], '2D': state.groupRunners['D'],
+        '1E': state.groupWinners['E'], '2F': state.groupRunners['F'], '1G': state.groupWinners['G'], '2H': state.groupRunners['H'],
+        '1I': state.groupWinners['I'], '2J': state.groupRunners['J'], '1K': state.groupWinners['K'], '2L': state.groupRunners['L'],
+        '1B': state.groupWinners['B'], '2A': state.groupRunners['A'], '1D': state.groupWinners['D'], '2C': state.groupRunners['C'],
+        '1F': state.groupWinners['F'], '2E': state.groupRunners['E'], '1H': state.groupWinners['H'], '2G': state.groupRunners['G'],
+        '1J': state.groupWinners['J'], '2I': state.groupRunners['I'], '1L': state.groupWinners['L'], '2K': state.groupRunners['K'],
+        '1B2': state.groupWinners['B'], '1C2': state.groupWinners['C'], '1D2': state.groupWinners['D'], '1E2': state.groupWinners['E'],
+        '1F2': state.groupWinners['F'], '1G2': state.groupWinners['G'], '1H2': state.groupWinners['H'], '1I2': state.groupWinners['I']
       };
-
       Object.entries(knockoutSeedMap).forEach(([seed, target]) => {
         const match = getMatchById(target.matchId);
         if (match) match[target.side] = directMap[seed] || null;
       });
     }
-
     function updateDerivedStages() {
       syncRound32FromGroups();
-
       for (const stage of stages) {
         if (stage.id === 'groups' || stage.id === 'round32') continue;
         state.matches[stage.id].forEach(match => {
           const [sourceA, sourceB] = match.sources;
           const home = state.picks[sourceA] || null;
           const away = state.picks[sourceB] || null;
-          match.home = home;
-          match.away = away;
+          match.home = home; match.away = away;
           const currentPick = state.picks[match.id];
-          if (currentPick && currentPick !== home && currentPick !== away) {
-            delete state.picks[match.id];
-          }
+          if (currentPick && currentPick !== home && currentPick !== away) delete state.picks[match.id];
         });
       }
-
       state.matches.round32.forEach(match => {
         const currentPick = state.picks[match.id];
-        if (currentPick && currentPick !== match.home && currentPick !== match.away) {
-          delete state.picks[match.id];
-        }
+        if (currentPick && currentPick !== match.home && currentPick !== match.away) delete state.picks[match.id];
       });
     }
-
     function setGroupPick(groupId, slot, team) {
       if (slot === 'winner') {
         if (state.groupRunners[groupId] === team) delete state.groupRunners[groupId];
@@ -900,323 +359,208 @@
         if (state.groupWinners[groupId] === team) delete state.groupWinners[groupId];
         state.groupRunners[groupId] = team;
       }
-      clearPicksFromStage('round32');
-      updateDerivedStages();
-      render();
+      clearPicksFromStage('round32'); updateDerivedStages(); render();
     }
-
     function setPick(matchId, team) {
-      const match = getMatchById(matchId);
-      if (!match) return;
+      const match = getMatchById(matchId); if (!match) return;
       const stage = stages.find(item => state.matches[item.id] && state.matches[item.id].some(entry => entry.id === matchId));
-      if (!stage || !isStageUnlocked(stage.id)) return;
-      if (!match.home || !match.away) return;
-      state.picks[matchId] = team;
-      updateDerivedStages();
-      render();
+      if (!stage || !isStageUnlocked(stage.id) || !match.home || !match.away) return;
+      state.picks[matchId] = team; updateDerivedStages(); render();
     }
-
     function resetBracket() {
-      state.groupWinners = {};
-      state.groupRunners = {};
-      state.picks = {};
-      state.matches = structuredClone(initialMatches);
-      state.activeStage = 'groups';
-      updateDerivedStages();
-      render();
+      state.groupWinners = {}; state.groupRunners = {}; state.picks = {}; state.matches = structuredClone(initialMatches); state.activeStage = 'groups';
+      updateDerivedStages(); render(); clearShareOutputs(); history.replaceState(null, '', window.location.pathname + window.location.search);
     }
-
     function autoFillExample() {
       resetBracket();
-      const groupExample = {
-        A: ['Mexico', 'South Korea'], B: ['Canada', 'Switzerland'], C: ['Brazil', 'Morocco'], D: ['United States', 'Paraguay'],
-        E: ['Germany', 'Ecuador'], F: ['Netherlands', 'Japan'], G: ['Belgium', 'Egypt'], H: ['Spain', 'Uruguay'],
-        I: ['France', 'Senegal'], J: ['Argentina', 'Austria'], K: ['Portugal', 'Colombia'], L: ['England', 'Croatia']
-      };
-      Object.entries(groupExample).forEach(([groupId, [winner, runner]]) => {
-        state.groupWinners[groupId] = winner;
-        state.groupRunners[groupId] = runner;
-      });
+      const groupExample = { A:['Mexico','South Korea'], B:['Canada','Switzerland'], C:['Brazil','Morocco'], D:['United States','Paraguay'], E:['Germany','Ecuador'], F:['Netherlands','Japan'], G:['Belgium','Egypt'], H:['Spain','Uruguay'], I:['France','Senegal'], J:['Argentina','Austria'], K:['Portugal','Colombia'], L:['England','Croatia'] };
+      Object.entries(groupExample).forEach(([groupId, [winner, runner]]) => { state.groupWinners[groupId] = winner; state.groupRunners[groupId] = runner; });
       updateDerivedStages();
-      const picks = {
-        'r32-1': 'Mexico', 'r32-2': 'Brazil', 'r32-3': 'Germany', 'r32-4': 'Spain',
-        'r32-5': 'France', 'r32-6': 'Portugal', 'r32-7': 'Canada', 'r32-8': 'United States',
-        'r32-9': 'Japan', 'r32-10': 'Uruguay', 'r32-11': 'Argentina', 'r32-12': 'England',
-        'r32-13': 'Brazil', 'r32-14': 'Germany', 'r32-15': 'Belgium', 'r32-16': 'Spain',
-        'r16-1': 'Brazil', 'r16-2': 'Spain', 'r16-3': 'France', 'r16-4': 'England',
-        'r16-5': 'Uruguay', 'r16-6': 'Argentina', 'r16-7': 'Germany', 'r16-8': 'Spain',
-        'qf-1': 'Spain', 'qf-2': 'England', 'qf-3': 'Argentina', 'qf-4': 'Spain',
-        'sf-1': 'Spain', 'sf-2': 'Argentina', 'f-1': 'Spain'
-      };
-      Object.entries(picks).forEach(([matchId, team]) => {
-        state.picks[matchId] = team;
-        updateDerivedStages();
-      });
-      state.activeStage = 'final';
-      render();
+      const picks = { 'r32-1':'Mexico','r32-2':'Brazil','r32-3':'Germany','r32-4':'Spain','r32-5':'France','r32-6':'Portugal','r32-7':'Canada','r32-8':'United States','r32-9':'Japan','r32-10':'Uruguay','r32-11':'Argentina','r32-12':'England','r32-13':'Brazil','r32-14':'Germany','r32-15':'Belgium','r32-16':'Spain','r16-1':'Brazil','r16-2':'Spain','r16-3':'France','r16-4':'England','r16-5':'Uruguay','r16-6':'Argentina','r16-7':'Germany','r16-8':'Spain','qf-1':'Spain','qf-2':'England','qf-3':'Argentina','qf-4':'Spain','sf-1':'Spain','sf-2':'Argentina','f-1':'Spain' };
+      Object.entries(picks).forEach(([matchId, team]) => { state.picks[matchId] = team; updateDerivedStages(); });
+      state.activeStage = 'final'; render();
     }
-
     function renderTabs() {
       stageTabs.innerHTML = '';
       stages.forEach(stage => {
         const button = document.createElement('button');
-        button.type = 'button';
-        button.className = `stage-tab${state.activeStage === stage.id ? ' active' : ''}`;
-        button.textContent = stage.label;
-        const unlocked = isStageUnlocked(stage.id);
-        button.disabled = !unlocked;
-        if (!unlocked) button.title = 'Completa la fase precedente per sbloccare questa tab';
-        button.addEventListener('click', () => {
-          if (!unlocked) return;
-          state.activeStage = stage.id;
-          renderTabs();
-          renderMainPanel();
-        });
+        button.type = 'button'; button.className = `stage-tab${state.activeStage === stage.id ? ' active' : ''}`; button.textContent = stage.label;
+        const unlocked = isStageUnlocked(stage.id); button.disabled = !unlocked; if (!unlocked) button.title = 'Completa la fase precedente per sbloccare questa tab';
+        button.addEventListener('click', () => { if (!unlocked) return; state.activeStage = stage.id; renderTabs(); renderMainPanel(); });
         stageTabs.appendChild(button);
       });
     }
-
     function renderGroups() {
       matchList.innerHTML = '';
       groupData.forEach(group => {
-        const article = document.createElement('article');
-        article.className = 'group-card';
-        article.innerHTML = `
-          <div class="group-card-header">
-            <div>
-              <div class="match-label">Girone ${group.id}</div>
-              <strong>Seleziona prima e seconda classificata</strong>
-            </div>
-            <span class="match-label">${group.teams.length} squadre</span>
-          </div>
-        `;
-
-        const picksWrap = document.createElement('div');
-        picksWrap.className = 'group-picks';
-        picksWrap.innerHTML = `
-          <div class="slot-card">
-            <span>1° posto</span>
-            <strong>${state.groupWinners[group.id] || 'Non selezionato'}</strong>
-            <span>${state.groupWinners[group.id] ? getTeamMeta(state.groupWinners[group.id]) : 'Scegli la squadra che vince il girone.'}</span>
-          </div>
-          <div class="slot-card">
-            <span>2° posto</span>
-            <strong>${state.groupRunners[group.id] || 'Non selezionato'}</strong>
-            <span>${state.groupRunners[group.id] ? getTeamMeta(state.groupRunners[group.id]) : 'Scegli la squadra che passa come seconda.'}</span>
-          </div>
-        `;
+        const article = document.createElement('article'); article.className = 'group-card';
+        article.innerHTML = `<div class="group-card-header"><div><div class="match-label">Girone ${group.id}</div><strong>Seleziona prima e seconda classificata</strong></div><span class="match-label">${group.teams.length} squadre</span></div>`;
+        const picksWrap = document.createElement('div'); picksWrap.className = 'group-picks';
+        picksWrap.innerHTML = `<div class="slot-card"><span>1° posto</span><strong>${state.groupWinners[group.id] || 'Non selezionato'}</strong><span>${state.groupWinners[group.id] ? getTeamMeta(state.groupWinners[group.id]) : 'Scegli la squadra che vince il girone.'}</span></div><div class="slot-card"><span>2° posto</span><strong>${state.groupRunners[group.id] || 'Non selezionato'}</strong><span>${state.groupRunners[group.id] ? getTeamMeta(state.groupRunners[group.id]) : 'Scegli la squadra che passa come seconda.'}</span></div>`;
         article.appendChild(picksWrap);
-
-        const winnerOptions = document.createElement('div');
-        winnerOptions.className = 'group-options';
         group.teams.forEach(team => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = `group-option${state.groupWinners[group.id] === team ? ' selected' : ''}`;
-          button.innerHTML = `
-            <span>${team}<small>${getTeamMeta(team)}</small></span>
-            <span class="pick-state">${state.groupWinners[group.id] === team ? '1° scelta' : '1° posto'}</span>
-          `;
-          button.addEventListener('click', () => setGroupPick(group.id, 'winner', team));
-          article.appendChild(button);
+          const button = document.createElement('button'); button.type = 'button'; button.className = `group-option${state.groupWinners[group.id] === team ? ' selected' : ''}`;
+          button.innerHTML = `<span>${team}<small>${getTeamMeta(team)}</small></span><span class="pick-state">${state.groupWinners[group.id] === team ? '1° scelta' : '1° posto'}</span>`;
+          button.addEventListener('click', () => setGroupPick(group.id, 'winner', team)); article.appendChild(button);
         });
-
-        const runnerTitle = document.createElement('div');
-        runnerTitle.className = 'match-label';
-        runnerTitle.textContent = 'Seconda classificata';
-        article.appendChild(runnerTitle);
-
+        const runnerTitle = document.createElement('div'); runnerTitle.className = 'match-label'; runnerTitle.textContent = 'Seconda classificata'; article.appendChild(runnerTitle);
         group.teams.forEach(team => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.disabled = state.groupWinners[group.id] === team;
-          button.className = `group-option${state.groupRunners[group.id] === team ? ' selected' : ''}`;
-          button.innerHTML = `
-            <span>${team}<small>${getTeamMeta(team)}</small></span>
-            <span class="pick-state">${state.groupRunners[group.id] === team ? '2° scelta' : '2° posto'}</span>
-          `;
-          button.addEventListener('click', () => setGroupPick(group.id, 'runner', team));
-          article.appendChild(button);
+          const button = document.createElement('button'); button.type = 'button'; button.disabled = state.groupWinners[group.id] === team; button.className = `group-option${state.groupRunners[group.id] === team ? ' selected' : ''}`;
+          button.innerHTML = `<span>${team}<small>${getTeamMeta(team)}</small></span><span class="pick-state">${state.groupRunners[group.id] === team ? '2° scelta' : '2° posto'}</span>`;
+          button.addEventListener('click', () => setGroupPick(group.id, 'runner', team)); article.appendChild(button);
         });
-
         matchList.appendChild(article);
       });
     }
-
     function renderKnockoutStage() {
       matchList.innerHTML = '';
-      const activeMatches = state.matches[state.activeStage];
-      const unlocked = isStageUnlocked(state.activeStage);
-
+      const activeMatches = state.matches[state.activeStage]; const unlocked = isStageUnlocked(state.activeStage);
       activeMatches.forEach((match, index) => {
-        const article = document.createElement('article');
-        article.className = 'match-card';
-        article.innerHTML = `
-          <div class="match-card-header">
-            <div>
-              <div class="match-label">${stages.find(stage => stage.id === state.activeStage).short}</div>
-              <strong>${match.label}</strong>
-            </div>
-            ${!unlocked ? '<span class="lock-badge">Bloccata</span>' : `<span class="match-label">Partita ${index + 1}</span>`}
-          </div>
-        `;
-
-        const options = document.createElement('div');
-        options.className = 'team-options';
+        const article = document.createElement('article'); article.className = 'match-card';
+        article.innerHTML = `<div class="match-card-header"><div><div class="match-label">${stages.find(stage => stage.id === state.activeStage).short}</div><strong>${match.label}</strong></div>${!unlocked ? '<span class="lock-badge">Bloccata</span>' : `<span class="match-label">Partita ${index + 1}</span>`}</div>`;
+        const options = document.createElement('div'); options.className = 'team-options';
         [match.home, match.away].forEach(team => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = `team-option${state.picks[match.id] === team ? ' selected' : ''}`;
-          button.disabled = !unlocked || !team;
-          button.innerHTML = `
-            <span>
-              ${team || 'In attesa del turno precedente'}
-              <small>${team ? getTeamMeta(team) : 'Completa prima il ramo precedente.'}</small>
-            </span>
-            <span class="pick-state">${state.picks[match.id] === team ? 'Scelta' : 'Seleziona'}</span>
-          `;
-          if (team) button.addEventListener('click', () => setPick(match.id, team));
-          options.appendChild(button);
+          const button = document.createElement('button'); button.type = 'button'; button.className = `team-option${state.picks[match.id] === team ? ' selected' : ''}`; button.disabled = !unlocked || !team;
+          button.innerHTML = `<span>${team || 'In attesa del turno precedente'}<small>${team ? getTeamMeta(team) : 'Completa prima il ramo precedente.'}</small></span><span class="pick-state">${state.picks[match.id] === team ? 'Scelta' : 'Seleziona'}</span>`;
+          if (team) button.addEventListener('click', () => setPick(match.id, team)); options.appendChild(button);
         });
-        article.appendChild(options);
-        matchList.appendChild(article);
+        article.appendChild(options); matchList.appendChild(article);
       });
     }
-
-    function renderMainPanel() {
-      if (state.activeStage === 'groups') renderGroups();
-      else renderKnockoutStage();
-    }
-
+    function renderMainPanel() { if (state.activeStage === 'groups') renderGroups(); else renderKnockoutStage(); }
     function createBracketColumn(title, stageId) {
-      const column = document.createElement('div');
-      column.className = 'bracket-column';
-      const heading = document.createElement('h3');
-      heading.textContent = title;
-      column.appendChild(heading);
-
-      const stageMatches = state.matches[stageId];
-      stageMatches.forEach(match => {
-        const card = document.createElement('div');
-        card.className = 'bracket-match';
-
-        const label = document.createElement('div');
-        label.className = 'match-label';
-        label.textContent = match.label;
-        card.appendChild(label);
-
+      const column = document.createElement('div'); column.className = 'bracket-column'; const heading = document.createElement('h3'); heading.textContent = title; column.appendChild(heading);
+      state.matches[stageId].forEach(match => {
+        const card = document.createElement('div'); card.className = 'bracket-match';
+        const label = document.createElement('div'); label.className = 'match-label'; label.textContent = match.label; card.appendChild(label);
         [match.home, match.away].forEach(team => {
-          const line = document.createElement('div');
-          const isWinner = state.picks[match.id] && state.picks[match.id] === team;
-          line.className = `bracket-team${isWinner ? ' winner' : ''}${team ? '' : ' placeholder'}`;
-          line.textContent = team || 'Da definire';
-          card.appendChild(line);
+          const line = document.createElement('div'); const isWinner = state.picks[match.id] && state.picks[match.id] === team; line.className = `bracket-team${isWinner ? ' winner' : ''}${team ? '' : ' placeholder'}`; line.textContent = team || 'Da definire'; card.appendChild(line);
         });
-
         column.appendChild(card);
       });
       return column;
     }
-
     function renderBracket() {
       bracketGrid.innerHTML = '';
-      ['round32', 'round16', 'quarters', 'semis', 'final'].forEach(stageId => {
-        const title = stages.find(stage => stage.id === stageId).label;
-        bracketGrid.appendChild(createBracketColumn(title, stageId));
-      });
+      ['round32', 'round16', 'quarters', 'semis', 'final'].forEach(stageId => { const title = stages.find(stage => stage.id === stageId).label; bracketGrid.appendChild(createBracketColumn(title, stageId)); });
       bracketStatus.textContent = areGroupsComplete() ? 'Popolato e aggiornabile' : 'In attesa dei gironi';
     }
-
     function renderSummary() {
       summaryList.innerHTML = '';
-
       const groupCompleted = Object.keys(state.groupWinners).length + Object.keys(state.groupRunners).length;
-      const groupItem = document.createElement('div');
-      groupItem.className = 'summary-item';
-      groupItem.innerHTML = `<span>Gironi</span><strong>${groupCompleted}/24</strong>`;
-      summaryList.appendChild(groupItem);
-
+      const groupItem = document.createElement('div'); groupItem.className = 'summary-item'; groupItem.innerHTML = `<span>Gironi</span><strong>${groupCompleted}/24</strong>`; summaryList.appendChild(groupItem);
       stages.filter(stage => stage.id !== 'groups').forEach(stage => {
-        const total = state.matches[stage.id].length;
-        const completed = state.matches[stage.id].filter(match => Boolean(state.picks[match.id])).length;
-        const item = document.createElement('div');
-        item.className = 'summary-item';
-        item.innerHTML = `<span>${stage.label}</span><strong>${completed}/${total}</strong>`;
-        summaryList.appendChild(item);
+        const total = state.matches[stage.id].length; const completed = state.matches[stage.id].filter(match => Boolean(state.picks[match.id])).length;
+        const item = document.createElement('div'); item.className = 'summary-item'; item.innerHTML = `<span>${stage.label}</span><strong>${completed}/${total}</strong>`; summaryList.appendChild(item);
       });
-
-      const completedMatches = groupCompleted + Object.keys(state.picks).length;
-      const progress = Math.round((completedMatches / totalMatches) * 100);
-      progressValue.textContent = `${progress}%`;
-      progressCircle.style.strokeDasharray = `${circleLength}`;
-      progressCircle.style.strokeDashoffset = `${circleLength - (circleLength * progress) / 100}`;
-
+      const completedMatches = groupCompleted + Object.keys(state.picks).length; const progress = Math.round((completedMatches / totalMatches) * 100);
+      progressValue.textContent = `${progress}%`; progressCircle.style.strokeDasharray = `${circleLength}`; progressCircle.style.strokeDashoffset = `${circleLength - (circleLength * progress) / 100}`;
       const finalPick = state.picks['f-1'];
-      if (finalPick) {
-        championName.textContent = finalPick;
-        championMeta.textContent = getTeamMeta(finalPick);
-      } else {
-        championName.textContent = 'Nessuna squadra ancora';
-        championMeta.textContent = areGroupsComplete()
-          ? 'Il bracket è pronto: completa le partite fino alla finale.'
-          : 'Completa i gironi per iniziare a popolare il tabellone.';
-      }
-
+      if (finalPick) { championName.textContent = finalPick; championMeta.textContent = getTeamMeta(finalPick); }
+      else { championName.textContent = 'Nessuna squadra ancora'; championMeta.textContent = areGroupsComplete() ? 'Il bracket è pronto: completa le partite fino alla finale.' : 'Completa i gironi per iniziare a popolare il tabellone.'; }
       const path = [];
       if (finalPick) {
         path.push(`Finale: ${finalPick}`);
-        ['sf-1', 'sf-2', 'qf-1', 'qf-2', 'qf-3', 'qf-4', 'r16-1', 'r16-2', 'r16-3', 'r16-4', 'r16-5', 'r16-6', 'r16-7', 'r16-8', 'r32-1', 'r32-2', 'r32-3', 'r32-4', 'r32-5', 'r32-6', 'r32-7', 'r32-8', 'r32-9', 'r32-10', 'r32-11', 'r32-12', 'r32-13', 'r32-14', 'r32-15', 'r32-16']
-          .forEach(matchId => {
-            if (state.picks[matchId] === finalPick) {
-              const match = getMatchById(matchId);
-              if (match) path.push(`${match.label}: ${finalPick}`);
-            }
-          });
+        ['sf-1','sf-2','qf-1','qf-2','qf-3','qf-4','r16-1','r16-2','r16-3','r16-4','r16-5','r16-6','r16-7','r16-8','r32-1','r32-2','r32-3','r32-4','r32-5','r32-6','r32-7','r32-8','r32-9','r32-10','r32-11','r32-12','r32-13','r32-14','r32-15','r32-16']
+          .forEach(matchId => { if (state.picks[matchId] === finalPick) { const match = getMatchById(matchId); if (match) path.push(`${match.label}: ${finalPick}`); } });
       }
+      championPath.innerHTML = path.length ? path.slice(0, 8).map(step => `<li>${step}</li>`).join('') : '<li>Nessun percorso ancora definito.</li>';
+    }
+    function render() { renderTabs(); renderMainPanel(); renderBracket(); renderSummary(); }
 
-      championPath.innerHTML = '';
-      if (!path.length) {
-        championPath.innerHTML = '<li>Nessun percorso ancora definito.</li>';
-      } else {
-        path.slice(0, 8).forEach(step => {
-          const li = document.createElement('li');
-          li.textContent = step;
-          championPath.appendChild(li);
-        });
+    function getSerializableState() {
+      return { g1: state.groupWinners, g2: state.groupRunners, p: state.picks, a: state.activeStage };
+    }
+    function encodeState() {
+      const json = JSON.stringify(getSerializableState());
+      return btoa(unescape(encodeURIComponent(json)));
+    }
+    function decodeState(code) {
+      const json = decodeURIComponent(escape(atob(code)));
+      return JSON.parse(json);
+    }
+    function applyImportedState(payload) {
+      if (!payload || typeof payload !== 'object') throw new Error('Payload non valido');
+      state.groupWinners = payload.g1 || {};
+      state.groupRunners = payload.g2 || {};
+      state.picks = payload.p || {};
+      state.activeStage = payload.a || 'groups';
+      state.matches = structuredClone(initialMatches);
+      updateDerivedStages();
+      render();
+    }
+    function clearShareOutputs() {
+      shareLinkOutput.value = ''; shareCodeOutput.value = ''; shareReadyBadge.textContent = 'Non generato'; shareStatus.textContent = 'Nessun link generato ancora.';
+    }
+    function generateShareArtifacts() {
+      try {
+        const code = encodeState();
+        const url = `${window.location.origin}${window.location.pathname}#share=${code}`;
+        shareLinkOutput.value = url;
+        shareCodeOutput.value = code;
+        shareReadyBadge.textContent = 'Pronto';
+        shareStatus.textContent = 'Link e codice generati correttamente.';
+        history.replaceState(null, '', `#share=${code}`);
+      } catch (error) {
+        shareStatus.textContent = 'Errore durante la generazione del link.';
       }
     }
-
-    function render() {
-      renderTabs();
-      renderMainPanel();
-      renderBracket();
-      renderSummary();
+    function tryLoadFromHash() {
+      const hash = window.location.hash || '';
+      if (!hash.startsWith('#share=')) return false;
+      const code = hash.replace('#share=', '').trim();
+      if (!code) return false;
+      try {
+        const payload = decodeState(code);
+        applyImportedState(payload);
+        shareCodeOutput.value = code;
+        shareLinkOutput.value = `${window.location.origin}${window.location.pathname}#share=${code}`;
+        shareReadyBadge.textContent = 'Caricato';
+        shareStatus.textContent = 'Bracket ricostruito da link condiviso.';
+        importStatus.textContent = 'Codice caricato correttamente dal link.';
+        return true;
+      } catch (error) {
+        importStatus.textContent = 'Il link contiene un codice non valido o corrotto.';
+        return false;
+      }
+    }
+    async function copyText(value, successMessage) {
+      if (!value) return;
+      try {
+        await navigator.clipboard.writeText(value);
+        shareStatus.textContent = successMessage;
+      } catch (error) {
+        shareStatus.textContent = 'Copia automatica non riuscita: seleziona e copia manualmente.';
+      }
     }
 
     (function initThemeToggle() {
-      const toggle = document.querySelector('[data-theme-toggle]');
-      const root = document.documentElement;
-      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', theme);
+      const toggle = document.querySelector('[data-theme-toggle]'); const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; root.setAttribute('data-theme', theme);
       const updateIcon = () => {
         toggle.setAttribute('aria-label', theme === 'dark' ? 'Passa al tema chiaro' : 'Passa al tema scuro');
-        toggle.innerHTML = theme === 'dark'
-          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>Tema'
-          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>Tema';
+        toggle.innerHTML = theme === 'dark' ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>Tema' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>Tema';
       };
-      updateIcon();
-      toggle.addEventListener('click', () => {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', theme);
-        updateIcon();
-      });
+      updateIcon(); toggle.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; root.setAttribute('data-theme', theme); updateIcon(); });
     })();
 
+    generateShareBtn.addEventListener('click', generateShareArtifacts);
+    copyLinkBtn.addEventListener('click', () => copyText(shareLinkOutput.value, 'Link copiato negli appunti.'));
+    copyCodeBtn.addEventListener('click', () => copyText(shareCodeOutput.value, 'Share code copiato negli appunti.'));
+    loadCodeBtn.addEventListener('click', () => {
+      const code = importCodeInput.value.trim();
+      if (!code) { importStatus.textContent = 'Incolla prima un codice valido.'; return; }
+      try {
+        const payload = decodeState(code); applyImportedState(payload); shareCodeOutput.value = code; shareLinkOutput.value = `${window.location.origin}${window.location.pathname}#share=${code}`; shareReadyBadge.textContent = 'Caricato'; importStatus.textContent = 'Codice caricato correttamente.'; shareStatus.textContent = 'Bracket ricostruito da share code.'; history.replaceState(null, '', `#share=${code}`);
+      } catch (error) {
+        importStatus.textContent = 'Codice non valido o danneggiato.';
+      }
+    });
+    clearCodeBtn.addEventListener('click', () => { importCodeInput.value = ''; importStatus.textContent = 'Campo svuotato.'; });
     resetBtn.addEventListener('click', resetBracket);
     autoFillBtn.addEventListener('click', autoFillExample);
 
-    updateDerivedStages();
-    render();
+    updateDerivedStages(); render(); tryLoadFromHash();
   </script>
 </body>
 </html>
