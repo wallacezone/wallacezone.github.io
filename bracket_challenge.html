@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Cup Bracket Selector</title>
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+  <style>
+    /* Art direction: strumento interattivo per tabellone Mondiale → sobrio, sportivo, leggibile
+       Palette: neutra con un solo accento teal
+       Typography: Satoshi per chiarezza e densità da web app
+       Density: bilanciata, con focus sul flusso di scelta partita per partita */
+
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #fbfbf9;
+      --color-surface-offset: #f3f0ec;
+      --color-surface-dynamic: #e6e4df;
+      --color-divider: #dcd9d5;
+      --color-border: #d4d1ca;
+      --color-text: #28251d;
+      --color-text-muted: #6f6d68;
+      --color-text-faint: #a6a39d;
+      --color-text-inverse: #f9f8f4;
+      --color-primary: #01696f;
+      --color-primary-hover: #0c4e54;
+      --color-primary-active: #0f3638;
+      --color-primary-highlight: #d9e8e6;
+      --color-success: #437a22;
+      --color-warning: #964219;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 1px 2px rgba(32, 28, 22, 0.06);
+      --shadow-md: 0 8px 24px rgba(32, 28, 22, 0.1);
+      --content-wide: 1240px;
+      --font-body: 'Satoshi', 'Inter', sans-serif;
+      --font-display: 'Satoshi', 'Inter', sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #171614;
+      --color-surface: #1c1b19;
+      --color-surface-2: #201f1d;
+      --color-surface-offset: #1d1c1a;
+      --color-surface-dynamic: #2d2c2a;
+      --color-divider: #262523;
+      --color-border: #393836;
+      --color-text: #cdccca;
+      --color-text-muted: #9a9895;
+      --color-text-faint: #6d6b67;
+      --color-text-inverse: #171614;
+      --color-primary: #4f98a3;
+      --color-primary-hover: #67aab4;
+      --color-primary-active: #1a626b;
+      --color-primary-highlight: #2b3738;
+      --color-success: #6daa45;
+      --color-warning: #bb653b;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.32);
+    }
+
+    *,:before,:after{box-sizing:border-box;margin:0;padding:0}
+    html{-moz-text-size-adjust:none;-webkit-text-size-adjust:none;text-size-adjust:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+    body{min-height:100dvh;line-height:1.55;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:linear-gradient(180deg,var(--color-bg),var(--color-surface-offset))}
+    img,svg{display:block;max-width:100%;height:auto}
+    button,input,select,textarea{font:inherit;color:inherit}
+    button{cursor:pointer;border:none;background:none}
+    a,button,input,select{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive),transform var(--transition-interactive)}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+
+    .app {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: var(--space-6) var(--space-4) var(--space-10);
+      display: grid;
+      gap: var(--space-6);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -100px;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      z-index: 100;
+    }
+    .skip-link:focus { top: var(--space-4); }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      background: color-mix(in oklab, var(--color-surface) 88%, transparent);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: var(--space-4);
+      z-index: 20;
+    }
+
+    .brand { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+    .brand-mark {
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: var(--space-2);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--color-primary), color-mix(in oklab, var(--color-primary) 72%, white));
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+      flex: 0 0 auto;
+    }
+    .brand-copy strong {
+      display:block;
+      font-size: var(--text-sm);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .brand-copy span {
+      display:block;
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+    }
+
+    .topbar-actions { display:flex; align-items:center; gap: var(--space-3); flex-wrap: wrap; justify-content: flex-end; }
+
+    .btn, .theme-toggle {
+      min-height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-full);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .btn:hover, .theme-toggle:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .btn.primary {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: transparent;
+    }
+    .btn.primary:hover { background: var(--color-primary-hover); }
+
+    .hero {
+      display:grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.9fr);
+      gap: var(--space-6);
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--color-surface);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-main {
+      padding: clamp(var(--space-5), 4vw, var(--space-8));
+      display:grid;
+      gap: var(--space-5);
+      background:
+        radial-gradient(circle at top right, color-mix(in oklab, var(--color-primary) 14%, transparent), transparent 36%),
+        var(--color-surface);
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-full);
+      background: var(--color-primary-highlight);
+      color: var(--color-primary-active);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 15ch;
+    }
+
+    .lead {
+      color: var(--color-text-muted);
+      max-width: 62ch;
+    }
+
+    .hero-grid {
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .mini-stat {
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      display:grid;
+      gap: var(--space-1);
+    }
+    .mini-stat strong {
+      font-size: var(--text-lg);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+    .mini-stat span { color: var(--color-text-muted); font-size: var(--text-xs); }
+
+    .hero-side {
+      padding: var(--space-5);
+      display:grid;
+      gap: var(--space-4);
+      align-content: start;
+      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+    }
+    .hero-side h2, .section-title {
+      font-size: var(--text-lg);
+      line-height: 1.15;
+    }
+    .hero-side p, .muted { color: var(--color-text-muted); }
+
+    .stage-tabs {
+      display:flex;
+      flex-wrap:wrap;
+      gap: var(--space-2);
+    }
+    .stage-tab {
+      min-height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-full);
+      background: var(--color-surface-offset);
+      border: 1px solid transparent;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text-muted);
+    }
+    .stage-tab.active {
+      background: var(--color-primary-highlight);
+      color: var(--color-primary-active);
+      border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
+    }
+
+    .layout {
+      display:grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .matches-panel {
+      padding: var(--space-5);
+      display:grid;
+      gap: var(--space-5);
+    }
+
+    .section-head {
+      display:flex;
+      justify-content:space-between;
+      gap: var(--space-4);
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .match-list {
+      display:grid;
+      gap: var(--space-4);
+    }
+
+    .match-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      display:grid;
+      gap: var(--space-4);
+    }
+
+    .match-card-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .match-label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      font-weight: 700;
+    }
+
+    .lock-badge {
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      background: color-mix(in oklab, var(--color-warning) 12%, var(--color-surface));
+      color: var(--color-warning);
+    }
+
+    .team-options {
+      display:grid;
+      gap: var(--space-3);
+    }
+
+    .team-option {
+      width:100%;
+      min-height: 52px;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
+      border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+      background: var(--color-surface);
+      color: var(--color-text);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: var(--space-3);
+      text-align:left;
+      font-weight: 700;
+    }
+
+    .team-option small {
+      display:block;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      margin-top: 2px;
+    }
+
+    .team-option.selected {
+      background: var(--color-primary-highlight);
+      border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+      color: var(--color-primary-active);
+    }
+    .team-option.selected .pick-state {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: transparent;
+    }
+
+    .team-option:disabled {
+      opacity: 0.56;
+      cursor: not-allowed;
+    }
+
+    .pick-state {
+      min-width: 94px;
+      min-height: 36px;
+      padding: 0 var(--space-3);
+      border-radius: var(--radius-full);
+      border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size: var(--text-xs);
+      font-weight: 700;
+      flex: 0 0 auto;
+      background: var(--color-surface-offset);
+      color: var(--color-text-muted);
+    }
+
+    .sidebar {
+      padding: var(--space-5);
+      display:grid;
+      gap: var(--space-5);
+      position: sticky;
+      top: calc(var(--space-4) + 88px);
+    }
+
+    .progress-ring {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      position: relative;
+      display:grid;
+      place-items:center;
+    }
+    .progress-ring svg { transform: rotate(-90deg); }
+    .progress-ring .progress-text {
+      position:absolute;
+      text-align:center;
+      display:grid;
+      gap: 2px;
+    }
+    .progress-ring strong {
+      font-size: var(--text-lg);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+    .progress-ring span {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .summary-list, .champion-card, .next-list { display:grid; gap: var(--space-3); }
+
+    .summary-item, .next-item {
+      display:flex;
+      justify-content:space-between;
+      gap: var(--space-3);
+      align-items:center;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+    }
+    .summary-item span, .next-item span { color: var(--color-text-muted); font-size: var(--text-sm); }
+    .summary-item strong, .next-item strong { font-size: var(--text-sm); text-align:right; }
+
+    .champion-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, color-mix(in oklab, var(--color-primary) 12%, var(--color-surface)), var(--color-surface));
+      border: 1px solid color-mix(in oklab, var(--color-primary) 24%, transparent);
+    }
+    .champion-name {
+      font-size: var(--text-lg);
+      line-height: 1.1;
+    }
+
+    .path-list {
+      display:grid;
+      gap: var(--space-2);
+      list-style:none;
+    }
+    .path-list li {
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .footer-note {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      text-align:center;
+    }
+
+    .hidden { display:none !important; }
+
+    @media (max-width: 1040px) {
+      .hero, .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; top: auto; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { align-items:flex-start; }
+      .topbar, .topbar-actions { flex-direction: column; }
+      .topbar-actions { width:100%; align-items:stretch; }
+      .topbar-actions .btn, .topbar-actions .theme-toggle { width:100%; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction:column; }
+      .team-option { align-items:flex-start; }
+      .pick-state { min-width: 78px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Salta al contenuto</a>
+  <div class="app">
+    <header class="topbar panel">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo tabellone mondiale">
+            <path d="M24 5L39 14V34L24 43L9 34V14L24 5Z" stroke="currentColor" stroke-width="3"/>
+            <path d="M16 18L24 13L32 18V30L24 35L16 30V18Z" fill="currentColor" opacity="0.28"/>
+            <path d="M24 13V35M16 18L32 30M32 18L16 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <strong>Bracket Builder 2026</strong>
+          <span>Scegli i vincitori turno dopo turno</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn" id="autoFillBtn" type="button">Compila esempio</button>
+        <button class="btn" id="resetBtn" type="button">Reset tabellone</button>
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Passa al tema scuro">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          Tema
+        </button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-main panel">
+        <div class="eyebrow">Selezione interattiva</div>
+        <div>
+          <h1>Costruisci il tuo tabellone del Mondiale 2026.</h1>
+          <p class="lead">La pagina aggiorna automaticamente quarti, semifinali e finale in base alle tue scelte. Selezioni una vincente per partita e il bracket si propaga da solo fino al campione.</p>
+        </div>
+        <div class="hero-grid">
+          <div class="mini-stat">
+            <strong>32</strong>
+            <span>Squadre nella fase a eliminazione</span>
+          </div>
+          <div class="mini-stat">
+            <strong>31</strong>
+            <span>Partite da decidere</span>
+          </div>
+          <div class="mini-stat">
+            <strong>5</strong>
+            <span>Turni verso il titolo</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side panel" aria-labelledby="how-it-works-title">
+        <div>
+          <h2 id="how-it-works-title">Come funziona</h2>
+          <p class="muted">Parti dai sedicesimi. Quando scegli una squadra, la trovi già nel turno successivo. Se cambi idea, il ramo interessato si aggiorna automaticamente.</p>
+        </div>
+        <div class="next-list" id="stageHints">
+          <div class="next-item"><span>1.</span><strong>Completa i sedicesimi</strong></div>
+          <div class="next-item"><span>2.</span><strong>Passa ai quarti</strong></div>
+          <div class="next-item"><span>3.</span><strong>Chiudi con la finale</strong></div>
+        </div>
+      </aside>
+    </section>
+
+    <main id="main-content" class="layout">
+      <section class="matches-panel panel" aria-labelledby="matches-title">
+        <div class="section-head">
+          <div>
+            <h2 id="matches-title" class="section-title">Partite del tabellone</h2>
+            <p class="muted">Apri un turno, scegli la vincente di ogni partita e controlla subito l’impatto sul tabellone completo.</p>
+          </div>
+          <nav class="stage-tabs" aria-label="Fasi del torneo" id="stageTabs"></nav>
+        </div>
+        <div class="match-list" id="matchList"></div>
+      </section>
+
+      <aside class="sidebar panel" aria-labelledby="summary-title">
+        <div>
+          <h2 id="summary-title" class="section-title">Avanzamento</h2>
+          <p class="muted">Qui vedi stato del bracket, squadra campione e prossimo lavoro da fare.</p>
+        </div>
+
+        <div class="progress-ring" aria-hidden="true">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="56" fill="none" stroke="color-mix(in oklab, var(--color-text) 8%, transparent)" stroke-width="12"></circle>
+            <circle id="progressCircle" cx="70" cy="70" r="56" fill="none" stroke="var(--color-primary)" stroke-width="12" stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="351.86"></circle>
+          </svg>
+          <div class="progress-text">
+            <strong id="progressValue">0%</strong>
+            <span>Completato</span>
+          </div>
+        </div>
+
+        <div class="summary-list" id="summaryList"></div>
+
+        <div class="champion-card">
+          <span class="match-label">Campione scelto</span>
+          <strong class="champion-name" id="championName">Nessuna squadra ancora</strong>
+          <p class="muted" id="championMeta">Completa il percorso fino alla finale per vedere il vincitore.</p>
+        </div>
+
+        <div>
+          <h3 class="section-title">Percorso finale</h3>
+          <ol class="path-list" id="championPath">
+            <li>Nessun percorso ancora definito.</li>
+          </ol>
+        </div>
+      </aside>
+    </main>
+
+    <p class="footer-note">Interfaccia statica in HTML, CSS e JavaScript vanilla. Nessun dato viene salvato fuori dalla pagina.</p>
+  </div>
+
+  <script>
+    const TEAM_META = {
+      'Spain': 'Qualità tecnica e controllo',
+      'Brazil': 'Talento offensivo e profondità',
+      'France': 'Rosa lunga e atletismo',
+      'Argentina': 'Gestione dei momenti pesanti',
+      'England': 'Fisicità e soluzioni individuali',
+      'Portugal': 'Alta qualità tra linee e attacco',
+      'Germany': 'Struttura e pressione organizzata',
+      'Netherlands': 'Connessioni tecniche e equilibrio',
+      'Mexico': 'Spinta ambientale e ordine',
+      'South Korea': 'Intensità e velocità',
+      'Canada': 'Energia e ritmo alto',
+      'Switzerland': 'Solidità e disciplina',
+      'Morocco': 'Compattezza e transizioni',
+      'Paraguay': 'Durezza e compattezza',
+      'Ecuador': 'Gambe e aggressività',
+      'Japan': 'Pulizia tecnica e sincronismi',
+      'Belgium': 'Talento esperto',
+      'Uruguay': 'Intensità e personalità',
+      'Senegal': 'Forza fisica e ripartenza',
+      'Austria': 'Squadra ordinata e intensa',
+      'Colombia': 'Estro e qualità tecnica',
+      'Croatia': 'Esperienza e letture',
+      'United States': 'Atletismo e profondità',
+      'Czechia': 'Ordine e gioco diretto',
+      'South Africa': 'Entusiasmo e corsa',
+      'Bosnia and Herzegovina': 'Qualità a sprazzi',
+      'Qatar': 'Palleggio ma meno ritmo',
+      'Scotland': 'Aggressività e seconde palle',
+      'Haiti': 'Energia ma meno profondità',
+      'Australia': 'Compattezza e resistenza',
+      'Turkey': 'Talento discontinuo',
+      'Ivory Coast': 'Atletismo e duelli',
+      'Curacao': 'Buona tecnica ma meno struttura',
+      'Sweden': 'Squadra ordinata',
+      'Tunisia': 'Compattezza difensiva',
+      'Egypt': 'Dipendenza dai leader',
+      'Iran': 'Disciplina tattica',
+      'New Zealand': 'Entusiasmo e ordine',
+      'Cape Verde': 'Possibile mina vagante',
+      'Saudi Arabia': 'Intensità variabile',
+      'Norway': 'Potenza offensiva ma equilibrio fragile',
+      'Costa Rica': 'Esperienza ma margine ridotto',
+      'Algeria': 'Buon talento ma continuità incerta',
+      'Uzbekistan': 'Organizzazione e corsa',
+      'Ghana': 'Forza fisica e imprevedibilità',
+      'Panama': 'Ordine e aggressività',
+      'Jordan': 'Entusiasmo da outsider'
+    };
+
+    const stages = [
+      { id: 'round32', label: 'Sedicesimi', short: 'R32' },
+      { id: 'round16', label: 'Ottavi', short: 'R16' },
+      { id: 'quarters', label: 'Quarti', short: 'QF' },
+      { id: 'semis', label: 'Semifinali', short: 'SF' },
+      { id: 'final', label: 'Finale', short: 'F' }
+    ];
+
+    const initialMatches = {
+      round32: [
+        { id: 'r32-1', label: 'Sedicesimo 1', home: 'Mexico', away: 'South Korea' },
+        { id: 'r32-2', label: 'Sedicesimo 2', home: 'Brazil', away: 'Switzerland' },
+        { id: 'r32-3', label: 'Sedicesimo 3', home: 'Canada', away: 'Morocco' },
+        { id: 'r32-4', label: 'Sedicesimo 4', home: 'United States', away: 'Paraguay' },
+        { id: 'r32-5', label: 'Sedicesimo 5', home: 'Germany', away: 'Japan' },
+        { id: 'r32-6', label: 'Sedicesimo 6', home: 'Netherlands', away: 'Ecuador' },
+        { id: 'r32-7', label: 'Sedicesimo 7', home: 'Belgium', away: 'Uruguay' },
+        { id: 'r32-8', label: 'Sedicesimo 8', home: 'Spain', away: 'Croatia' },
+        { id: 'r32-9', label: 'Sedicesimo 9', home: 'France', away: 'South Africa' },
+        { id: 'r32-10', label: 'Sedicesimo 10', home: 'Argentina', away: 'Bosnia and Herzegovina' },
+        { id: 'r32-11', label: 'Sedicesimo 11', home: 'England', away: 'Senegal' },
+        { id: 'r32-12', label: 'Sedicesimo 12', home: 'Portugal', away: 'Austria' },
+        { id: 'r32-13', label: 'Sedicesimo 13', home: 'Colombia', away: 'Scotland' },
+        { id: 'r32-14', label: 'Sedicesimo 14', home: 'Australia', away: 'Ivory Coast' },
+        { id: 'r32-15', label: 'Sedicesimo 15', home: 'Norway', away: 'Cape Verde' },
+        { id: 'r32-16', label: 'Sedicesimo 16', home: 'Ghana', away: 'Sweden' }
+      ],
+      round16: Array.from({ length: 8 }, (_, i) => ({ id: `r16-${i + 1}`, label: `Ottavo ${i + 1}`, home: null, away: null, sources: [`r32-${i * 2 + 1}`, `r32-${i * 2 + 2}`] })),
+      quarters: Array.from({ length: 4 }, (_, i) => ({ id: `qf-${i + 1}`, label: `Quarto ${i + 1}`, home: null, away: null, sources: [`r16-${i * 2 + 1}`, `r16-${i * 2 + 2}`] })),
+      semis: Array.from({ length: 2 }, (_, i) => ({ id: `sf-${i + 1}`, label: `Semifinale ${i + 1}`, home: null, away: null, sources: [`qf-${i * 2 + 1}`, `qf-${i * 2 + 2}`] })),
+      final: [{ id: 'f-1', label: 'Finale', home: null, away: null, sources: ['sf-1', 'sf-2'] }]
+    };
+
+    const state = {
+      activeStage: 'round32',
+      picks: {},
+      matches: structuredClone(initialMatches)
+    };
+
+    const stageTabs = document.getElementById('stageTabs');
+    const matchList = document.getElementById('matchList');
+    const summaryList = document.getElementById('summaryList');
+    const championName = document.getElementById('championName');
+    const championMeta = document.getElementById('championMeta');
+    const championPath = document.getElementById('championPath');
+    const progressCircle = document.getElementById('progressCircle');
+    const progressValue = document.getElementById('progressValue');
+    const resetBtn = document.getElementById('resetBtn');
+    const autoFillBtn = document.getElementById('autoFillBtn');
+
+    const totalMatches = stages.reduce((acc, stage) => acc + initialMatches[stage.id].length, 0);
+    const circleLength = 2 * Math.PI * 56;
+
+    function getTeamMeta(team) {
+      return TEAM_META[team] || 'Selezione libera per il tuo bracket';
+    }
+
+    function getMatchById(matchId) {
+      for (const stage of stages) {
+        const found = state.matches[stage.id].find(match => match.id === matchId);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function stageCompleted(stageId) {
+      return state.matches[stageId].every(match => Boolean(state.picks[match.id]));
+    }
+
+    function isStageUnlocked(stageId) {
+      if (stageId === 'round32') return true;
+      const index = stages.findIndex(stage => stage.id === stageId);
+      const prevStage = stages[index - 1];
+      return prevStage ? stageCompleted(prevStage.id) : true;
+    }
+
+    function updateDerivedStages() {
+      for (const stage of stages) {
+        if (stage.id === 'round32') continue;
+        state.matches[stage.id].forEach(match => {
+          const [sourceA, sourceB] = match.sources;
+          const home = state.picks[sourceA] || null;
+          const away = state.picks[sourceB] || null;
+          match.home = home;
+          match.away = away;
+          const currentPick = state.picks[match.id];
+          if (currentPick && currentPick !== home && currentPick !== away) {
+            delete state.picks[match.id];
+          }
+        });
+      }
+    }
+
+    function setPick(matchId, team) {
+      const match = getMatchById(matchId);
+      if (!match) return;
+      const stage = stages.find(item => state.matches[item.id].some(entry => entry.id === matchId));
+      if (!stage || !isStageUnlocked(stage.id)) return;
+      if (!match.home || !match.away) return;
+      state.picks[matchId] = team;
+      updateDerivedStages();
+      render();
+    }
+
+    function resetBracket() {
+      state.picks = {};
+      state.matches = structuredClone(initialMatches);
+      state.activeStage = 'round32';
+      updateDerivedStages();
+      render();
+    }
+
+    function autoFillExample() {
+      resetBracket();
+      const picks = {
+        'r32-1': 'Mexico', 'r32-2': 'Brazil', 'r32-3': 'Morocco', 'r32-4': 'United States',
+        'r32-5': 'Germany', 'r32-6': 'Netherlands', 'r32-7': 'Uruguay', 'r32-8': 'Spain',
+        'r32-9': 'France', 'r32-10': 'Argentina', 'r32-11': 'England', 'r32-12': 'Portugal',
+        'r32-13': 'Colombia', 'r32-14': 'Ivory Coast', 'r32-15': 'Norway', 'r32-16': 'Ghana',
+        'r16-1': 'Brazil', 'r16-2': 'United States', 'r16-3': 'Germany', 'r16-4': 'Spain',
+        'r16-5': 'Argentina', 'r16-6': 'Portugal', 'r16-7': 'Colombia', 'r16-8': 'Norway',
+        'qf-1': 'Brazil', 'qf-2': 'Spain', 'qf-3': 'Portugal', 'qf-4': 'Colombia',
+        'sf-1': 'Spain', 'sf-2': 'Portugal', 'f-1': 'Spain'
+      };
+      for (const [matchId, team] of Object.entries(picks)) {
+        state.picks[matchId] = team;
+        updateDerivedStages();
+      }
+      state.activeStage = 'final';
+      render();
+    }
+
+    function renderTabs() {
+      stageTabs.innerHTML = '';
+      stages.forEach(stage => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `stage-tab${state.activeStage === stage.id ? ' active' : ''}`;
+        button.textContent = stage.label;
+        const unlocked = isStageUnlocked(stage.id);
+        button.disabled = !unlocked;
+        if (!unlocked) button.title = 'Completa il turno precedente per sbloccare questa fase';
+        button.addEventListener('click', () => {
+          if (!unlocked) return;
+          state.activeStage = stage.id;
+          renderTabs();
+          renderMatches();
+        });
+        stageTabs.appendChild(button);
+      });
+    }
+
+    function renderMatches() {
+      matchList.innerHTML = '';
+      const activeMatches = state.matches[state.activeStage];
+      const unlocked = isStageUnlocked(state.activeStage);
+
+      activeMatches.forEach((match, index) => {
+        const article = document.createElement('article');
+        article.className = 'match-card';
+
+        const header = document.createElement('div');
+        header.className = 'match-card-header';
+        header.innerHTML = `
+          <div>
+            <div class="match-label">${stages.find(stage => stage.id === state.activeStage).short}</div>
+            <strong>${match.label}</strong>
+          </div>
+          ${!unlocked ? '<span class="lock-badge">Bloccata</span>' : `<span class="match-label">Partita ${index + 1}</span>`}
+        `;
+        article.appendChild(header);
+
+        const options = document.createElement('div');
+        options.className = 'team-options';
+
+        const teams = [match.home, match.away];
+        teams.forEach(team => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = `team-option${state.picks[match.id] === team ? ' selected' : ''}`;
+          button.disabled = !unlocked || !team;
+          button.innerHTML = `
+            <span>
+              ${team || 'In attesa del turno precedente'}
+              <small>${team ? getTeamMeta(team) : 'Prima devi completare il ramo precedente.'}</small>
+            </span>
+            <span class="pick-state">${state.picks[match.id] === team ? 'Scelta' : 'Seleziona'}</span>
+          `;
+          if (team) {
+            button.addEventListener('click', () => setPick(match.id, team));
+          }
+          options.appendChild(button);
+        });
+
+        article.appendChild(options);
+        matchList.appendChild(article);
+      });
+    }
+
+    function renderSummary() {
+      summaryList.innerHTML = '';
+      stages.forEach(stage => {
+        const total = state.matches[stage.id].length;
+        const completed = state.matches[stage.id].filter(match => Boolean(state.picks[match.id])).length;
+        const item = document.createElement('div');
+        item.className = 'summary-item';
+        item.innerHTML = `<span>${stage.label}</span><strong>${completed}/${total}</strong>`;
+        summaryList.appendChild(item);
+      });
+
+      const completedMatches = Object.keys(state.picks).length;
+      const progress = Math.round((completedMatches / totalMatches) * 100);
+      progressValue.textContent = `${progress}%`;
+      progressCircle.style.strokeDasharray = `${circleLength}`;
+      progressCircle.style.strokeDashoffset = `${circleLength - (circleLength * progress) / 100}`;
+
+      const finalPick = state.picks['f-1'];
+      if (finalPick) {
+        championName.textContent = finalPick;
+        championMeta.textContent = getTeamMeta(finalPick);
+      } else {
+        championName.textContent = 'Nessuna squadra ancora';
+        championMeta.textContent = 'Completa il percorso fino alla finale per vedere il vincitore.';
+      }
+
+      const path = [];
+      if (finalPick) {
+        path.push(`Finale: ${finalPick}`);
+        ['sf-1', 'sf-2', 'qf-1', 'qf-2', 'qf-3', 'qf-4', 'r16-1', 'r16-2', 'r16-3', 'r16-4', 'r16-5', 'r16-6', 'r16-7', 'r16-8', 'r32-1', 'r32-2', 'r32-3', 'r32-4', 'r32-5', 'r32-6', 'r32-7', 'r32-8', 'r32-9', 'r32-10', 'r32-11', 'r32-12', 'r32-13', 'r32-14', 'r32-15', 'r32-16']
+          .forEach(matchId => {
+            if (state.picks[matchId] === finalPick) {
+              const match = getMatchById(matchId);
+              path.push(`${match.label}: ${finalPick}`);
+            }
+          });
+      }
+
+      championPath.innerHTML = '';
+      if (!path.length) {
+        championPath.innerHTML = '<li>Nessun percorso ancora definito.</li>';
+      } else {
+        path.slice(0, 6).forEach(step => {
+          const li = document.createElement('li');
+          li.textContent = step;
+          championPath.appendChild(li);
+        });
+      }
+    }
+
+    function render() {
+      renderTabs();
+      renderMatches();
+      renderSummary();
+    }
+
+    (function initThemeToggle() {
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      const updateIcon = () => {
+        toggle.setAttribute('aria-label', theme === 'dark' ? 'Passa al tema chiaro' : 'Passa al tema scuro');
+        toggle.innerHTML = theme === 'dark'
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>Tema'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>Tema';
+      };
+      updateIcon();
+      toggle.addEventListener('click', () => {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        updateIcon();
+      });
+    })();
+
+    resetBtn.addEventListener('click', resetBracket);
+    autoFillBtn.addEventListener('click', autoFillExample);
+
+    updateDerivedStages();
+    render();
+  </script>
+</body>
+</html>
