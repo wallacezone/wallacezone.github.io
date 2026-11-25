@@ -249,3 +249,65 @@ test('22. Circ. INPS 122/2022, esempio 1 (giorni usati prima del 13/8/2022): il 
   assert.equal(r.parentale.padre.fasce.p30, 47);
   assert.ok(r.avvisi.some((a) => a.includes('13/8/2022')));
 });
+
+// ---------- Area 3: adozione, affidamento, disabilità ----------
+
+test('23. Adozione nazionale di un bambino di quasi 7 anni: finestre dall\'ingresso, tetto dei 18 anni', () => {
+  // Ingresso 1/4/2026, nato 1/5/2019. Art. 26 c. 2: maternità entro 5 mesi -> fino al 1/9/2026.
+  // Art. 36 c. 2: parentale entro 14 anni dall'ingresso (31/3/2040) ma non oltre i 18 anni (30/4/2037) -> 30/4/2037.
+  // 80% entro 6 anni dall'ingresso: 31/3/2032. Ingresso dal 2025 -> 3 mesi (circ. INPS 95/2025).
+  // Riposi: primo anno dall'ingresso -> 31/3/2027 (art. 45). Notte: 3 anni dall'ingresso (31/3/2029), non oltre i 12 anni (30/4/2031) -> 31/3/2029.
+  const r = M.calcola(input({ evento: 'adozione_nazionale', dataIngresso: '2026-04-01', dataNascita: '2019-05-01' }), P);
+  const mat = diritto(r, 'maternita-adozione');
+  assert.deepEqual([mat.dal, mat.al, mat.stato], ['2026-04-01', '2026-09-01', 'scaduto']);
+  assert.equal(r.fineParentale, '2037-04-30');
+  assert.equal(r.fineMaggiorata, '2032-03-31');
+  assert.equal(r.regime.mesi80, 3);
+  assert.equal(diritto(r, 'riposi').al, '2027-03-31');
+  assert.equal(diritto(r, 'notte-esonero').al, '2029-03-31');
+  assert.deepEqual(plain(r.parentale.padre.fasce), { p100: 30, p80: 60, p30: 90, p0: 30 });
+  // Malattia: senza limite fino ai 6 anni (già passati); giorni annui dall'ingresso fino ai 14 anni (30/4/2033).
+  assert.equal(diritto(r, 'malattia-libera').stato, 'scaduto');
+  const mal = diritto(r, 'malattia-annua');
+  assert.deepEqual([mal.dal, mal.al], ['2026-04-01', '2033-04-30']);
+  assert.equal(diritto(r, 'paternita').al, '2026-09-01');
+});
+
+test('24. Adozione internazionale e affidamento: maternità prima dell\'ingresso; 3 mesi per l\'affidamento', () => {
+  // Art. 26 c. 3: nell'adozione internazionale il congedo può iniziare all'estero, prima dell'ingresso -> nessuna data di inizio.
+  const ai = M.calcola(input({ evento: 'adozione_internazionale', dataIngresso: '2026-10-01', dataNascita: '2023-01-15' }), P);
+  const m = diritto(ai, 'maternita-adozione');
+  assert.equal(m.dal, null);
+  assert.equal(m.al, '2027-03-01');
+  assert.equal(m.stato, 'attivo');
+  // Art. 26 c. 6: affidamento 3 mesi entro 5 mesi.
+  const af = M.calcola(input({ evento: 'affidamento', dataIngresso: '2026-10-01', dataNascita: '2023-01-15' }), P);
+  assert.match(diritto(af, 'maternita-adozione').dettaglio, /^3 mesi/);
+});
+
+test('25. Figlio con disabilità grave: prolungamento fino a 3 anni compresi i congedi già usati', () => {
+  // Nato 1/3/2025; madre ha usato 180 giorni, padre 30. Art. 33 c. 1: 3 anni = 36 mesi x 30 = 1080 giorni, meno 210 -> 870.
+  // Finestra: 14 anni -> 28/2/2039. Due ore al giorno fino ai 3 anni -> 29/2/2028.
+  const r = M.calcola(input({ dataNascita: '2025-03-01', disabilitaGrave: true,
+    madre: { fineCongedo: '2025-06-01', parentaleGiorni: 180, parentale80Giorni: 60 }, padre: { parentaleGiorni: 30 } }), P);
+  const pr = diritto(r, 'prolungamento');
+  assert.match(pr.dettaglio, /restano 870 giorni/);
+  assert.equal(pr.al, '2039-02-28');
+  const ore = diritto(r, 'permesso-ore');
+  assert.deepEqual([ore.al, ore.stato], ['2028-02-29', 'attivo']);
+  assert.ok(diritto(r, 'permessi-104'));
+  assert.ok(diritto(r, 'congedo-straordinario'));
+  // Senza disabilità questi diritti non compaiono.
+  const no = M.calcola(input({ dataNascita: '2025-03-01' }), P);
+  assert.equal(diritto(no, 'prolungamento'), undefined);
+});
+
+test('26. Adozione di un figlio con disabilità: i permessi decorrono dall\'ingresso in famiglia', () => {
+  // Art. 45 c. 2: l'art. 42 si applica all'adozione; i permessi non possono iniziare prima che il minore sia in famiglia.
+  const r = M.calcola(input({ evento: 'adozione_nazionale', dataIngresso: '2026-04-01', dataNascita: '2019-05-01', disabilitaGrave: true }), P);
+  assert.equal(diritto(r, 'permessi-104').dal, '2026-04-01');
+  assert.equal(diritto(r, 'congedo-straordinario').dal, '2026-04-01');
+  // Prolungamento: limite di età del bambino (art. 33 c. 1: 14 anni di vita) -> 30/4/2033; nessun giorno usato -> 1080.
+  assert.match(diritto(r, 'prolungamento').dettaglio, /restano 1080 giorni/);
+  assert.equal(diritto(r, 'prolungamento').al, '2033-04-30');
+});

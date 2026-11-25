@@ -72,9 +72,19 @@ Per ogni materia ho controllato quale CCNL la regola oggi. Il CCNL 2026 (art. 3)
 | Lavoro agile | Priorità per figli ≤ 12 anni (art. 18 c. 3-bis L. 81/2017) | Esclusi i lavori in turno (art. 93 c. 2) | La priorità vale solo tra le attività che l'Azienda ha individuato come remotizzabili |
 | Part-time | Priorità figli ≤ 13 anni (art. 8 c. 5); diritto in luogo del congedo (art. 8 c. 7) | Quota 3-7% per figli ≤ 8 anni; diritto art. 8 c. 7 fuori quota (art. 110 c. 7) | Il CCNL recepisce il diritto di legge e aggiunge una via a quota |
 
-## Aree 3 e 4
+## Area 3 — Disabilità, adozione e affidamento (completa)
 
-Non ancora verificate in questa versione. Ricerca già fatta per l'area 3: L. 104/1992 art. 33 (testo vigente dal 13/8/2022), TU artt. 26, 31, 33, 36, 42, 45, 50 (Normattiva).
+| Regola (id) | Articolo e comma | Modificata da | Condizioni | Data che decide | Regime |
+|---|---|---|---|---|---|
+| `disabilita-prolungamento` | TU art. 33 cc. 1, 3, 4; art. 34 c. 2; art. 35 c. 1 | L. 199/2025 (14 anni) | Disabilità grave (L. 104 art. 4 c. 1); figlio non ricoverato a tempo pieno | Data d'uso (età del figlio) | 3 anni totali compresi i mesi dell'art. 32; 30% |
+| `disabilita-permessi` | TU art. 42 cc. 1, 2, 4, 6; artt. 43-44; L. 104/1992 art. 33 cc. 2, 3, 4, 6-bis; CCNL 2024 art. 35 cc. 1-3 | D.Lgs. 105/2022 (L. 104 art. 33) | Alternatività tra le misure sotto i 3 anni; mai negli stessi giorni dei due genitori (TU art. 42 c. 5-bis) | Età del figlio | Dal 13/8/2022 |
+| `congedo-straordinario` | TU art. 42 cc. 5, 5-bis, 5-ter, 5-quater, 5-quinquies | D.Lgs. 105/2022; Corte cost. 197/2025 | Ordine dei familiari; 2 anni per persona e per vita lavorativa | Data della domanda (30 giorni) | Tetto 43.579,06 € (2011) rivalutato ISTAT. **Da verificare**: importo 2026 |
+| `adozione-maternita` | TU art. 26 cc. 1-6-bis; art. 31; CCNL 2024 art. 41 c. 2 | D.Lgs. 80/2015 | Provvedimento di adozione/affidamento; certificazione ente per l'estero | Ingresso in famiglia / in Italia | 5 mesi (affidamento 3) entro 5 mesi. **Da verificare**: CCNL 100% o legge 80% |
+| `adozione-altri` | TU art. 27-bis c. 4; art. 36 cc. 1-3; art. 45 cc. 1, 2, 2-bis; art. 50 cc. 1-3; art. 53 c. 2 lett. b-bis; art. 54 c. 9; circ. INPS 122/2022 par. 2.2; msg. INPS 251/2026 | L. 199/2025 (14 anni dall'ingresso) | — | Ingresso; nascita (limite 18 anni) | **Da verificare**: art. 50 c. 2 non aggiornato (8 anni) |
+
+## Area 4 — Previdenza, ENPAM e bonus (non completata)
+
+Non verificata in questa versione e quindi assente dalla pagina. Un primo riscontro utile per chi la riprenderà: l'art. 71 c. 2 del TU chiede alla libera professionista, per avere l'indennità di maternità della cassa (ENPAM), di dichiarare di non avere diritto all'indennità del Capo III (lavoratrici dipendenti): la dirigente SSN in maternità non dovrebbe quindi avere l'indennità ENPAM per lo stesso evento. Va confermato sul regolamento ENPAM vigente, insieme a sussidi, bonus, contribuzione, riscatti, ricongiunzione/cumulo/totalizzazione, assegno unico e bonus nido.
 
 ## Confronto a campione (5 regole)
 

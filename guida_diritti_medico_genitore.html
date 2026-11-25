@@ -293,8 +293,8 @@
 {
   "meta": {
     "aggiornamento": "2026-11-25",
-    "areeComplete": [1, 2],
-    "areeMancanti": [3, 4],
+    "areeComplete": [1, 2, 3],
+    "areeMancanti": [4],
     "nomiAree": {
       "1": "Congedi e permessi",
       "2": "Il contratto della dirigenza (CCNL Area Sanità)",
@@ -309,6 +309,7 @@
       "flessibile": { "preMesi": 1, "postMesi": 4 },
       "solo_dopo": { "preMesi": 0, "postMesi": 5 },
       "totaleMesi": 5,
+      "adozioneMesi": 5, "affidamentoMesi": 3, "adozioneEntroMesi": 5,
       "percentualeLegge": 80,
       "preavvisoRipresaGiorni": 10
     },
@@ -365,6 +366,7 @@
     "ccnl2019": { "titolo": "CCNL Area Sanità 19 dicembre 2019 (triennio 2016-2018)", "url": "https://www.aranagenzia.it/documento_pubblico/contratto-collettivo-nazionale-di-lavoro-dellarea-sanita-triennio-2016-2018/", "lettoDa": "Copia del testo ARAN pubblicata dall'Università di Perugia (unipg.it/files/pagine/1275/ccnl-2016-2018.pdf); pagina ufficiale ARAN verificata. Artt. 45 e 110 ancora vigenti", "verificato": "2026-11-25" },
     "l81": { "titolo": "L. 22 maggio 2017, n. 81 (lavoro agile)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2017-05-22;81~art18", "lettoDa": "Normattiva, testo vigente dell'art. 18 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
     "dlgs81": { "titolo": "D.Lgs. 15 giugno 2015, n. 81 (part-time)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2015-06-15;81~art8", "lettoDa": "Normattiva, testo vigente dell'art. 8 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
+    "l104": { "titolo": "L. 5 febbraio 1992, n. 104", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:1992-02-05;104~art33", "lettoDa": "Normattiva, testo vigente dell'art. 33 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
     "cortecost115": { "titolo": "Corte costituzionale, sentenza n. 115/2025 (congedo di paternità alla madre intenzionale in coppia di donne)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2001-03-26;151~art27bis", "lettoDa": "Nota di aggiornamento (52) all'art. 27-bis su Normattiva", "verificato": "2026-11-25" }
   },
   "regole": [
@@ -667,7 +669,12 @@
       "dataDecisiva": "Età del figlio alla domanda.",
       "regime": "Testo in vigore dal 6/6/2024.",
       "verificato": "2026-11-25"
-    }
+    },
+    {"id": "disabilita-prolungamento", "area": 3, "titolo": "Figlio con disabilità grave: prolungamento del congedo parentale", "chi": "entrambi", "aChi": "Alla madre o, in alternativa, al padre dipendente di un figlio con disabilità grave accertata (L. 104/1992, art. 4 c. 1), se il figlio non è ricoverato a tempo pieno (salvo che i sanitari chiedano la presenza del genitore). Spetta anche se l'altro genitore non ne ha diritto.", "durata": "Fino a 3 anni in tutto per figlio, compresi i mesi di congedo parentale ordinario già usati da entrambi i genitori.", "finestra": "Entro i 14 anni del figlio (12 per i giorni usati fino al 31/12/2025). Decorre dopo la fine del congedo parentale massimo spettante al genitore che lo chiede.", "retribuzione": "30% per tutto il prolungamento, senza limiti di reddito. Contribuzione figurativa.", "comeChiedere": "Domanda all'Azienda con il verbale di handicap grave (art. 3 c. 3 L. 104/1992); preavviso come per il congedo parentale.", "fonti": [{"f": "tu151", "art": "33"}, {"f": "tu151", "art": "34"}, {"f": "tu151", "art": "35"}], "dataDecisiva": "Data d'uso (14 anni dal 2026); data dell'accertamento della disabilità.", "regime": "14 anni dal 1/1/2026 (L. 199/2025).", "verificato": "2026-11-25"},
+    {"id": "disabilita-permessi", "area": 3, "titolo": "Figlio con disabilità grave: 2 ore al giorno o 3 giorni al mese", "chi": "entrambi", "aChi": "Ai genitori dipendenti, anche adottivi o affidatari, di un figlio con disabilità grave non ricoverato a tempo pieno.", "durata": "Fino ai 3 anni del figlio: in alternativa tra loro, 2 ore di permesso al giorno, oppure il prolungamento del congedo, oppure 3 giorni al mese. Dopo i 3 anni: 3 giorni di permesso al mese, che i due genitori possono dividersi, anche continuativi. Si cumulano con il congedo parentale ordinario e con la malattia del figlio. Negli stessi giorni in cui un genitore usa permessi o prolungamento, l'altro non può usarli.", "finestra": "Le 2 ore fino ai 3 anni; i 3 giorni al mese senza limite di età.", "retribuzione": "100%, con contribuzione figurativa. Per il CCNL i 3 giorni maturano ferie e tredicesima e si possono prendere a ore fino a 18 ore al mese.", "comeChiedere": "Domanda all'Azienda con il verbale. Il CCNL chiede una programmazione mensile entro il giorno 20 del mese precedente (o in tempo per i turni); in urgenza 24 ore prima.", "fonti": [{"f": "tu151", "art": "42"}, {"f": "tu151", "art": "43"}, {"f": "tu151", "art": "44"}, {"f": "l104", "art": "art. 33 cc. 2, 3, 4, 6-bis"}, {"f": "ccnl2024", "art": "35 cc. 1-3"}], "dataDecisiva": "Età del figlio nel giorno di permesso.", "regime": "Art. 33 L. 104/1992 in vigore dal 13/8/2022.", "verificato": "2026-11-25"},
+    {"id": "congedo-straordinario", "area": 3, "titolo": "Congedo straordinario per assistere il figlio con disabilità grave", "chi": "entrambi", "aChi": "A un genitore per volta, anche adottivo, se il figlio non ha un coniuge o convivente che lo assista (per un figlio minorenne spetta ai genitori). Il figlio non deve essere ricoverato a tempo pieno.", "durata": "Fino a 2 anni per ciascuna persona assistita e nell'arco della vita lavorativa, continuativi o frazionati. Non si può dare a più di un lavoratore per la stessa persona; i due genitori possono alternarsi ma non negli stessi giorni.", "finestra": "Nessun limite di età del figlio. Va concesso entro 30 giorni dalla domanda; spetta anche se la convivenza inizia dopo la domanda.", "retribuzione": "Indennità pari all'ultima retribuzione (voci fisse e continuative), entro un tetto annuo complessivo (indennità più contributi) di 43.579,06 euro rivalutato ogni anno dal 2011 sull'indice ISTAT. Contribuzione figurativa. Non matura ferie, tredicesima e TFR.", "comeChiedere": "Domanda all'Azienda con il verbale di handicap grave e le dichiarazioni sulla convivenza e sugli altri familiari.", "fonti": [{"f": "tu151", "art": "42"}], "dataDecisiva": "Data della domanda (l'Azienda ha 30 giorni).", "regime": "Testo in vigore dal 13/8/2022, con la sentenza della Corte costituzionale 197/2025 (convivente di fatto, testo anteriore al 2022).", "verificato": "2026-11-25", "incerta": true, "lettura": "Il tetto annuo è quello rivalutato che l'INPS pubblica ogni anno: la pagina non riporta l'importo del 2026 perché non l'ho letto su una fonte primaria.", "alternativa": "Nessuna alternativa di merito: chiedi all'Azienda l'importo del tetto in vigore nell'anno in cui usi il congedo."},
+    {"id": "adozione-maternita", "area": 3, "titolo": "Adozione e affidamento: congedo di maternità (e paternità alternativa)", "chi": "entrambi", "aChi": "Alla madre adottiva o affidataria dipendente; al padre, alle stesse condizioni, se la madre non lo chiede (anche se la madre non lavora, per il periodo all'estero).", "durata": "Adozione nazionale e internazionale: 5 mesi, qualunque sia l'età del minore. Affidamento: 3 mesi. Nell'adozione internazionale chi non usa il congedo durante la permanenza all'estero può avere un congedo non retribuito per quel periodo.", "finestra": "Adozione nazionale: nei 5 mesi dopo l'ingresso in famiglia. Internazionale: anche prima dell'ingresso in Italia, durante la permanenza all'estero certificata dall'ente autorizzato, e comunque entro 5 mesi dall'ingresso. Affidamento: entro 5 mesi dall'affidamento. Vale anche la sospensione per ricovero del minore (art. 16-bis).", "retribuzione": "Lettura scelta: retribuzione intera del CCNL, come per la maternità biologica.", "comeChiedere": "Domanda all'Azienda con il provvedimento di adozione o affidamento e la data di ingresso; per l'estero, certificazione dell'ente autorizzato.", "fonti": [{"f": "tu151", "art": "26"}, {"f": "tu151", "art": "31"}, {"f": "ccnl2024", "art": "41 c. 2"}], "dataDecisiva": "Data di ingresso in famiglia (o in Italia).", "regime": "Art. 26 in vigore dal 25/6/2015.", "verificato": "2026-11-25", "incerta": true, "lettura": "Il congedo per adozione è lo stesso congedo di maternità («come regolato dal presente Capo», art. 26 c. 1), quindi il dirigente SSN ha la retribuzione intera dell'art. 41 c. 2 CCNL.", "alternativa": "L'art. 41 c. 2 CCNL nomina solo gli artt. 16, 17, 27-bis e 28 del D.Lgs. 151/2001, non l'art. 26: un'Azienda potrebbe pagare solo l'80% di legge. Effetto: 20% di retribuzione in meno per 5 mesi. Non ho trovato orientamenti ARAN: chiedi conferma scritta."},
+    {"id": "adozione-altri", "area": 3, "titolo": "Adozione e affidamento: gli altri diritti", "chi": "entrambi", "aChi": "Ai genitori adottivi e affidatari dipendenti.", "durata": "Paternità obbligatoria: 10 giorni nei 5 mesi dall'ingresso (nell'adozione internazionale anche all'estero). Congedo parentale: stesse durate, entro 14 anni dall'ingresso e non oltre i 18 anni del figlio; i mesi all'80% entro 6 anni dall'ingresso. Riposi giornalieri nel primo anno dall'ingresso. Malattia del figlio: senza limite fino ai 6 anni, poi a giorni annui. Esonero dal lavoro notturno nei primi 3 anni dall'ingresso (non oltre i 12 anni). Divieto di licenziamento fino a un anno dall'ingresso (per l'adozione internazionale da quando arriva la proposta di incontro). Assegnazione temporanea (art. 42-bis) nei primi 3 anni dall'ingresso.", "finestra": "Tutte le finestre decorrono dall'ingresso in famiglia.", "retribuzione": "Come per i figli biologici.", "comeChiedere": "All'Azienda con il provvedimento e la data di ingresso.", "fonti": [{"f": "tu151", "art": "27-bis"}, {"f": "tu151", "art": "36"}, {"f": "tu151", "art": "45"}, {"f": "tu151", "art": "50"}, {"f": "tu151", "art": "53"}, {"f": "tu151", "art": "54"}, {"f": "inps122", "art": "par. 2.2"}, {"f": "inps251", "art": ""}], "dataDecisiva": "Data di ingresso in famiglia; data di nascita del minore (limite dei 18 anni).", "regime": "14 anni dall'ingresso dal 1/1/2026.", "verificato": "2026-11-25", "incerta": true, "lettura": "Malattia del figlio adottato: senza limite fino ai 6 anni; poi 10 giorni l'anno fino ai 14 anni come per tutti i figli (art. 47 c. 2 dal 2026); se il minore entra tra i 6 e i 12 anni, almeno nei primi 3 anni dall'ingresso.", "alternativa": "L'art. 50 c. 2 dice ancora «fino al compimento dell'ottavo anno» e non è stato aggiornato dalla legge di bilancio 2026: letto alla lettera, per i figli adottati i giorni annui finirebbero agli 8 anni. Lo ritengo superato perché l'art. 47 c. 2 ora copre tutti i figli fino a 14 anni, ma l'INPS non si è espresso."}
   ],
   "faq": [
     { "d": "Mia moglie è libera professionista (iscritta solo all'ENPAM): io, dirigente SSN, che congedi ho?", "r": "I 10 giorni di paternità obbligatoria al 100%. Il congedo parentale per intero: fino a 7 mesi tuoi (6 + 1 se ne prendi almeno 3), di cui 6 indennizzati, perché il congedo spetta anche se l'altro genitore non ne ha diritto; i primi 30 giorni al 100% e i mesi all'80% se le date lo consentono. I riposi giornalieri (2 ore al giorno fino a un anno), perché la madre non è lavoratrice dipendente (art. 40 lett. c D.Lgs. 151/2001)." },
@@ -676,6 +683,7 @@
     { "d": "Nei giorni di congedo parentale si contano anche sabati e domeniche?", "r": "Sì, se il congedo è continuativo, e anche se è frazionato quando tra un periodo e l'altro non torni al lavoro (art. 41 c. 5 CCNL 23/1/2024). Per non perdere i festivi, rientra al lavoro tra un periodo e l'altro." },
     { "d": "Posso rifiutare le guardie notturne?", "r": "La madre non può fare notti fino al primo anno del figlio. Dopo, fino ai 3 anni, la madre (o in alternativa il padre convivente) può chiedere di non essere adibita al lavoro notturno; il genitore unico affidatario fino ai 12 anni del figlio (art. 53 D.Lgs. 151/2001). Il CCNL non prevede un esonero ulteriore per i genitori." },
     { "d": "Posso chiedere il part-time per stare con mio figlio?", "r": "Sì, in due modi. Su domanda, se il figlio ha fino a 8 anni: l'Azienda decide entro 60 giorni e può dire no se è raggiunta la quota (3%, fino al 7% con il contratto integrativo) o se il servizio ne risente. Come diritto, una sola volta, al posto del congedo parentale che ti resta, con riduzione non oltre il 50%: l'Azienda deve concederlo entro 15 giorni (art. 110 CCNL 19/12/2019; art. 8 c. 7 D.Lgs. 81/2015). In entrambi i casi perdi l'eventuale incarico gestionale e sospendi l'intramoenia." },
+    { "d": "Abbiamo adottato un bambino di 7 anni: che congedi abbiamo?", "r": "Congedo di maternità di 5 mesi nei 5 mesi dall'ingresso in famiglia (qualunque sia l'età), 10 giorni di paternità obbligatoria, congedo parentale entro 14 anni dall'ingresso ma non oltre i 18 anni del figlio (quindi fino al giorno prima dei 18 anni), con i mesi all'80% entro 6 anni dall'ingresso. Riposi giornalieri nel primo anno dall'ingresso (art. 45 D.Lgs. 151/2001). Malattia del figlio a giorni annui: vedi il punto da verificare sull'art. 50." },
     { "d": "Chi paga: INPS o Azienda?", "r": "Per il dirigente SSN dipendente paga l'Azienda tutti i trattamenti (maternità, paternità, congedo parentale, riposi): le indennità di legge «corrispondono, per le pubbliche amministrazioni, ai trattamenti economici» di legge e contratto, e non possono essere inferiori (art. 2 c. 2 D.Lgs. 151/2001). La domanda va all'ufficio del personale, non all'INPS." }
   ]
 }
@@ -799,6 +807,13 @@
       diritti.push({ id: 'maternita', titolo: 'Congedo di maternità', chi: 'madre', dal: mat.inizio, al: fineMaternita, stato: stato(oggi, mat.inizio, fineMaternita),
         dettaglio: 'Retribuzione intera (CCNL).' + (mat.giorniAggiunti ? ' Include ' + mat.giorniAggiunti + ' giorni non goduti prima del parto.' : '') + (mat.stimata || !inp.madre.fineCongedo ? ' Date stimate.' : '') });
     }
+    if (adozione && dipendente(inp.madre.tipo) && inp.genitoreSolo !== 'padre') {
+      var mesiAd = inp.evento === 'affidamento' ? P.maternita.affidamentoMesi : P.maternita.adozioneMesi;
+      var adAl = addMonths(dataEvento, P.maternita.adozioneEntroMesi);
+      var adDal = inp.evento === 'adozione_internazionale' ? null : dataEvento;
+      diritti.push({ id: 'maternita-adozione', titolo: 'Congedo di maternità per ' + (inp.evento === 'affidamento' ? 'affidamento' : 'adozione'), chi: 'madre (o il padre, se lei non lo chiede)', dal: adDal, al: adAl, stato: stato(oggi, adDal, adAl),
+        dettaglio: mesiAd + ' mesi entro i 5 mesi dall\'ingresso' + (inp.evento === 'adozione_internazionale' ? '; si può iniziare prima dell\'ingresso in Italia, durante la permanenza all\'estero' : '') + '.' });
+    }
     var basePat = adozione ? dataEvento : presunta;
     if (dipendente(inp.padre.tipo) && inp.genitoreSolo !== 'madre') {
       var patDal = adozione ? dataEvento : addMonths(basePat, -P.paternita.finestraPreMesi);
@@ -871,10 +886,33 @@
       }
       diritti.push({ id: 'malattia-libera', titolo: 'Malattia del figlio senza limite di giorni', chi: 'ciascun genitore, in alternativa', dal: adozione ? dataEvento : nascitaFiglio, al: fineLibera, stato: stato(oggi, adozione ? dataEvento : nascitaFiglio, fineLibera),
         dettaglio: 'Non retribuita per legge. Dirigente SSN: ' + P.malattiaFiglio.ccnlGiorniAnno100 + ' giorni al 100% per ogni anno di vita fino ai 3 anni, contati per la coppia.' });
-      diritti.push({ id: 'malattia-annua', titolo: 'Malattia del figlio, ' + regMal.giorni + ' giorni l\'anno', chi: 'ciascun genitore', dal: addDays(fineLibera, 1), al: fineMalattia, stato: stato(oggi, addDays(fineLibera, 1), fineMalattia),
+      var dalAnnua = adozione ? max(addDays(fineLibera, 1), dataEvento) : addDays(fineLibera, 1);
+      diritti.push({ id: 'malattia-annua', titolo: 'Malattia del figlio, ' + regMal.giorni + ' giorni l\'anno', chi: 'ciascun genitore', dal: dalAnnua, al: fineMalattia, stato: stato(oggi, dalAnnua, fineMalattia),
         dettaglio: regMal.giorni + ' giorni lavorativi all\'anno per ciascun genitore, non retribuiti.' });
       if (oggi <= fineLibera) scadenze.push({ data: fineLibera, testo: 'Fine della malattia del figlio senza limite (e dei 30 giorni CCNL al 100%)' });
       scadenze.push({ data: fineMalattia, testo: 'Fine del congedo per malattia del figlio' });
+    }
+
+    /* Figlio con disabilità grave (art. 33, 42 D.Lgs. 151/2001; art. 33 L. 104/1992) */
+    if (inp.disabilitaGrave && (dipendente(inp.madre.tipo) || dipendente(inp.padre.tipo))) {
+      var D = P.disabilita;
+      var usTotD = (dipendente(inp.madre.tipo) ? +inp.madre.parentaleGiorni || 0 : 0) + (dipendente(inp.padre.tipo) ? +inp.padre.parentaleGiorni || 0 : 0);
+      var residuoProl = max(0, D.prolungamentoMesiTotali * P.mese - usTotD);
+      var baseD = nascita || presunta || dataEvento;
+      var fineProl = primaDelCompleanno(baseD, anni);
+      if (oggi > fineProl) residuoProl = 0;
+      diritti.push({ id: 'prolungamento', titolo: 'Prolungamento del congedo parentale', chi: 'madre o, in alternativa, padre', dal: null, al: fineProl, stato: stato(oggi, null, fineProl),
+        dettaglio: 'Fino a 3 anni in tutto, compresi i congedi parentali già usati: restano ' + residuoProl + ' giorni, al 30%. Decorre dopo il congedo parentale massimo del genitore che lo chiede.' });
+      var fineOre = primaDelCompleanno(baseD, D.permessoOreEtaAnni);
+      var dalD = adozione ? dataEvento : baseD;
+      diritti.push({ id: 'permesso-ore', titolo: 'Due ore di permesso al giorno', chi: 'madre o, in alternativa, padre', dal: dalD, al: fineOre, stato: stato(oggi, dalD, fineOre),
+        dettaglio: D.permessoOreGiornaliere + ' ore al giorno retribuite al 100%, in alternativa al prolungamento.' });
+      diritti.push({ id: 'permessi-104', titolo: 'Tre giorni di permesso al mese (L. 104/1992)', chi: 'entrambi i genitori, alternativamente', dal: dalD, al: null, stato: stato(oggi, dalD, null),
+        dettaglio: D.permessiGiorniMese + ' giorni al mese retribuiti al 100% (anche 18 ore mensili), senza limite di età del figlio; sotto i 3 anni in alternativa alle 2 ore e al prolungamento.' });
+      diritti.push({ id: 'congedo-straordinario', titolo: 'Congedo straordinario retribuito', chi: 'un genitore per volta', dal: dalD, al: null, stato: stato(oggi, dalD, null),
+        dettaglio: 'Fino a ' + D.congedoStraordinarioAnni + ' anni nella vita lavorativa, con l\'ultima retribuzione fissa entro un tetto annuo rivalutato ogni anno. Concesso entro 30 giorni dalla domanda.' });
+      if (oggi <= fineOre) scadenze.push({ data: fineOre, testo: 'Fine delle 2 ore di permesso giornaliero (figlio con disabilità)' });
+      if (oggi <= fineProl) scadenze.push({ data: fineProl, testo: 'Ultimo giorno per il prolungamento del congedo parentale' });
     }
 
     /* Divieto di licenziamento */
