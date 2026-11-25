@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll). Il sito è HTML statico: nessun tema, nessun plugin.
+# Questi file servono a chi lavora sul sito e non vanno pubblicati.
+# (I file che iniziano con "_", come _template.html, sono già esclusi da Jekyll.)
+exclude:
+  - CLAUDE.md
+  - README.md

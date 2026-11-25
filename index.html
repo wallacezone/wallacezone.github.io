@@ -1,108 +1,124 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alessandro Barbieri</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-            background-color: #f6f8fa;
-            color: #24292e;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .profile {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .profile img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 1px solid #e1e4e8;
-        }
-        .profile h1 {
-            margin: 15px 0;
-            font-size: 2.2em;
-        }
-        .profile p {
-            color: #586069;
-            font-size: 1.1em;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-size: 1.6em;
-            margin-bottom: 10px;
-            color: #24292e;
-            border-bottom: 2px solid #e1e4e8;
-            padding-bottom: 5px;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 8px;
-            font-size: 1em;
-            line-height: 1.5;
-        }
-        a {
-            color: #0366d6;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .navbar {
-            background-color: #24292e;
-            padding: 10px;
-        }
-        .navbar a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+  <title>Alessandro Barbieri</title>
+  <meta name="description" content="Alessandro Barbieri: raccolta personale di guide, strumenti e piccoli giochi.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#indice">Vai all'indice</a>
 
-    <div class="container">
-        <div class="profile">
-            <img src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri">
-            <h1>Alessandro Barbieri</h1>
-            Medico Chirurgo Specialista in Ortopedia e Traumatologia
+  <div class="page">
+    <header class="masthead">
+      <img class="masthead__photo" src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri" width="640" height="640" referrerpolicy="no-referrer">
+      <div>
+        <h1 class="masthead__name">Alessandro Barbieri</h1>
+        <p class="masthead__role">Medico Chirurgo Specialista in Ortopedia e Traumatologia</p>
+      </div>
+    </header>
+
+    <main id="indice">
+
+      <section class="group" aria-labelledby="g-genitori">
+        <div class="group__head">
+          <span class="group__number" aria-hidden="true">01</span>
+          <h2 class="group__title" id="g-genitori">Genitori e lavoro</h2>
+          <span class="group__count label">3 pagine</span>
         </div>
+        <ul class="group__list">
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="diritti_medico_genitore.html">Diritti Genitorialità Medico SSN</a></h3>
+            <p class="entry__desc">Gravidanza, congedi, permessi per la cura del figlio e tutele economiche del medico dirigente del Servizio Sanitario Nazionale.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="diritti_medico_genitore_link.html">Diritti Genitorialità Medico SSN (link utili)</a></h3>
+            <p class="entry__desc">Le fonti in un elenco: d.lgs. 151/2001 e 105/2022, CCNL 2024, la sentenza 17192/2024 e 24 schede ENPAM.</p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="diritti_genitori.html">Diritti dei Genitori 2025</a></h3>
+            <p class="entry__desc">ISEE, Assegno Unico, Bonus Nido, congedi e tutele in vigore nel 2025, con grafici per fascia di reddito.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+        </ul>
+      </section>
 
-        <div class="section experience">
-            <div class="section-title"></div>
-            <ul>
-            <li><a href="diritti_medico_genitore.html">Diritti Genitorialità Medico SSN [Gemini AI]</a></li>
-                <li><a href="diritti_medico_genitore_link.html">Diritti Genitorialità Medico SSN (link utili)</a></li>
-                <li><a href="diritti_genitori.html">Diritti dei Genitori 2025 [Gemini AI]</a></li>
-                <li><a href="equally_weighted.html">Allocazione Geografica Strategica per un Portafoglio Globale di ETF Azionari [Gemini AI]</a></li>
-                <li><a href="etf_vs_fondi.html">Gestione Passiva (ETF) vs. Gestione Attiva (Fondi Comuni) [Gemini AI]</a></li>
-                <li><a href="fkt.html">L'Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica [Gemini AI]</a></li>
-                <li><a href="stagionalita.html">Stagionalità Frutta e Verdura in Italia e in Veneto [Gemini AI]</a></li>
-                <li><a href="fan_fact.html">Fan Fact of the Day [Gemini AI]</a></li>
-                <li><a href="japan-tracker.html">Japan Tracker [Perplexity AI]</a></li>
-                <li><a href="bracket_challenge.html">Bracket Challenge [Perplexity AI]</a></li>
-            </ul>
+      <section class="group" aria-labelledby="g-investire">
+        <div class="group__head">
+          <span class="group__number" aria-hidden="true">02</span>
+          <h2 class="group__title" id="g-investire">Investire</h2>
+          <span class="group__count label">2 pagine</span>
         </div>
+        <ul class="group__list">
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="equally_weighted.html">Allocazione Geografica Strategica per un Portafoglio Globale di ETF Azionari</a></h3>
+            <p class="entry__desc">Quanto pesano gli Stati Uniti in un ETF globale, cosa mostra la storia dei mercati e tre portafogli modello a confronto.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="etf_vs_fondi.html">Gestione Passiva (ETF) vs. Gestione Attiva (Fondi Comuni)</a></h3>
+            <p class="entry__desc">Costi, dati SPIVA e persistenza dei gestori: chi rende di più sul lungo periodo.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+        </ul>
+      </section>
 
-    </div>
+      <section class="group" aria-labelledby="g-salute">
+        <div class="group__head">
+          <span class="group__number" aria-hidden="true">03</span>
+          <h2 class="group__title" id="g-salute">Salute e tavola</h2>
+          <span class="group__count label">2 pagine</span>
+        </div>
+        <ul class="group__list">
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="fkt.html">L'Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica</a></h3>
+            <p class="entry__desc">Come agisce la fisioterapia, in quali casi regge il confronto con la chirurgia e quanto conta il paziente.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="stagionalita.html">Stagionalità Frutta e Verdura in Italia e in Veneto</a></h3>
+            <p class="entry__desc">Frutta, verdura ed erbe aromatiche del mese in corso, con un consiglio per la spesa.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="group" aria-labelledby="g-giochi">
+        <div class="group__head">
+          <span class="group__number" aria-hidden="true">04</span>
+          <h2 class="group__title" id="g-giochi">Giochi e curiosità</h2>
+          <span class="group__count label">3 pagine</span>
+        </div>
+        <ul class="group__list">
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="fan_fact.html">Fan Fact of the Day</a></h3>
+            <p class="entry__desc">Una curiosità al giorno, scelta in base alla data tra 366.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="japan-tracker.html">Japan Tracker</a></h3>
+            <p class="entry__desc">Le 47 prefetture del Giappone su una mappa: segni quelle visitate e da visitare e condividi il risultato con un link.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span></p>
+          </li>
+          <li class="entry">
+            <h3 class="entry__title"><a class="entry__link" href="bracket_challenge.html">Bracket Challenge</a></h3>
+            <p class="entry__desc">Il tabellone dei Mondiali 2026, dai 12 gironi alle 31 partite a eliminazione, da compilare e condividere con un link o un codice.</p>
+            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span></p>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>Il badge accanto a una voce indica lo strumento di intelligenza artificiale usato per generarla.</p>
+    </footer>
+  </div>
 </body>
 </html>
