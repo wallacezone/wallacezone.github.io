@@ -26,7 +26,7 @@ Sito personale di Alessandro Barbieri, pubblicato con GitHub Pages: una raccolta
 | | `--font-sans` | Solo etichette, badge, piè di pagina |
 | Scala | `--step--1` … `--step-3` | 13→14, 16→18, 19→22, 22→28, 36→64 px (fluida con `clamp()`) |
 | Spazi | `--space-3xs` … `--space-xl` | Da 4 px a ~88 px, fluidi |
-| Misure | `--measure` (68ch), `--page-max`, `--gutter` | Larghezza di lettura, contenitore, margini laterali |
+| Misure | `--measure` (34em, circa 70 caratteri), `--page-max`, `--gutter` | Larghezza di lettura, contenitore, margini laterali |
 | Forme | `--radius-s`, `--radius-pill`, `--rule-width` | Raggi e spessore dei filetti |
 
 Il tema scuro si attiva da solo con `prefers-color-scheme: dark` e ridefinisce solo i colori. Un colore nuovo va aggiunto **in entrambi i temi**, con il contrasto calcolato e scritto nel commento accanto.

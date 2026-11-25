@@ -48,7 +48,7 @@
   --radius-s:    4px;
   --radius-pill: 999px;
   --rule-width:  1px;
-  --measure:     68ch;                 /* larghezza di lettura */
+  --measure:     34em;                 /* larghezza di lettura: ~70 caratteri con qualsiasi font (ch varia col font) */
   --page-max:    68rem;                /* larghezza massima del contenuto */
   --gutter:      clamp(1rem, 0.5rem + 3vw, 3rem);
 
