@@ -4,121 +4,141 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fff7e8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15130f" media="(prefers-color-scheme: dark)">
   <title>Alessandro Barbieri</title>
   <meta name="description" content="Alessandro Barbieri: raccolta personale di guide, strumenti e piccoli giochi.">
   <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <a class="skip-link" href="#indice">Vai all'indice</a>
+  <a class="skip-link" href="#genitori">Vai all'indice</a>
 
-  <div class="page">
-    <header class="masthead">
-      <img class="masthead__photo" src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri" width="640" height="640" referrerpolicy="no-referrer">
-      <div>
-        <h1 class="masthead__name">Alessandro Barbieri</h1>
-        <p class="masthead__role">Medico Chirurgo Specialista in Ortopedia e Traumatologia</p>
-      </div>
-    </header>
+  <main class="page">
+    <ul class="bento">
+      <li class="tile hello">
+        <img class="hello__photo" src="https://i.imgur.com/jEjiFnm.jpg" alt="Alessandro Barbieri" width="640" height="640" referrerpolicy="no-referrer">
+        <div>
+          <h1 class="hello__name"><span>Alessandro</span> <span>Barbieri</span></h1>
+          <p class="hello__role">Medico Chirurgo Specialista in Ortopedia e Traumatologia</p>
+        </div>
+      </li>
 
-    <main id="indice">
+      <li class="tile group-nav">
+        <nav aria-labelledby="gruppi-titolo">
+          <h2 class="group-nav__title" id="gruppi-titolo">Gruppi</h2>
+          <ul class="group-nav__list">
+            <li class="tone-1"><a class="group-nav__link" href="#genitori"><span>Genitori e lavoro</span><span>3</span></a></li>
+            <li class="tone-2"><a class="group-nav__link" href="#investire"><span>Investire</span><span>2</span></a></li>
+            <li class="tone-3"><a class="group-nav__link" href="#salute"><span>Salute e tavola</span><span>2</span></a></li>
+            <li class="tone-4"><a class="group-nav__link" href="#giochi"><span>Giochi e curiosità</span><span>3</span></a></li>
+          </ul>
+        </nav>
+      </li>
 
-      <section class="group" aria-labelledby="g-genitori">
-        <div class="group__head">
-          <span class="group__number" aria-hidden="true">01</span>
-          <h2 class="group__title" id="g-genitori">Genitori e lavoro</h2>
-          <span class="group__count label">3 pagine</span>
+      <li class="group tone-1">
+        <section class="group" aria-labelledby="genitori-titolo">
+        <div class="tile group-label" id="genitori">
+          <span class="group-label__number" aria-hidden="true">01</span>
+          <h2 class="group-label__title" id="genitori-titolo">Genitori e lavoro</h2>
+          <span class="group-label__count">3 pagine</span>
         </div>
         <ul class="group__list">
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="diritti_medico_genitore.html">Diritti Genitorialità Medico SSN</a></h3>
             <p class="entry__desc">Gravidanza, congedi, permessi per la cura del figlio e tutele economiche del medico dirigente del Servizio Sanitario Nazionale.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="diritti_medico_genitore_link.html">Diritti Genitorialità Medico SSN (link utili)</a></h3>
             <p class="entry__desc">Le fonti in un elenco: d.lgs. 151/2001 e 105/2022, CCNL 2024, la sentenza 17192/2024 e 24 schede ENPAM.</p>
+            <p class="entry__foot"><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="diritti_genitori.html">Diritti dei Genitori 2025</a></h3>
             <p class="entry__desc">ISEE, Assegno Unico, Bonus Nido, congedi e tutele in vigore nel 2025, con grafici per fascia di reddito.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
         </ul>
-      </section>
+        </section>
+      </li>
 
-      <section class="group" aria-labelledby="g-investire">
-        <div class="group__head">
-          <span class="group__number" aria-hidden="true">02</span>
-          <h2 class="group__title" id="g-investire">Investire</h2>
-          <span class="group__count label">2 pagine</span>
+      <li class="group tone-2">
+        <section class="group" aria-labelledby="investire-titolo">
+        <div class="tile group-label" id="investire">
+          <span class="group-label__number" aria-hidden="true">02</span>
+          <h2 class="group-label__title" id="investire-titolo">Investire</h2>
+          <span class="group-label__count">2 pagine</span>
         </div>
         <ul class="group__list">
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="equally_weighted.html">Allocazione Geografica Strategica per un Portafoglio Globale di ETF Azionari</a></h3>
             <p class="entry__desc">Quanto pesano gli Stati Uniti in un ETF globale, cosa mostra la storia dei mercati e tre portafogli modello a confronto.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="etf_vs_fondi.html">Gestione Passiva (ETF) vs. Gestione Attiva (Fondi Comuni)</a></h3>
             <p class="entry__desc">Costi, dati SPIVA e persistenza dei gestori: chi rende di più sul lungo periodo.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
         </ul>
-      </section>
+        </section>
+      </li>
 
-      <section class="group" aria-labelledby="g-salute">
-        <div class="group__head">
-          <span class="group__number" aria-hidden="true">03</span>
-          <h2 class="group__title" id="g-salute">Salute e tavola</h2>
-          <span class="group__count label">2 pagine</span>
+      <li class="group tone-3">
+        <section class="group" aria-labelledby="salute-titolo">
+        <div class="tile group-label" id="salute">
+          <span class="group-label__number" aria-hidden="true">03</span>
+          <h2 class="group-label__title" id="salute-titolo">Salute e tavola</h2>
+          <span class="group-label__count">2 pagine</span>
         </div>
         <ul class="group__list">
-          <li class="entry">
-            <h3 class="entry__title"><a class="entry__link" href="fkt.html">L'Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica</a></h3>
+          <li class="tile entry">
+            <h3 class="entry__title"><a class="entry__link" href="fkt.html">L&#x27;Efficacia e i Meccanismi della Fisioterapia nella Gestione Conservativa Ortopedica</a></h3>
             <p class="entry__desc">Come agisce la fisioterapia, in quali casi regge il confronto con la chirurgia e quanto conta il paziente.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="stagionalita.html">Stagionalità Frutta e Verdura in Italia e in Veneto</a></h3>
             <p class="entry__desc">Frutta, verdura ed erbe aromatiche del mese in corso, con un consiglio per la spesa.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
         </ul>
-      </section>
+        </section>
+      </li>
 
-      <section class="group" aria-labelledby="g-giochi">
-        <div class="group__head">
-          <span class="group__number" aria-hidden="true">04</span>
-          <h2 class="group__title" id="g-giochi">Giochi e curiosità</h2>
-          <span class="group__count label">3 pagine</span>
+      <li class="group tone-4">
+        <section class="group" aria-labelledby="giochi-titolo">
+        <div class="tile group-label" id="giochi">
+          <span class="group-label__number" aria-hidden="true">04</span>
+          <h2 class="group-label__title" id="giochi-titolo">Giochi e curiosità</h2>
+          <span class="group-label__count">3 pagine</span>
         </div>
         <ul class="group__list">
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="fan_fact.html">Fan Fact of the Day</a></h3>
             <p class="entry__desc">Una curiosità al giorno, scelta in base alla data tra 366.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Gemini AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="japan-tracker.html">Japan Tracker</a></h3>
             <p class="entry__desc">Le 47 prefetture del Giappone su una mappa: segni quelle visitate e da visitare e condividi il risultato con un link.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
-          <li class="entry">
+          <li class="tile entry">
             <h3 class="entry__title"><a class="entry__link" href="bracket_challenge.html">Bracket Challenge</a></h3>
             <p class="entry__desc">Il tabellone dei Mondiali 2026, dai 12 gironi alle 31 partite a eliminazione, da compilare e condividere con un link o un codice.</p>
-            <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span></p>
+            <p class="entry__foot"><span class="badge"><span class="visually-hidden">Generata con </span>Perplexity AI</span><span class="arrow" aria-hidden="true">→</span></p>
           </li>
         </ul>
-      </section>
+        </section>
+      </li>
 
-    </main>
-
-    <footer class="site-footer">
-      <p>Il badge accanto a una voce indica lo strumento di intelligenza artificiale usato per generarla.</p>
-    </footer>
-  </div>
+      <li class="tile note">
+        <p>Il badge accanto a una voce indica lo strumento di intelligenza artificiale usato per generarla.</p>
+      </li>
+    </ul>
+  </main>
 </body>
 </html>

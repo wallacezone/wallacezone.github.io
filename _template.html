@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <!--
   MODELLO DI PAGINA — copia questo file con un nome nuovo (es. mia-pagina.html)
-  e sostituisci SOLO i testi tra [parentesi quadre].
+  e sostituisci SOLO i testi tra [parentesi quadre] e il numero in "tone-N".
+  tone-N = il tono del gruppo in index.html (1 Genitori e lavoro, 2 Investire,
+  3 Salute e tavola, 4 Giochi e curiosità).
   Non aggiungere <style> né classi nuove: usa i componenti di assets/style.css
   (elenco e regole in CLAUDE.md). Questo file inizia con "_", quindi
   GitHub Pages (Jekyll) non lo pubblica.
@@ -19,16 +21,16 @@
 <body>
   <a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
-  <div class="page">
-    <header class="page-header">
-      <a class="page-header__back" href="./">← Alessandro Barbieri</a>
-      <p class="label">[Nome del gruppo, come in index.html]</p>
+  <div class="page bento">
+    <header class="tile page-header tone-[N]">
+      <a class="page-header__back" href="./">← Tutte le pagine</a>
+      <p class="page-header__group">[Nome del gruppo, come in index.html]</p>
       <h1 class="page-header__title">[Titolo della pagina]</h1>
       <p class="page-header__lede">[Una o due frasi che dicono cosa trova il lettore.]</p>
-      <p class="entry__meta"><span class="badge"><span class="visually-hidden">Generata con </span>[Strumento AI]</span></p>
+      <p><span class="badge"><span class="visually-hidden">Generata con </span>[Strumento AI]</span></p>
     </header>
 
-    <main id="contenuto" class="prose">
+    <main id="contenuto" class="tile prose">
       <h2>[Primo titolo di sezione]</h2>
       <p>[Testo. La larghezza di lettura è già limitata da .prose.]</p>
       <ul>
@@ -36,7 +38,7 @@
       </ul>
     </main>
 
-    <footer class="site-footer">
+    <footer class="tile note">
       <p><a href="./">Torna all'indice</a></p>
     </footer>
   </div>

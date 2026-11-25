@@ -1,8 +1,28 @@
 /* ==========================================================================
-   wallacezone — foglio di stile comune
-   Stile editoriale sobrio: carta calda, inchiostro, un solo accento.
+   wallacezone — foglio di stile comune · stile "Bento"
+   Riquadri con bordo spesso e ombra piena, un colore per gruppo,
+   l'azzurro dell'illustrazione per l'intestazione.
    Regole d'uso, token e componenti: vedi CLAUDE.md alla radice.
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. Font (self-hosted, licenza SIL OFL 1.1 — vedi assets/fonts/LICENZE.md)
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/bricolage-grotesque-latin.woff2") format("woff2");
+  font-weight: 400 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Figtree";
+  src: url("fonts/figtree-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* --------------------------------------------------------------------------
    1. Token
@@ -10,61 +30,82 @@
 :root {
   color-scheme: light dark;
 
-  /* Colori — tema chiaro (contrasti verificati, vedi CLAUDE.md) */
-  --color-paper:   #f6f3ec;  /* sfondo pagina */
-  --color-surface: #fffdf8;  /* riquadri, se servono */
-  --color-ink:     #1c1a17;  /* testo principale        15.7:1 su paper */
-  --color-muted:   #5c564d;  /* testo secondario         6.5:1 su paper */
-  --color-accent:  #9b3a22;  /* link, numeri, accenti    6.3:1 su paper */
-  --color-rule:    #d9d2c4;  /* filetti decorativi (non testo) */
-  --color-focus:   #9b3a22;  /* anello di focus */
+  /* Colori di base — tema chiaro (contrasti in CLAUDE.md) */
+  --color-paper:   #fff7e8;  /* sfondo pagina */
+  --color-surface: #ffffff;  /* riquadri neutri, badge */
+  --color-ink:     #141414;  /* testo e bordi             17.3:1 su paper */
+  --color-line:    #141414;  /* bordi dei riquadri */
+  --color-shadow:  #141414;  /* ombra piena */
+  --color-sky:     #a9ddf6;  /* riquadro del nome (dall'illustrazione) */
+  --color-on-sky:  #141414;  /*                            12.6:1 */
+  --color-invert:    #141414;  /* riquadro scuro (navigazione), cerchio freccia */
+  --color-on-invert: #fff7e8;  /*                          17.3:1 */
+  --color-focus:   #141414;
 
-  /* Famiglie: solo font di sistema, nessun download */
-  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
-                Charter, "Bitstream Charter", "Noto Serif", Georgia, serif;
-  --font-sans:  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-                Arial, sans-serif;
+  /* Toni dei gruppi: --tone (pieno), --on-tone (testo sul pieno), --tint (voci) */
+  --tone-1: #ff7a52;  --on-tone-1: #141414;  --tint-1: #ffe3d8;  /* arancio   7.2:1 */
+  --tone-2: #2f4bff;  --on-tone-2: #ffffff;  --tint-2: #e2e7ff;  /* blu       5.9:1 */
+  --tone-3: #ffd23f;  --on-tone-3: #141414;  --tint-3: #fff2bd;  /* giallo   12.8:1 */
+  --tone-4: #35d08e;  --on-tone-4: #141414;  --tint-4: #d6f6e7;  /* menta     9.3:1 */
+
+  /* Famiglie */
+  --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-text:    "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* Scala tipografica fluida (min a 360px, max a 1440px) */
-  --step--1: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);  /* 13 → 14  etichette, badge */
-  --step-0:  clamp(1rem,      0.96rem + 0.2vw, 1.125rem);  /* 16 → 18  testo */
-  --step-1:  clamp(1.1875rem, 1.12rem + 0.35vw, 1.375rem); /* 19 → 22  titoli di voce */
-  --step-2:  clamp(1.375rem,  1.25rem + 0.6vw, 1.75rem);   /* 22 → 28  titoli di gruppo */
-  --step-3:  clamp(2.25rem,   1.7rem + 2.6vw, 4rem);       /* 36 → 64  nome / h1 */
+  --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.85rem);   /* 12.5 → 13.6  badge, conteggi */
+  --step-0:  clamp(1rem,    0.96rem + 0.2vw, 1.1rem);    /* 16 → 17.6    testo */
+  --step-1:  clamp(1.2rem,  1.1rem + 0.4vw,  1.45rem);   /* 19 → 23      titoli di voce */
+  --step-2:  clamp(1.6rem,  1.3rem + 1vw,    2.1rem);    /* 26 → 34      titoli di gruppo */
+  --step-3:  clamp(3rem,    1.6rem + 5vw,    6.2rem);    /* 48 → 99      nome, h1 */
+  --step-4:  clamp(3.5rem,  2.5rem + 4vw,    6rem);      /* 56 → 96      numeri dei gruppi */
 
-  --leading-tight: 1.15;
-  --leading-body:  1.55;
+  --leading-tight: 0.92;
+  --leading-snug:  1.15;
+  --leading-body:  1.5;
 
   /* Spaziature fluide */
   --space-3xs: 0.25rem;
   --space-2xs: 0.5rem;
-  --space-xs:  clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --space-s:   clamp(1rem,    0.9rem + 0.5vw,  1.25rem);
-  --space-m:   clamp(1.5rem,  1.3rem + 1vw,    2rem);
-  --space-l:   clamp(2rem,    1.6rem + 2vw,    3rem);
-  --space-xl:  clamp(3rem,    2.2rem + 4vw,    5.5rem);
+  --space-xs:  clamp(0.75rem, 0.5rem + 0.8vw, 1.25rem);  /* spazio tra riquadri */
+  --space-s:   clamp(1.1rem,  0.9rem + 0.8vw, 1.6rem);   /* padding dei riquadri */
+  --space-m:   clamp(1.5rem,  1.2rem + 1.2vw, 2.25rem);
+  --space-l:   clamp(2rem,    1.5rem + 2.5vw, 3.5rem);
 
-  /* Forme e misure */
-  --radius-s:    4px;
+  /* Forme */
+  --border:      2.5px solid var(--color-line);
+  --radius-tile: 26px;
   --radius-pill: 999px;
-  --rule-width:  1px;
-  --measure:     34em;                 /* larghezza di lettura: ~70 caratteri con qualsiasi font (ch varia col font) */
-  --page-max:    68rem;                /* larghezza massima del contenuto */
-  --gutter:      clamp(1rem, 0.5rem + 3vw, 3rem);
+  --shadow-offset:  5px;   /* ombra piena: il colore è --color-shadow, letto dal riquadro */
+  --shadow-raised:  7px;
+  --shadow-pressed: 2px;
 
-  --duration: 180ms;
+  /* Misure */
+  --measure:  34em;    /* ~70 caratteri per riga */
+  --page-max: 90rem;
+  --tile-min: 17rem;   /* larghezza minima di un riquadro: decide quante colonne */
+
+  --duration: 150ms;
 }
 
-/* Tema scuro — progettato, non invertito */
+/* Tema scuro: riquadri scuri, bordi crema, ombra nel colore del gruppo */
 @media (prefers-color-scheme: dark) {
+  .tile  { --color-shadow: var(--tone, #57503f); }
+  .hello { --color-shadow: var(--color-sky); }
   :root {
-    --color-paper:   #171614;
-    --color-surface: #201e1b;
-    --color-ink:     #ece6da;  /* 14.6:1 su paper */
-    --color-muted:   #aaa294;  /*  7.2:1 su paper */
-    --color-accent:  #e9967a;  /*  7.8:1 su paper */
-    --color-rule:    #3a3631;
-    --color-focus:   #e9967a;
+    --color-paper:   #15130f;
+    --color-surface: #221f1a;
+    --color-ink:     #f5eedf;  /* 16.1:1 su paper */
+    --color-line:    #f5eedf;
+    --color-shadow:  #57503f;  /* ombra neutra; i riquadri colorati usano il loro tono */
+    --color-invert:    #f5eedf;
+    --color-on-invert: #15130f;
+    --color-focus:   #ffd23f;
+
+    --tint-1: #3b221a;  /* testo crema: 12.7:1 */
+    --tint-2: #1e2452;  /*             12.7:1 */
+    --tint-3: #3a3014;  /*             11.3:1 */
+    --tint-4: #173a2a;  /*             10.9:1 */
   }
 }
 
@@ -73,20 +114,15 @@
    -------------------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 body {
   margin: 0;
   background: var(--color-paper);
   color: var(--color-ink);
-  font-family: var(--font-serif);
+  font-family: var(--font-text);
   font-size: var(--step-0);
   line-height: var(--leading-body);
-  font-variant-numeric: oldstyle-nums;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -95,28 +131,28 @@ ul, ol { padding: 0; }
 img { display: block; max-width: 100%; height: auto; }
 
 a {
-  color: var(--color-accent);
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
+  color: inherit;
+  text-decoration-thickness: 2px;
   text-underline-offset: 0.18em;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-  transition: text-decoration-color var(--duration) ease;
 }
-a:hover { text-decoration-color: currentColor; }
 
 :focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-::selection { background: var(--color-accent); color: var(--color-paper); }
+::selection { background: var(--tone-3); color: #141414; }
+
+@keyframes rise {
+  from { transform: translateY(0.35em); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
+    animation: none !important;
     transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
 }
@@ -127,197 +163,278 @@ a:hover { text-decoration-color: currentColor; }
 
 /* .page — contenitore di ogni pagina */
 .page {
-  width: 100%;
-  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  max-width: var(--page-max);
   margin-inline: auto;
-  padding: var(--space-xl) var(--gutter);
+  padding: var(--space-xs);
 }
+
+/* .bento — la griglia di riquadri. Le colonne nascono da --tile-min. */
+.bento {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--tile-min)), 1fr));
+  gap: var(--space-xs);
+}
+
+/* .group — un gruppo tematico: non crea un box, i suoi riquadri
+   entrano direttamente nella griglia .bento */
+.group, .group__list { display: contents; }
 
 /* .skip-link — primo elemento raggiunto con Tab */
 .skip-link {
   position: absolute;
-  left: var(--gutter);
+  left: var(--space-xs);
   top: -100px;
-  padding: var(--space-2xs) var(--space-xs);
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-  border-radius: var(--radius-s);
   z-index: 10;
+  padding: var(--space-2xs) var(--space-xs);
+  background: var(--color-invert);
+  color: var(--color-on-invert);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
 }
 .skip-link:focus { top: var(--space-xs); }
 
 /* --------------------------------------------------------------------------
-   4. Componenti
+   4. Toni (applicali a .group o a un riquadro)
+   -------------------------------------------------------------------------- */
+.tone-1 { --tone: var(--tone-1); --on-tone: var(--on-tone-1); --tint: var(--tint-1); }
+.tone-2 { --tone: var(--tone-2); --on-tone: var(--on-tone-2); --tint: var(--tint-2); }
+.tone-3 { --tone: var(--tone-3); --on-tone: var(--on-tone-3); --tint: var(--tint-3); }
+.tone-4 { --tone: var(--tone-4); --on-tone: var(--on-tone-4); --tint: var(--tint-4); }
+
+/* --------------------------------------------------------------------------
+   5. Componenti
    -------------------------------------------------------------------------- */
 
-/* .masthead — intestazione della homepage: foto, nome, sottotitolo */
-.masthead {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: var(--space-s) var(--space-m);
-  padding-bottom: var(--space-l);
-  border-bottom: var(--rule-width) solid var(--color-ink);
+/* .tile — il riquadro base */
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-s);
+  background: var(--color-surface);
+  border: var(--border);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
 }
-.masthead__photo {
-  width: clamp(4.5rem, 3.5rem + 4vw, 7.5rem);
+
+/* .hello — riquadro grande con foto, nome e sottotitolo (homepage) */
+.hello {
+  grid-column: span 2;
+  grid-row: span 2;
+  justify-content: space-between;
+  gap: var(--space-l);
+  min-height: 26rem;
+  background: var(--color-sky);
+  color: var(--color-on-sky);
+}
+@media (max-width: 37rem) {            /* una sola colonna: niente span */
+  .hello { grid-column: auto; grid-row: auto; min-height: 0; }
+}
+.hello__photo {
+  width: clamp(6rem, 4rem + 6vw, 9.5rem);
   aspect-ratio: 1;
-  object-fit: cover;
+  border: var(--border);
+  border-color: #141414;
   border-radius: 50%;
+  background: #ffffff;
 }
-.masthead__name {
+.hello__name {
+  font-family: var(--font-display);
   font-size: var(--step-3);
-  font-weight: 400;
+  font-weight: 800;
   line-height: var(--leading-tight);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
-.masthead__role {
-  margin-top: var(--space-2xs);
-  color: var(--color-muted);
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-  letter-spacing: 0.02em;
+.hello__name > span {                   /* una riga per parola, entrano al caricamento */
+  display: block;
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
-@media (max-width: 30rem) {
-  .masthead { grid-template-columns: 1fr; }
-}
-
-/* .page-header — intestazione di una pagina interna (vedi _template.html) */
-.page-header {
-  max-width: var(--measure);
-  padding-bottom: var(--space-l);
-  border-bottom: var(--rule-width) solid var(--color-ink);
-}
-.page-header__back {
-  display: inline-block;
-  margin-bottom: var(--space-m);
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-}
-.page-header__title {
-  font-size: var(--step-3);
-  font-weight: 400;
-  line-height: var(--leading-tight);
-  letter-spacing: -0.015em;
-}
-.page-header__lede {
+.hello__name > span + span { animation-delay: 0.12s; }
+.hello__role {
   margin-top: var(--space-s);
-  color: var(--color-muted);
-  font-size: var(--step-1);
-  line-height: 1.4;
+  max-width: 24rem;
+  font-weight: 500;
 }
 
-/* .label — etichetta in maiuscoletto (sezioni, date, contatori) */
-.label {
-  font-family: var(--font-sans);
+/* .group-nav — riquadro scuro con i link ai gruppi */
+.group-nav {
+  background: var(--color-invert);
+  color: var(--color-on-invert);
+  --color-focus: var(--tone-3);
+}
+.group-nav__title {
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+}
+.group-nav__list { list-style: none; display: grid; gap: var(--space-2xs); }
+.group-nav__link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2xs);
+  min-height: 2.75rem;
+  padding: 0.4rem 1rem;
+  background: var(--tone);
+  color: var(--on-tone);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--duration) ease;
+}
+.group-nav__link:hover { transform: translateX(4px); }
+
+/* .group-label — riquadro pieno che apre un gruppo: numero, titolo, conteggio */
+.group-label {
+  justify-content: space-between;
+  min-height: 12rem;
+  background: var(--tone);
+  color: var(--on-tone);
+  scroll-margin-top: var(--space-xs);
+}
+.group-label__number {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+}
+.group-label__title {
+  margin-top: auto;
+  padding-top: var(--space-s);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.group-label__count {
+  margin-top: var(--space-3xs);
   font-size: var(--step--1);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-muted);
 }
 
-/* .group — un gruppo tematico di voci.
-   Su schermi larghi: intestazione a sinistra, voci a destra. */
-.group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: var(--space-xs) var(--space-l);
-  padding-block: var(--space-l);
-  border-bottom: var(--rule-width) solid var(--color-rule);
-}
-.group__head { align-self: start; }
-.group__number {
-  display: block;
-  color: var(--color-accent);
-  font-size: var(--step-1);
-  font-variant-numeric: lining-nums tabular-nums;
-}
-.group__title {
-  font-size: var(--step-2);
-  font-weight: 400;
-  line-height: var(--leading-tight);
-}
-.group__count { display: block; margin-top: var(--space-3xs); }
-.group__list {
-  list-style: none;
-  max-width: var(--measure);
-}
-@media (min-width: 52rem) {
-  .group { grid-template-columns: 15rem minmax(0, 1fr); }
-  .group__head { position: sticky; top: var(--space-m); }
-}
-
-/* .entry — una voce dell'elenco: titolo-link, badge, descrizione */
+/* .entry — riquadro di una pagina: tutto il riquadro è cliccabile */
 .entry {
-  padding-block: var(--space-s);
-  border-top: var(--rule-width) solid var(--color-rule);
+  background: var(--tint, var(--color-surface));
+  transition: transform var(--duration) ease, box-shadow var(--duration) ease;
 }
-.entry:first-child { border-top: 0; padding-top: 0; }
+.entry:hover  { transform: translate(-2px, -2px); box-shadow: var(--shadow-raised) var(--shadow-raised) 0 var(--color-shadow); }
+.entry:active { transform: translate(2px, 2px);   box-shadow: var(--shadow-pressed) var(--shadow-pressed) 0 var(--color-shadow); }
+.entry:has(.entry__link:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
 .entry__title {
+  font-family: var(--font-display);
   font-size: var(--step-1);
-  font-weight: 400;
-  line-height: 1.3;
+  font-weight: 700;
+  line-height: var(--leading-snug);
+  letter-spacing: -0.015em;
 }
-.entry__link {
-  color: var(--color-ink);
-  text-decoration-color: transparent;
+.entry__link { text-decoration: none; }
+.entry__link::after {                    /* estende il link a tutto il riquadro */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-tile);
 }
-.entry__link:hover,
-.entry__link:focus-visible {
-  color: var(--color-accent);
-  text-decoration-color: currentColor;
-}
-.entry__desc {
-  margin-top: var(--space-3xs);
-  color: var(--color-muted);
-  max-width: var(--measure);
-}
-.entry__meta {
+.entry__link:focus-visible { outline: none; }
+.entry__desc { margin-top: var(--space-2xs); max-width: var(--measure); }
+.entry__foot {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2xs);
-  margin-top: var(--space-2xs);
+  margin-top: auto;
+  padding-top: var(--space-s);
 }
 
-/* .badge — dato secondario discreto (es. strumento usato) */
+/* .arrow — cerchio con freccia in fondo a una voce */
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: auto;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-invert);
+  color: var(--color-on-invert);
+  font-size: 1.2rem;
+  transition: transform 200ms ease;
+}
+.entry:hover .arrow { transform: translateX(4px); }
+
+/* .badge — dato secondario (es. strumento AI) */
 .badge {
   display: inline-block;
-  padding: 0.1em 0.6em;
-  border: var(--rule-width) solid var(--color-rule);
+  padding: 0.1em 0.65em;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 2px solid var(--color-line);
   border-radius: var(--radius-pill);
-  font-family: var(--font-sans);
   font-size: var(--step--1);
-  line-height: 1.5;
-  color: var(--color-muted);
+  font-weight: 700;
   white-space: nowrap;
 }
 
-/* .prose — testo lungo nelle pagine interne */
-.prose { max-width: var(--measure); padding-top: var(--space-l); }
+/* .note — riquadro largo per note e piè di pagina */
+.note { grid-column: 1 / -1; font-size: var(--step--1); }
+
+/* .page-header — riquadro d'apertura di una pagina interna (vedi _template.html) */
+.page-header {
+  grid-column: 1 / -1;
+  background: var(--tone, var(--color-sky));
+  color: var(--on-tone, var(--color-on-sky));
+  gap: var(--space-s);
+}
+.page-header__back {
+  align-self: flex-start;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 1rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  text-decoration: none;
+}
+.page-header__back:hover { text-decoration: underline; }
+.page-header__group {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-header__title {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+}
+.page-header__lede { max-width: var(--measure); font-size: var(--step-1); line-height: 1.35; }
+
+/* .prose — testo lungo di una pagina interna, dentro un riquadro */
+.prose { grid-column: 1 / -1; }
+.prose > * { max-width: var(--measure); }
 .prose > * + * { margin-top: var(--space-s); }
-.prose > :first-child { margin-top: 0; }
 .prose h2 {
   margin-top: var(--space-l);
+  font-family: var(--font-display);
   font-size: var(--step-2);
-  font-weight: 400;
-  line-height: var(--leading-tight);
+  font-weight: 700;
+  line-height: var(--leading-snug);
 }
+.prose > :first-child { margin-top: 0; }
 .prose ul, .prose ol { padding-left: 1.25em; }
-
-/* .site-footer — piè di pagina */
-.site-footer {
-  padding-top: var(--space-l);
-  color: var(--color-muted);
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-}
-
-/* --------------------------------------------------------------------------
-   5. Utilità
-   -------------------------------------------------------------------------- */
+.prose a { text-decoration: underline; }
 
 /* .visually-hidden — testo solo per screen reader */
 .visually-hidden {
