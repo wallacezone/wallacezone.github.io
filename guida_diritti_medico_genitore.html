@@ -293,8 +293,8 @@
 {
   "meta": {
     "aggiornamento": "2026-11-25",
-    "areeComplete": [1],
-    "areeMancanti": [2, 3, 4],
+    "areeComplete": [1, 2],
+    "areeMancanti": [3, 4],
     "nomiAree": {
       "1": "Congedi e permessi",
       "2": "Il contratto della dirigenza (CCNL Area Sanità)",
@@ -362,6 +362,9 @@
     "inps95": { "titolo": "INPS, circolare n. 95 del 26/5/2025 (congedo parentale all'80%: secondo e terzo mese)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2025/05/Circolare_14931/Allegati/16094_Circolare-numero-95-del-26-05-2025.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-25" },
     "inps251": { "titolo": "INPS, messaggio n. 251 del 26/1/2026 (congedo parentale fino a 14 anni)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2026/01/Circolare_15144/Allegati/16535_Messaggio-numero-251-del-26-01-2026.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-25" },
     "aran-parere": { "titolo": "ARAN, parere su retribuzione al 100% dei primi 30 giorni oltre i 6 anni (riportato da Anaao)", "url": "https://www.anaao.it/content.php?cont=38975", "lettoDa": "Solo il commento Anaao: il testo del parere ARAN non è stato trovato. Usato come indizio", "verificato": "2026-11-25" },
+    "ccnl2019": { "titolo": "CCNL Area Sanità 19 dicembre 2019 (triennio 2016-2018)", "url": "https://www.aranagenzia.it/documento_pubblico/contratto-collettivo-nazionale-di-lavoro-dellarea-sanita-triennio-2016-2018/", "lettoDa": "Copia del testo ARAN pubblicata dall'Università di Perugia (unipg.it/files/pagine/1275/ccnl-2016-2018.pdf); pagina ufficiale ARAN verificata. Artt. 45 e 110 ancora vigenti", "verificato": "2026-11-25" },
+    "l81": { "titolo": "L. 22 maggio 2017, n. 81 (lavoro agile)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2017-05-22;81~art18", "lettoDa": "Normattiva, testo vigente dell'art. 18 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
+    "dlgs81": { "titolo": "D.Lgs. 15 giugno 2015, n. 81 (part-time)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2015-06-15;81~art8", "lettoDa": "Normattiva, testo vigente dell'art. 8 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
     "cortecost115": { "titolo": "Corte costituzionale, sentenza n. 115/2025 (congedo di paternità alla madre intenzionale in coppia di donne)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2001-03-26;151~art27bis", "lettoDa": "Nota di aggiornamento (52) all'art. 27-bis su Normattiva", "verificato": "2026-11-25" }
   },
   "regole": [
@@ -553,6 +556,117 @@
       "incerta": true,
       "lettura": "Dopo la scadenza del contratto l'indennità (80%) la paga l'INPS: il dirigente a termine è assicurato per la maternità all'INPS.",
       "alternativa": "Alcune Aziende continuano a pagare loro fino alla fine del congedo. Non ho trovato una circolare INPS o della Funzione Pubblica recente sul dirigente SSN a termine: chiedi all'ufficio del personale chi paga e in che misura."
+    },
+    {
+      "id": "ccnl-economico",
+      "area": 2,
+      "titolo": "Cosa aggiunge il CCNL alla legge (sintesi economica)",
+      "chi": "entrambi",
+      "aChi": "Al dirigente medico e sanitario dipendente di Aziende ed Enti del SSN.",
+      "durata": "Maternità, interdizione, paternità obbligatoria e alternativa: retribuzione intera invece dell'80% (o del 100% per la paternità). Congedo parentale: i primi {{p.parentale.ccnlGiorni100}} giorni per la coppia al 100% invece del 30%/80%, senza riduzione di ferie e tredicesima. Malattia del figlio sotto i 3 anni: {{p.malattiaFiglio.ccnlGiorniAnno100}} giorni l'anno al 100% per la coppia invece di zero. Questi giorni fanno parte dei congedi di legge: non sono giorni di assenza in più.",
+      "finestra": "Per il congedo parentale, per tutta la finestra di legge (oggi 14 anni). Per la malattia del figlio, fino ai 3 anni.",
+      "retribuzione": "«Retribuzione individuale mensile per particolari istituti»: stipendio tabellare, indennità di specificità medica, retribuzione di posizione, esclusività, indennità di struttura complessa e di rischio radiologico se spettanti, retribuzione di risultato. Non le guardie, la pronta disponibilità, gli straordinari.",
+      "comeChiedere": "Non serve una domanda a parte: l'Azienda applica il CCNL alla domanda di congedo.",
+      "fonti": [ { "f": "ccnl2024", "art": "41; 59 c. 2" }, { "f": "ccnl2026", "art": "3" }, { "f": "tu151", "art": "2" } ],
+      "dataDecisiva": "Data del congedo (vale il CCNL in vigore in quel momento).",
+      "regime": "Art. 41 CCNL 23/1/2024, confermato dal CCNL 27/2/2026 (art. 3); ha sostituito l'art. 44 del CCNL 19/12/2019 con contenuto analogo.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "guardie",
+      "area": 2,
+      "titolo": "Guardie notturne e pronta disponibilità",
+      "chi": "entrambi",
+      "aChi": "A tutti i dirigenti, esclusi i direttori di struttura complessa salvo carenza di personale.",
+      "durata": "Il CCNL non prevede esoneri specifici per i genitori: valgono quelli di legge (art. 53 D.Lgs. 151/2001, vedi «Lavoro notturno»). Limiti per tutti: in media non più di 5 guardie notturne al mese nel quadrimestre, non più di 10 turni di pronta disponibilità al mese nel quadrimestre, non più di 12 servizi complessivi (guardie più pronte disponibilità) al mese nel bimestre.",
+      "finestra": "—",
+      "retribuzione": "Guardie: 100 euro a turno (120 in pronto soccorso). Pronta disponibilità: 2 euro l'ora. Nei congedi questi compensi non sono dovuti.",
+      "comeChiedere": "Chi ha diritto all'esonero dal lavoro notturno lo comunica per iscritto all'Azienda in tempo per i turni.",
+      "fonti": [ { "f": "ccnl2024", "art": "29 cc. 2-3; 30 cc. 2-3, 6-7" }, { "f": "tu151", "art": "53" } ],
+      "dataDecisiva": "Età del figlio alla data del turno.",
+      "regime": "Artt. 29-30 CCNL 23/1/2024, non modificati dal CCNL 27/2/2026.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "La pronta disponibilità notturna rientra nel divieto per la madre fino al primo anno e nell'esonero fino ai 3 anni, perché la chiamata in servizio è lavoro tra le 24 e le 6 che l'Azienda non può escludere in anticipo.",
+      "alternativa": "La pronta disponibilità in sé non è lavoro (lo è solo la chiamata): l'Azienda potrebbe programmarla sostenendo che il divieto scatta solo se c'è la chiamata. Non ho trovato una norma, una circolare o un orientamento ARAN che chiuda la questione: chiedi all'Azienda di escluderla per iscritto."
+    },
+    {
+      "id": "orario-flessibile",
+      "area": 2,
+      "titolo": "Orario flessibile e ferie estive",
+      "chi": "entrambi",
+      "aChi": "Al dirigente con figli minori di 12 anni (priorità nell'orario flessibile), con figli con DSA nel primo ciclo scolastico, con figli in età di obbligo scolastico (ferie), alle famiglie monoparentali e alle coppie di dirigenti entrambi turnisti.",
+      "durata": "Priorità nell'impiego flessibile dell'orario, se compatibile con l'organizzazione. Almeno 15 giorni lavorativi continuativi di ferie tra il 15 giugno e il 15 settembre per chi ha figli in età di obbligo scolastico (per gli altri tra il 1° giugno e il 30 settembre).",
+      "finestra": "Fino ai 12 anni del figlio (orario); finché il figlio è in età di obbligo scolastico (ferie).",
+      "retribuzione": "Nessun effetto sulla retribuzione.",
+      "comeChiedere": "Richiesta al direttore della struttura nella programmazione di turni e ferie.",
+      "fonti": [ { "f": "ccnl2024", "art": "27 c. 10 lett. g, h, i" }, { "f": "ccnl2026", "art": "9 c. 10" } ],
+      "dataDecisiva": "Età del figlio al momento della programmazione.",
+      "regime": "Ferie: art. 9 CCNL 27/2/2026 (in vigore dalla pubblicazione, GU 7/4/2026), che ha portato i 15 giorni a «lavorativi». Orario: art. 27 CCNL 23/1/2024.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "lavoro-agile",
+      "area": 2,
+      "titolo": "Lavoro agile",
+      "chi": "entrambi",
+      "aChi": "A tutti i dirigenti, anche a tempo determinato o part-time, per le attività che l'Azienda individua come compatibili. Esclusi i lavori in turno e le attività che richiedono presenza fisica: per il medico di reparto è raro.",
+      "durata": "Per legge l'Azienda che stipula accordi di lavoro agile deve dare priorità ai genitori con figli fino a 12 anni, o senza limite di età se il figlio ha una disabilità (L. 104/1992 art. 3 c. 3). Chi lo chiede non può essere sanzionato, trasferito o penalizzato.",
+      "finestra": "Fino ai 12 anni del figlio (senza limite con disabilità).",
+      "retribuzione": "Stessa retribuzione; niente compensi legati ai turni non svolti.",
+      "comeChiedere": "Accordo individuale scritto con l'Azienda.",
+      "fonti": [ { "f": "l81", "art": "art. 18 c. 3-bis" }, { "f": "ccnl2024", "art": "93; 94" } ],
+      "dataDecisiva": "Età del figlio alla richiesta.",
+      "regime": "Priorità in vigore dal 13/8/2022 (D.Lgs. 105/2022).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "part-time",
+      "area": 2,
+      "titolo": "Part-time (rapporto a impegno orario ridotto)",
+      "chi": "entrambi",
+      "aChi": "Ai dirigenti con rapporto esclusivo. Non compatibile con un incarico gestionale (viene revocato e sostituito con un incarico professionale); la libera professione intramuraria è sospesa.",
+      "durata": "Due strade. (1) Su domanda per assistere figli fino a 8 anni: l'Azienda decide entro 60 giorni, nei limiti del 3% dei posti (elevabile al 7% dal contratto integrativo) e se il servizio non ne risente. (2) Come diritto, una sola volta, al posto del congedo parentale o nei limiti del congedo ancora spettante, con riduzione dell'orario non oltre il 50%: l'Azienda deve concederlo entro 15 giorni, fuori dalle quote. Per legge c'è poi la priorità per chi ha un figlio convivente fino a 13 anni o con disabilità.",
+      "finestra": "Finché dura l'esigenza (strada 1) o nei limiti del congedo parentale residuo (strada 2).",
+      "retribuzione": "Proporzionale all'orario. Nel part-time verticale maternità e paternità spettano per intero; congedo parentale e riposi solo per i giorni che sarebbero lavorativi.",
+      "comeChiedere": "Domanda all'Azienda; si firma una modifica scritta del contratto individuale con durata e distribuzione dell'orario.",
+      "fonti": [ { "f": "ccnl2019", "art": "110 cc. 1-4, 6-10" }, { "f": "dlgs81", "art": "art. 8 cc. 5, 5-bis, 7" }, { "f": "ccnl2024", "art": "87 c. 9" } ],
+      "dataDecisiva": "Età del figlio alla domanda; congedo parentale residuo (strada 2).",
+      "regime": "Art. 110 CCNL 19/12/2019, ancora vigente (lo richiama il CCNL 23/1/2024).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "parentale-ore",
+      "area": 2,
+      "titolo": "Congedo parentale a ore e permessi orari",
+      "chi": "entrambi",
+      "aChi": "A ciascun genitore dirigente, a tempo pieno o ridotto.",
+      "durata": "Il congedo parentale si può prendere a ore. Il CCNL lo consente ma non fissa criteri di calcolo, quindi vale la regola di legge: metà dell'orario medio giornaliero del mese precedente, non cumulabile nello stesso giorno con altri permessi o riposi del D.Lgs. 151/2001. In più il CCNL dà 18 ore l'anno di assenza retribuita per motivi personali o familiari, senza documentazione.",
+      "finestra": "Come il congedo parentale.",
+      "retribuzione": "Le ore di congedo seguono la percentuale del congedo parentale; le 18 ore sono retribuite per intero.",
+      "comeChiedere": "Congedo a ore: preavviso di 2 giorni. Le 18 ore: richiesta compatibile con le esigenze di servizio.",
+      "fonti": [ { "f": "ccnl2019", "art": "45" }, { "f": "tu151", "art": "32" }, { "f": "ccnl2024", "art": "34" } ],
+      "dataDecisiva": "Data d'uso.",
+      "regime": "Art. 32 c. 1-ter in vigore dal 25/6/2015; art. 45 CCNL 19/12/2019 non sostituito.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "L'art. 45 del CCNL 19/12/2019 permette il congedo a ore ma rinvia alle «disposizioni attuative» senza fissare il calcolo: si applica quindi la regola di legge della metà dell'orario medio giornaliero (art. 32 c. 1-ter).",
+      "alternativa": "Se un contratto integrativo aziendale ha fissato criteri diversi (per esempio l'equivalenza di un certo numero di ore a una giornata), vale quello: chiedi all'ufficio del personale se esiste."
+    },
+    {
+      "id": "assegnazione-temporanea",
+      "area": 2,
+      "titolo": "Assegnazione temporanea vicino all'altro genitore",
+      "chi": "entrambi",
+      "aChi": "Al genitore dipendente pubblico con figli fino a 3 anni.",
+      "durata": "Fino a 3 anni complessivi, anche frazionati, in una sede nella stessa provincia o regione in cui lavora l'altro genitore, se c'è un posto vacante di pari livello e con l'assenso delle due amministrazioni. Il dissenso deve essere motivato e limitato a casi eccezionali.",
+      "finestra": "Fino ai 3 anni del figlio (adozione: primi 3 anni dall'ingresso, a qualsiasi età).",
+      "retribuzione": "La norma non regola il trattamento economico durante l'assegnazione: chiedilo alle due Aziende prima di accettare.",
+      "comeChiedere": "Domanda all'Azienda di appartenenza e a quella di destinazione: devono rispondere entro 30 giorni.",
+      "fonti": [ { "f": "tu151", "art": "42-bis" }, { "f": "tu151", "art": "45" } ],
+      "dataDecisiva": "Età del figlio alla domanda.",
+      "regime": "Testo in vigore dal 6/6/2024.",
+      "verificato": "2026-11-25"
     }
   ],
   "faq": [
@@ -561,6 +675,7 @@
     { "d": "Mio figlio ha compiuto 12 anni nel 2025 e non avevamo finito il congedo parentale: è perso?", "r": "No, se è ancora sotto i 14 anni. Dal 1° gennaio 2026 i genitori dipendenti con figli che non hanno compiuto 14 anni possono usare il congedo residuo (messaggio INPS 251/2026). I giorni usati fino al 31/12/2025 restavano soggetti al limite di 12 anni." },
     { "d": "Nei giorni di congedo parentale si contano anche sabati e domeniche?", "r": "Sì, se il congedo è continuativo, e anche se è frazionato quando tra un periodo e l'altro non torni al lavoro (art. 41 c. 5 CCNL 23/1/2024). Per non perdere i festivi, rientra al lavoro tra un periodo e l'altro." },
     { "d": "Posso rifiutare le guardie notturne?", "r": "La madre non può fare notti fino al primo anno del figlio. Dopo, fino ai 3 anni, la madre (o in alternativa il padre convivente) può chiedere di non essere adibita al lavoro notturno; il genitore unico affidatario fino ai 12 anni del figlio (art. 53 D.Lgs. 151/2001). Il CCNL non prevede un esonero ulteriore per i genitori." },
+    { "d": "Posso chiedere il part-time per stare con mio figlio?", "r": "Sì, in due modi. Su domanda, se il figlio ha fino a 8 anni: l'Azienda decide entro 60 giorni e può dire no se è raggiunta la quota (3%, fino al 7% con il contratto integrativo) o se il servizio ne risente. Come diritto, una sola volta, al posto del congedo parentale che ti resta, con riduzione non oltre il 50%: l'Azienda deve concederlo entro 15 giorni (art. 110 CCNL 19/12/2019; art. 8 c. 7 D.Lgs. 81/2015). In entrambi i casi perdi l'eventuale incarico gestionale e sospendi l'intramoenia." },
     { "d": "Chi paga: INPS o Azienda?", "r": "Per il dirigente SSN dipendente paga l'Azienda tutti i trattamenti (maternità, paternità, congedo parentale, riposi): le indennità di legge «corrispondono, per le pubbliche amministrazioni, ai trattamenti economici» di legge e contratto, e non possono essere inferiori (art. 2 c. 2 D.Lgs. 151/2001). La domanda va all'ufficio del personale, non all'INPS." }
   ]
 }
@@ -798,7 +913,7 @@
     var f = F[ref.f]; if (!f) return el('span', { text: ref.f });
     var url = f.url;
     if (f.articoli && ref.art) url += '~art' + ref.art.replace(/[^0-9a-z]/gi, '').toLowerCase();
-    var etichetta = f.articoli ? 'D.Lgs. 151/2001, art. ' + ref.art : f.titolo.split(',')[0] + (ref.art ? ', ' + ref.art : '');
+    var etichetta = f.articoli ? 'D.Lgs. 151/2001, art. ' + ref.art : f.titolo.split(' (')[0] + (ref.art ? ', ' + (/^\d/.test(ref.art) ? 'art. ' : '') + ref.art : '');
     return el('a', { href: url, rel: 'noopener', text: etichetta });
   }
 
@@ -851,9 +966,12 @@
     var tb = el('tbody'); righe.forEach(function (r) { var x = el('tr'); r.forEach(function (c, i) { x.appendChild(el(i ? 'td' : 'th', i ? { text: testo(c) } : { scope: 'row', text: testo(c) })); }); tb.appendChild(x); });
     t.appendChild(tb); return el('div', { class: 'table-wrap', role: 'region', 'aria-label': caption, tabindex: '0' }, [t]);
   }
-  var reg1 = dati.regole.filter(function (r) { return r.area === 1; });
-  tab.appendChild(tabella('Congedi e permessi: chi, quanto, come è pagato il dirigente SSN', ['Diritto', 'A chi', 'Quando', 'Retribuzione'],
-    reg1.map(function (r) { return [r.titolo, CHI[r.chi] || r.chi, r.finestra, r.retribuzione]; })));
+  dati.meta.areeComplete.forEach(function (n) {
+    var reg = dati.regole.filter(function (r) { return r.area === n; });
+    tab.appendChild(tabella(n + '. ' + dati.meta.nomiAree[n] + ': chi, quando, come è pagato il dirigente SSN', ['Diritto', 'A chi', 'Quando', 'Retribuzione'],
+      reg.map(function (r) { return [r.titolo, CHI[r.chi] || r.chi, r.finestra, r.retribuzione]; })));
+    tab.appendChild(el('p', { text: '' }));
+  });
   var pp = P.parentale;
   tab.appendChild(el('p', { text: '' }));
   tab.appendChild(tabella('Congedo parentale: quanti mesi e a quale percentuale', ['Situazione', 'Mesi in totale', 'Retribuiti', 'Entro'], [

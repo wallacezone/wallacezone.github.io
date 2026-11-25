@@ -50,9 +50,31 @@ Abbreviazioni: TU = D.Lgs. 151/2001; CCNL 2024 = CCNL Area Sanità 23/1/2024 (tr
 | Malattia del figlio sotto i 3 anni | Non retribuita | 30 gg/anno al 100% per la coppia | Il CCNL retribuisce una parte dei giorni di legge | CCNL art. 41 c. 4 |
 | Riposi giornalieri | 100% | — | Ore lavorative a tutti gli effetti | TU art. 39 c. 2 |
 
-## Aree 2, 3, 4
+## Area 2 — CCNL dirigenza medica (completa)
 
-Non ancora verificate in questa versione. La ricerca fatta finora (CCNL 2019 art. 110; CCNL 2024 artt. 29, 30, 34, 35, 85, 87, 93; L. 81/2017 art. 18 c. 3-bis; D.Lgs. 81/2015 art. 8; L. 104/1992 art. 33; TU artt. 33, 42, 42-bis) sarà riportata qui quando le aree saranno complete.
+Per ogni materia ho controllato quale CCNL la regola oggi. Il CCNL 2026 (art. 3) conferma tutto ciò che non sostituisce; sostituisce solo, tra le materie di questa guida, le ferie (art. 9). Il CCNL 2024 sostituisce l'art. 44 (congedi dei genitori) del CCNL 2019 con l'art. 41 e gli artt. 26-27 (guardia, pronta disponibilità) con gli artt. 29-30. Restano del CCNL 2019 l'art. 45 (congedo a ore) e l'art. 110 (part-time), richiamato dal CCNL 2024 (artt. 9 e 15).
+
+| Regola (id) | Articolo e comma | CCNL che la regola oggi | Condizioni | Data che decide |
+|---|---|---|---|---|
+| `ccnl-economico` | CCNL 2024 art. 41 cc. 2-5; art. 59 c. 2 lett. c; TU art. 2 c. 2 | CCNL 2024, confermato da CCNL 2026 art. 3 | Dirigente SSN dipendente | Data del congedo |
+| `guardie` | CCNL 2024 art. 29 cc. 2, 3, 5, 6; art. 30 cc. 2, 3, 6, 7; TU art. 53 | CCNL 2024 | Nessun esonero contrattuale per genitori (cercato in CCNL 2019, 2024, 2026: trovato solo l'esonero dai turni disagiati per le donne vittime di violenza, art. 36 c. 9 CCNL 2024) | Età del figlio al turno. **Da verificare**: pronta disponibilità notturna e art. 53 |
+| `orario-flessibile` | CCNL 2024 art. 27 c. 10 lett. g, h, i; CCNL 2026 art. 9 c. 10 | CCNL 2024 (orario), CCNL 2026 (ferie) | Compatibilità organizzativa | Età del figlio |
+| `lavoro-agile` | L. 81/2017 art. 18 c. 3-bis; CCNL 2024 artt. 93-94 | CCNL 2024 | Attività remotizzabili, esclusi i turni | Età del figlio (12 anni; senza limite con disabilità) |
+| `part-time` | CCNL 2019 art. 110 cc. 1-4, 6-10; D.Lgs. 81/2015 art. 8 cc. 5, 5-bis, 7; CCNL 2024 art. 87 c. 9 | CCNL 2019 | Rapporto esclusivo; niente incarico gestionale; intramoenia sospesa | Età del figlio (8 anni per la quota; 13 per la priorità di legge); congedo parentale residuo |
+| `parentale-ore` | CCNL 2019 art. 45; TU art. 32 cc. 1-bis, 1-ter, 3; CCNL 2024 art. 34 | CCNL 2019 + legge | — | Data d'uso. **Da verificare**: criteri aziendali |
+| `assegnazione-temporanea` | TU art. 42-bis; art. 45 c. 2-bis | Legge (solo dipendenti pubblici) | Posto vacante; assenso delle due amministrazioni | Età del figlio alla domanda |
+
+### Combinazione CCNL ↔ legge (area 2)
+
+| Istituto | Legge | CCNL | Combinazione |
+|---|---|---|---|
+| Lavoro notturno | Divieto fino a 1 anno, esonero fino a 3 / 12 anni (art. 53 TU) | Nessuna regola specifica | Vale la legge |
+| Lavoro agile | Priorità per figli ≤ 12 anni (art. 18 c. 3-bis L. 81/2017) | Esclusi i lavori in turno (art. 93 c. 2) | La priorità vale solo tra le attività che l'Azienda ha individuato come remotizzabili |
+| Part-time | Priorità figli ≤ 13 anni (art. 8 c. 5); diritto in luogo del congedo (art. 8 c. 7) | Quota 3-7% per figli ≤ 8 anni; diritto art. 8 c. 7 fuori quota (art. 110 c. 7) | Il CCNL recepisce il diritto di legge e aggiunge una via a quota |
+
+## Aree 3 e 4
+
+Non ancora verificate in questa versione. Ricerca già fatta per l'area 3: L. 104/1992 art. 33 (testo vigente dal 13/8/2022), TU artt. 26, 31, 33, 36, 42, 45, 50 (Normattiva).
 
 ## Confronto a campione (5 regole)
 
