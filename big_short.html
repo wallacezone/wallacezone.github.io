@@ -100,6 +100,22 @@
       letter-spacing: .01em;
     }
 
+    /* --- Avvertenze (inizio e fine) ---------------------------------------- */
+    .disclaimer {
+      margin: 1.25rem 0 0;
+      padding: .85rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-left: 4px solid var(--ink);
+      font-family: var(--font-sans);
+      font-size: .875rem;
+      line-height: 1.5;
+    }
+    .disclaimer p { margin: 0; }
+    .disclaimer p + p { margin-top: .6em; }
+    .disclaimer strong { font-weight: 700; }
+    .disclaimer--end { margin-top: 3rem; border-top: 3px double var(--ink); }
+
     /* --- Indice ------------------------------------------------------------- */
     .toc {
       font-family: var(--font-sans);
@@ -278,6 +294,9 @@
       <a class="back" href="./">← Tutte le pagine</a>
       <h1>La grande scommessa, spiegata davvero</h1>
       <p class="byline">Alessandro Barbieri · <time datetime="2026-11-25">25 novembre 2026</time></p>
+      <aside class="disclaimer" aria-label="Avvertenza">
+        <p><strong>Avvertenza.</strong> Questa guida è stata creata con Claude, l'intelligenza artificiale di Anthropic. Ha uno scopo esclusivamente didattico e di intrattenimento: non è una consulenza finanziaria né un invito a comprare o vendere strumenti finanziari.</p>
+      </aside>
     </header>
     <nav aria-labelledby="indice-titolo" class="toc" id="indice"><div class="toc__inner"><p class="toc__title" id="indice-titolo">Indice</p><ol class="toc__list"><li><a href="#in-breve">In breve</a></li><li><a href="#come-leggere">Come leggere questa guida</a></li><li><a href="#personaggi">I personaggi: nome nel film e persona reale</a></li><li><a href="#linea-del-tempo">Linea del tempo essenziale</a></li><li><a href="#capitolo-1"><span class="toc__num">Cap. 1</span> Anni '70-2000: quando un mutuo diventa un titolo da vendere</a></li><li><a href="#capitolo-2"><span class="toc__num">Cap. 2</span> 2000-2006: la fabbrica dei mutui subprime</a></li><li><a href="#capitolo-3"><span class="toc__num">Cap. 3</span> Le tranche e i rating: la torre di Jenga</a></li><li><a href="#capitolo-4"><span class="toc__num">Cap. 4</span> Il CDO: lo stufato di pesce di Anthony Bourdain</a></li><li><a href="#intermezzo"><span class="toc__num">Intermezzo</span> La catena degli incentivi: chi guadagnava cosa</a></li><li><a href="#capitolo-5"><span class="toc__num">Cap. 5</span> 2005: Michael Burry legge le carte e trova il modo di scommettere contro</a></li><li><a href="#capitolo-6"><span class="toc__num">Cap. 6</span> 2006: Lippmann, Eisman e i ragazzi del garage entrano in gioco</a></li><li><a href="#capitolo-7"><span class="toc__num">Cap. 7</span> Gennaio 2007: Las Vegas e il CDO sintetico</a></li><li><a href="#capitolo-8"><span class="toc__num">Cap. 8</span> 2006-2007: perché la scommessa era quasi impossibile da tenere</a></li><li><a href="#capitolo-9"><span class="toc__num">Cap. 9</span> Estate 2007 - 2008: l'incasso (e il suo prezzo morale)</a></li><li><a href="#capitolo-10"><span class="toc__num">Cap. 10</span> Epilogo: dal crollo di Wall Street alla crisi dell'euro</a></li><li><a href="#film-e-fatti">Dove il film si discosta dai fatti (o semplifica)</a></li><li><a href="#avvertenze">Avvertenze sulle cifre</a></li><li><a href="#domande-finali">Le tre domande finali (con risposta modello)</a></li><li><a href="#fonti">Fonti principali</a></li></ol></div></nav>
     <main id="contenuto" class="article">
@@ -838,6 +857,10 @@
 <li>Fed di St. Louis, <a href="https://fraser.stlouisfed.org/timeline/financial-crisis">cronologia della crisi finanziaria</a></li>
 </ul>
 </section>
+      <aside class="disclaimer disclaimer--end" aria-label="Avvertenza finale">
+        <p><strong>Prima di chiudere.</strong> Questo articolo è stato creato con Claude (Anthropic) per spiegare i meccanismi della crisi del 2008 raccontati nel film <em>La grande scommessa</em>. È un contenuto didattico e di intrattenimento: non costituisce consulenza finanziaria, legale o fiscale, né una raccomandazione di investimento.</p>
+        <p>Gli esempi inventati servono solo a far capire i meccanismi. I dati reali vengono dalle fonti citate, ma possono contenere errori o essere superati: per i dettagli conviene sempre risalire alle fonti originali. Per decisioni sui tuoi risparmi rivolgiti a un consulente abilitato e indipendente; ogni investimento comporta il rischio di perdere il capitale.</p>
+      </aside>
     </main>
   </div>
   <a class="to-index" href="#indice">↑ Indice</a>
