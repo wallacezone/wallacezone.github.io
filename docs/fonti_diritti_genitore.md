@@ -1,0 +1,118 @@
+# Matrice regola → fonte
+
+Guida: [`guida_diritti_medico_genitore.html`](../guida_diritti_medico_genitore.html). Le regole e i parametri della pagina stanno nel JSON `<script id="dati">`; questa tabella dice da dove viene ciascuna.
+
+Data di verifica: **25/11/2026** per le aree 1-3, **26/11/2026** per l'area 4.
+
+Abbreviazioni: TU = D.Lgs. 151/2001; CCNL 2024 = CCNL Area Sanità 23/1/2024 (triennio 2019-2021); CCNL 2026 = CCNL Area Sanità 27/2/2026 (triennio 2022-2024); CCNL 2019 = CCNL Area Sanità 19/12/2019 (triennio 2016-2018).
+
+## Da dove ho letto i testi
+
+| Fonte | Letta da | Note |
+|---|---|---|
+| TU, testo vigente | Normattiva, pagina di ogni articolo (`…;151~artN`), con note di aggiornamento | Lettura diretta. Ogni link della pagina apre l'articolo |
+| D.Lgs. 105/2022 | Effetti letti nel testo vigente del TU su Normattiva + circ. INPS 122/2022 | Non ho letto il decreto in sé: tutte le sue modifiche sono nel TU vigente |
+| L. 197/2022 c. 359; L. 213/2023 c. 179; L. 207/2024 cc. 217-218 | Note di aggiornamento (48), (49), (51) all'art. 34 TU su Normattiva, che riportano il testo delle clausole di decorrenza; circ. INPS 95/2025 | Lettura indiretta ma testuale |
+| L. 199/2025 cc. 219-220 | Testo vigente artt. 32, 33, 34, 36, 47 TU su Normattiva («Testo in vigore dal 1-1-2026»); messaggio INPS 251/2026 per il c. 219 | La pagina Normattiva della legge non ha caricato l'art. 1 dalla sandbox: il numero del c. 220 (malattia del figlio) viene da fonti secondarie (Ipsoa, Edotto) |
+| CCNL 2024 | Copia del testo in GU (SG n. 59 dell'11/3/2024) pubblicata da Anaao: `anaao.it/public/aaa_9348614_testogu.pdf` | Pagina ufficiale ARAN verificata (esiste ed è il triennio giusto); il testo l'ho letto dalla copia sindacale |
+| CCNL 2026 | Copia del testo firmato il 27/2/2026 pubblicata da Anaao: `anaao.it/public/aaa_2476166_2026.02.27-ccnl-area-sanita-2022-2024.pdf` | Art. 3 (Conferme): restano in vigore le norme del CCNL 2024 e precedenti non disapplicate. Non tocca congedi, guardie, pronta disponibilità, lavoro agile |
+| CCNL 2019 | Copia del testo ARAN pubblicata dall'Università di Perugia: `unipg.it/files/pagine/1275/ccnl-2016-2018.pdf` | Serve per l'area 2 (art. 110, part-time), ancora vigente: lo richiama il CCNL 2024 |
+| Nota DFP 27/3/2023 | PDF protocollato DFP-0020810-P pubblicato da lentepubblica.it | Copia della nota originale, destinataria un'Azienda socio-sanitaria |
+| Circ. INPS 122/2022 | PDF copia pubblicata dall'Università di Palermo | Link della pagina alla scheda INPS ufficiale |
+| Circ. INPS 95/2025, msg. INPS 251/2026 | PDF ufficiali INPS | Lettura diretta |
+| Parere ARAN sui 30 giorni oltre i 6 anni | Solo commento Anaao (`anaao.it/content.php?cont=38975`) | Indizio, non fonte primaria: il parere non l'ho trovato |
+| Cass. 17192/2024 (link 28 del file di partenza) | Banca dati pubblica della Cassazione (Italgiure) | Cass. civ. n. 17192/2024 è un'ordinanza della III sezione civile (21/6/2024) su una fornitura di funghi; la n. 17192/2024 penale è un'inammissibilità. Nessuna delle due riguarda i medici genitori. La pagina Anaao del link è riservata agli iscritti. **Non usata**: va chiesto ad Anaao a quale pronuncia si riferisce |
+
+## Area 1 — Congedi e permessi (completa)
+
+| Regola (id nel JSON) | Articolo e comma | Modificata da | Condizioni | Data che decide | Regime |
+|---|---|---|---|---|---|
+| `maternita` | TU art. 16 c. 1 lett. a-d, c. 1.1; art. 20 c. 1; art. 22 c. 1, 3; art. 2 c. 2. CCNL 2024 art. 41 c. 2, art. 59 c. 2 lett. c, art. 87 c. 9 | c. 1.1 da L. 145/2018 (dal 1/1/2019) | Dipendente; flessibilità e "tutto dopo" solo con attestazioni del ginecologo SSN e del medico competente | Data presunta e data effettiva del parto | Unico vigente |
+| `maternita-casi` | TU art. 16-bis; art. 16 c. 1-bis | D.Lgs. 80/2015 | Ricovero del neonato: una volta per figlio, certificato medico | Date di ricovero e dimissione | Dal 24/9/2015 |
+| `interdizione` | TU artt. 7, 8, 12, 17, 53 c. 1; CCNL 2024 art. 41 c. 2 (trattamento) | Art. 17 da D.L. 5/2012 | ASL per complicanze, ITL per rischi del lavoro | Accertamento gravidanza; parto (+7 mesi) | Dal 1/4/2012 |
+| `paternita` | TU art. 27-bis cc. 1-6; art. 29 c. 1; CCNL 2024 art. 41 c. 2; circ. INPS 122/2022 par. 2 e 2.2 | D.Lgs. 105/2022; Corte cost. 115/2025 | Padre dipendente; anche adottivo/affidatario; madre intenzionale in coppia di donne | Data presunta e data di nascita (adozione: ingresso) | Dal 13/8/2022 |
+| `paternita-alternativa` | TU art. 28 cc. 1, 1-bis, 2; art. 29 c. 2 | D.Lgs. 105/2022 (rubrica) | Morte, grave infermità, abbandono della madre, affidamento esclusivo | Data dell'evento | Dal 13/8/2022 |
+| `parentale` | TU art. 32 cc. 1, 1-bis, 1-ter, 2, 3, 4; art. 34 cc. 1, 3, 5; art. 35; CCNL 2024 art. 41 cc. 3, 5, 6, 7 | D.Lgs. 105/2022; L. 199/2025 c. 219 (14 anni) | Genitore dipendente; spetta anche se l'altro non ne ha diritto | Data d'uso (12 o 14 anni); nascita/ingresso | 12 anni per giorni fino al 31/12/2025; 14 anni dal 1/1/2026 (msg. INPS 251/2026: vale anche per figli che avevano già compiuto 12 anni) |
+| `parentale-80` | TU art. 34 c. 1; L. 197/2022 c. 359; L. 213/2023 c. 179; L. 207/2024 cc. 217-218; circ. INPS 95/2025 par. 2-3; nota DFP 27/3/2023; CCNL 2024 art. 41 c. 3 | Tre leggi di bilancio | Dipendenti; entro 6 anni; dentro i 3 mesi non trasferibili di ciascun genitore | Data di nascita/ingresso e fine maternità/paternità (anche obbligatoria) di un genitore dipendente | 0/1/2/3 mesi: tabella nella pagina. **Da verificare**: cumulo con i 30 gg CCNL |
+| `riposi` | TU artt. 39, 40, 41, 43, 45 | Corte cost. 104/2003 (art. 45) | Padre: lett. a-d dell'art. 40 | Nascita/ingresso | Unico vigente |
+| `malattia-figlio` | TU art. 47 cc. 1-6; art. 48; art. 49; art. 50; CCNL 2024 art. 41 cc. 4-5 | L. 199/2025 c. 220 (10 giorni, 14 anni) | Certificato del pediatra SSN | Data d'uso; età del figlio | 5 gg 3-8 anni fino al 31/12/2025; 10 gg 3-14 anni dal 1/1/2026. **Da verificare**: anno solare o di età |
+| `notte` | TU art. 53 cc. 1, 2 lett. a, b, b-bis, 3; CCNL 2024 art. 29 | D.Lgs. 105/2022 (lett. b-bis e c. 3-bis) | Esonero a richiesta | Nascita/ingresso, età | Dal 13/8/2022 |
+| `tutele` | TU art. 54 cc. 1, 3, 6, 7, 9; art. 56 | D.Lgs. 105/2022 | — | Inizio gravidanza; nascita | Dal 13/8/2022 |
+| `tempo-determinato` | TU art. 24 cc. 1-2; art. 54 c. 3 lett. c; CCNL 2024 art. 85 c. 1 lett. g | — | Contratto a termine | Scadenza del contratto rispetto alla maternità | **Da verificare**: chi paga dopo la scadenza |
+
+### Combinazione CCNL ↔ legge (area 1)
+
+| Istituto | Legge | CCNL dirigenza | Come si combinano | Fonte della combinazione |
+|---|---|---|---|---|
+| Maternità, paternità obbligatoria e alternativa | 80% (maternità), 100% (paternità) | Retribuzione art. 59 c. 2 lett. c | Il CCNL sostituisce l'indennità (art. 2 c. 2 TU: per le PA le indennità «corrispondono» ai trattamenti contrattuali e non possono essere inferiori) | TU art. 2 c. 2; CCNL 2024 art. 41 c. 2 |
+| Congedo parentale, primi 30 giorni | 30% o 80% | 100%, 30 giorni per la coppia | Fanno parte dei mesi di legge (non sono giorni in più di congedo). Sul mese all'80%: assorbito secondo DFP | Nota DFP 27/3/2023; CCNL art. 41 c. 3 («nell'ambito del congedo parentale») |
+| Congedo parentale, 2° e 3° mese all'80% | 80% | Nessuna previsione | Si applicano anche ai dirigenti SSN, pagati dall'Azienda | Circ. INPS 95/2025 (per i pubblici: «a cura dell'Amministrazione»); art. 2 c. 2 TU |
+| Malattia del figlio sotto i 3 anni | Non retribuita | 30 gg/anno al 100% per la coppia | Il CCNL retribuisce una parte dei giorni di legge | CCNL art. 41 c. 4 |
+| Riposi giornalieri | 100% | — | Ore lavorative a tutti gli effetti | TU art. 39 c. 2 |
+
+## Area 2 — CCNL dirigenza medica (completa)
+
+Per ogni materia ho controllato quale CCNL la regola oggi. Il CCNL 2026 (art. 3) conferma tutto ciò che non sostituisce; sostituisce solo, tra le materie di questa guida, le ferie (art. 9). Il CCNL 2024 sostituisce l'art. 44 (congedi dei genitori) del CCNL 2019 con l'art. 41 e gli artt. 26-27 (guardia, pronta disponibilità) con gli artt. 29-30. Restano del CCNL 2019 l'art. 45 (congedo a ore) e l'art. 110 (part-time), richiamato dal CCNL 2024 (artt. 9 e 15).
+
+| Regola (id) | Articolo e comma | CCNL che la regola oggi | Condizioni | Data che decide |
+|---|---|---|---|---|
+| `ccnl-economico` | CCNL 2024 art. 41 cc. 2-5; art. 59 c. 2 lett. c; TU art. 2 c. 2 | CCNL 2024, confermato da CCNL 2026 art. 3 | Dirigente SSN dipendente | Data del congedo |
+| `guardie` | CCNL 2024 art. 29 cc. 2, 3, 5, 6; art. 30 cc. 2, 3, 6, 7; TU art. 53 | CCNL 2024 | Nessun esonero contrattuale per genitori (cercato in CCNL 2019, 2024, 2026: trovato solo l'esonero dai turni disagiati per le donne vittime di violenza, art. 36 c. 9 CCNL 2024) | Età del figlio al turno. **Da verificare**: pronta disponibilità notturna e art. 53 |
+| `orario-flessibile` | CCNL 2024 art. 27 c. 10 lett. g, h, i; CCNL 2026 art. 9 c. 10 | CCNL 2024 (orario), CCNL 2026 (ferie) | Compatibilità organizzativa | Età del figlio |
+| `lavoro-agile` | L. 81/2017 art. 18 c. 3-bis; CCNL 2024 artt. 93-94 | CCNL 2024 | Attività remotizzabili, esclusi i turni | Età del figlio (12 anni; senza limite con disabilità) |
+| `part-time` | CCNL 2019 art. 110 cc. 1-4, 6-10; D.Lgs. 81/2015 art. 8 cc. 5, 5-bis, 7; CCNL 2024 art. 87 c. 9 | CCNL 2019 | Rapporto esclusivo; niente incarico gestionale; intramoenia sospesa | Età del figlio (8 anni per la quota; 13 per la priorità di legge); congedo parentale residuo |
+| `parentale-ore` | CCNL 2019 art. 45; TU art. 32 cc. 1-bis, 1-ter, 3; CCNL 2024 art. 34 | CCNL 2019 + legge | — | Data d'uso. **Da verificare**: criteri aziendali |
+| `assegnazione-temporanea` | TU art. 42-bis; art. 45 c. 2-bis | Legge (solo dipendenti pubblici) | Posto vacante; assenso delle due amministrazioni | Età del figlio alla domanda |
+
+### Combinazione CCNL ↔ legge (area 2)
+
+| Istituto | Legge | CCNL | Combinazione |
+|---|---|---|---|
+| Lavoro notturno | Divieto fino a 1 anno, esonero fino a 3 / 12 anni (art. 53 TU) | Nessuna regola specifica | Vale la legge |
+| Lavoro agile | Priorità per figli ≤ 12 anni (art. 18 c. 3-bis L. 81/2017) | Esclusi i lavori in turno (art. 93 c. 2) | La priorità vale solo tra le attività che l'Azienda ha individuato come remotizzabili |
+| Part-time | Priorità figli ≤ 13 anni (art. 8 c. 5); diritto in luogo del congedo (art. 8 c. 7) | Quota 3-7% per figli ≤ 8 anni; diritto art. 8 c. 7 fuori quota (art. 110 c. 7) | Il CCNL recepisce il diritto di legge e aggiunge una via a quota |
+
+## Area 3 — Disabilità, adozione e affidamento (completa)
+
+| Regola (id) | Articolo e comma | Modificata da | Condizioni | Data che decide | Regime |
+|---|---|---|---|---|---|
+| `disabilita-prolungamento` | TU art. 33 cc. 1, 3, 4; art. 34 c. 2; art. 35 c. 1 | L. 199/2025 (14 anni) | Disabilità grave (L. 104 art. 4 c. 1); figlio non ricoverato a tempo pieno | Data d'uso (età del figlio) | 3 anni totali compresi i mesi dell'art. 32; 30% |
+| `disabilita-permessi` | TU art. 42 cc. 1, 2, 4, 6; artt. 43-44; L. 104/1992 art. 33 cc. 2, 3, 4, 6-bis; CCNL 2024 art. 35 cc. 1-3 | D.Lgs. 105/2022 (L. 104 art. 33) | Alternatività tra le misure sotto i 3 anni; mai negli stessi giorni dei due genitori (TU art. 42 c. 5-bis) | Età del figlio | Dal 13/8/2022 |
+| `congedo-straordinario` | TU art. 42 cc. 5, 5-bis, 5-ter, 5-quater, 5-quinquies | D.Lgs. 105/2022; Corte cost. 197/2025 | Ordine dei familiari; 2 anni per persona e per vita lavorativa | Data della domanda (30 giorni) | Tetto 43.579,06 € (2011) rivalutato ISTAT. **Da verificare**: importo 2026 |
+| `adozione-maternita` | TU art. 26 cc. 1-6-bis; art. 31; CCNL 2024 art. 41 c. 2 | D.Lgs. 80/2015 | Provvedimento di adozione/affidamento; certificazione ente per l'estero | Ingresso in famiglia / in Italia | 5 mesi (affidamento 3) entro 5 mesi. **Da verificare**: CCNL 100% o legge 80% |
+| `adozione-altri` | TU art. 27-bis c. 4; art. 36 cc. 1-3; art. 45 cc. 1, 2, 2-bis; art. 50 cc. 1-3; art. 53 c. 2 lett. b-bis; art. 54 c. 9; circ. INPS 122/2022 par. 2.2; msg. INPS 251/2026 | L. 199/2025 (14 anni dall'ingresso) | — | Ingresso; nascita (limite 18 anni) | **Da verificare**: art. 50 c. 2 non aggiornato (8 anni) |
+
+## Area 4 — Previdenza, ENPAM e bonus (completa, verificata il 26/11/2026)
+
+| Regola (id) | Fonte e punto | Letta da | Condizioni | Data che decide | Regime |
+|---|---|---|---|---|---|
+| `enpam-maternita` | Regolamento ENPAM genitorialità artt. 2, 5, 6; TU artt. 70-71; pagina ENPAM Maternità; pagina Importi | PDF e pagine ufficiali ENPAM; Normattiva | Esclusa se c'è trattamento di legge o contratto per lo stesso evento (art. 6 c. 1); integrazione fino al minimo e a 5 mensilità (art. 6 c. 2) | Data effettiva del parto | Minimo 6.045,10 €, massimo 30.225,50 € (2026) |
+| `enpam-paternita-rischio` | Regolamento ENPAM artt. 7, 8; TU art. 70 c. 3-ter | PDF ENPAM; Normattiva | Paternità solo con madre libera professionista; rischio solo senza altra tutela | Nascita / evento | Da marzo 2020 |
+| `enpam-sussidio` | Bando ENPAM 2026 artt. 3-5; Regolamento art. 10; pagina Importi | PDF ufficiale ENPAM | Reddito familiare medio triennale ≤ 62.753,60 € + 7.844,20 € per familiare; Quota B: 3 anni in 10, uno nel 2022-2024 | Nascita/ingresso; date del bando | Bando 2026: 2.000 € + 3.000 €; domande 13/4-10/9/2026. **Da verificare**: bando 2027 |
+| `enpam-quote` | Pagine ENPAM Quota A, libera professione, contributo volontario; Regolamento art. 9 | Sito ENPAM | — | Età | Importi della pagina al 26/11/2026 (anno non indicato sulla pagina) |
+| `figurativi` | TU artt. 25, 35 cc. 1-4, 42 c. 5-ter, 44, 49 | Normattiva | Dipendenti pubblici: figurativa per la differenza (art. 35 c. 3) | Data del congedo | **Da verificare**: malattia figlio 8-14 anni (art. 49 non aggiornato) |
+| `riscatti` | TU art. 25 c. 2; art. 35 c. 5 | Normattiva | 5 anni di contributi da lavoro al momento della domanda | Data della domanda | Invariato |
+| `ricongiunzione` | L. 45/1990 artt. 1-2; D.Lgs. 42/2006 art. 1; circ. INPS 140/2017; pagina ENPAM Ricongiunzione | Normattiva; PDF INPS; sito ENPAM | Cumulo: non titolari di pensione diretta; totalizzazione: 65+20 o 40 anni | Domanda / pensione | Cumulo con le casse dal 1/1/2017. Il testo della L. 228/2012 c. 239 non l'ho letto direttamente (Normattiva non carica l'art. 1): riportato tramite circ. INPS 140/2017 |
+| `assegno-unico` | Circ. INPS 7/2026 par. 1-3 e allegato 1 | PDF ufficiali INPS | ISEE neutralizzato dall'AUU | ISEE del mese | 2026: 203,8 → 58,3 € per figlio minore; +50% sotto 1 anno |
+| `bonus-nido` | Circ. INPS 29/2026 par. 2-3 | PDF ufficiale INPS | Figlio sotto 3 anni; non cumulabile con la detrazione | Nascita prima/dal 2024; ISEE | 3.600/1.500 € (nati dal 2024); 3.000/2.500/1.500 € (prima) |
+| `bonus-nuovi-nati` | Circ. INPS 45/2026 par. 2-4 | PDF ufficiale INPS | ISEE ≤ 40.000 €; residenza | Evento nel 2026; 120 giorni | L. 207/2024 cc. 206-208 |
+| `bonus-mamme` | Circ. INPS 106/2026 par. 1-4; circ. INPS 27/2024 par. 1-2 | Copie dei PDF INPS (informazionefiscale.it, dirittobancario.it): non ho trovato l'URL ufficiale dei due PDF | Bonus: redditi da lavoro ≤ 40.000 €; esonero: tempo indeterminato, pubblico o privato, 3 figli | Mesi di lavoro 2026 | Bonus 60 €/mese (2026); esonero fino al 31/12/2026 |
+
+### Combinazione ENPAM ↔ Azienda
+
+| Prestazione | Azienda (dirigente SSN) | ENPAM | Combinazione |
+|---|---|---|---|
+| Maternità | Retribuzione intera 5 mesi | Indennità 80% di 5/12 del reddito ENPAM | Non cumulabili; ENPAM integra solo fino al minimo legale (Regolamento art. 6 c. 2) |
+| Gravidanza a rischio | Retribuzione intera (interdizione art. 17) | Indennità fino a 6 mensilità | Non cumulabili (art. 8 c. 2) |
+| Paternità | 10 giorni al 100%; alternativa come maternità | Solo se la madre è libera professionista | Indipendenti |
+| Sussidio nuovi nati | — | Bando annuale | Nessuna incompatibilità dichiarata da ENPAM (bando 2026 art. 4) |
+
+## Confronto a campione (5 regole)
+
+| # | Regola | Riferimento | Esito |
+|---|---|---|---|
+| 1 | Mesi all'80%, regime 3 mesi per nato nel 2024 con maternità finita nel 2025 | Circ. INPS 95/2025, esempio A | Coincide (test 7) |
+| 2 | Mesi all'80% dentro i 3 mesi non trasferibili; mese residuo alla madre | Circ. INPS 95/2025, esempio B | Coincide (test 20) |
+| 3 | Fine della paternità obbligatoria nel 2025 dà diritto a 3 mesi | Circ. INPS 95/2025, esempio C | Coincide (test 21) |
+| 4 | Residuo del padre con giorni usati prima del 13/8/2022 | Circ. INPS 122/2022, esempio 1 | Totale coincide (107 giorni); la divisione per fasce no (47 al 30% invece di 90), perché il motore presume che i giorni già usati fossero indennizzati. Limite dichiarato con avviso nella pagina (test 22) |
+| 5 | 30 giorni al 100% per la coppia; 30 giorni/anno al 100% per malattia del figlio sotto i 3 anni | CCNL 2024 art. 41 cc. 3-4 (testo GU) | Coincide (test 10 e parametri `ccnlGiorni100`, `ccnlGiorniAnno100`) |

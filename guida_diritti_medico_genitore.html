@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Diritti del medico genitore nel SSN</title>
+  <meta name="description" content="Guida verificata ai diritti del dirigente medico del SSN che diventa genitore: congedi, permessi, CCNL Area Sanità, con fonti datate e una timeline personale.">
+  <link rel="icon" href="data:,">
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/bricolage-grotesque-latin.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
+    @font-face { font-family: "Figtree"; src: url("assets/fonts/figtree-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+    :root {
+      color-scheme: light dark;
+      --paper: #fff7e8; --surface: #ffffff; --ink: #141414; --muted: #4a4540; --line: #141414; --shadow: #141414;
+      --tone: #ff7a52; --on-tone: #141414; --tint: #ffe3d8;
+      --ok: #1f7a4d; --ok-tint: #d6f6e7; --warn: #8a5a00; --warn-tint: #fff2bd; --off: #5c5650; --off-tint: #eee7da;
+      --t100: #1f7a4d; --t80: #2f4bff; --t30: #ff7a52; --t0: #8f877d;
+      --focus: #141414;
+      --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, sans-serif;
+      --font-text: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.88rem);
+      --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+      --step-1: clamp(1.2rem, 1.1rem + 0.4vw, 1.45rem);
+      --step-2: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+      --step-3: clamp(2.2rem, 1.4rem + 3.2vw, 4.4rem);
+      --space-2xs: 0.5rem; --space-xs: clamp(0.75rem, 0.5rem + 0.8vw, 1.25rem); --space-s: clamp(1rem, 0.85rem + 0.8vw, 1.6rem); --space-m: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+      --border: 2.5px solid var(--line); --radius: 22px; --radius-s: 12px; --measure: 42em;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #15130f; --surface: #221f1a; --ink: #f5eedf; --muted: #cfc6b5; --line: #f5eedf; --shadow: #57503f;
+        --tint: #3b221a; --ok: #7fe0ad; --ok-tint: #173a2a; --warn: #ffd23f; --warn-tint: #3a3014; --off: #cfc6b5; --off-tint: #2c2822;
+        --t100: #35d08e; --t80: #8fa0ff; --t30: #ff9a7a; --t0: #a89f92; --focus: #ffd23f;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 1rem; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-text); font-size: var(--step-0); line-height: 1.55; }
+    h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; margin: 0; }
+    p, ul, ol, dl, table, details, fieldset { margin: 0; }
+    a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: var(--paper); padding: 0.6rem 1rem; border-radius: 999px; z-index: 10; }
+    .skip-link:focus { top: 1rem; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .page { max-width: 76rem; margin: 0 auto; padding: var(--space-s) 16px var(--space-m); display: grid; gap: var(--space-s); }
+    .tile { background: var(--surface); border: var(--border); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--shadow); padding: var(--space-s); min-width: 0; }
+    .hero { background: var(--tone); color: var(--on-tone); }
+    @media (prefers-color-scheme: dark) { .hero { --shadow: var(--tone); color: #141414; border-color: #141414; } }
+    .hero__back { font-weight: 700; }
+    .hero__kicker { font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: var(--step--1); margin-top: var(--space-xs); }
+    .hero h1 { font-size: var(--step-3); font-weight: 800; letter-spacing: -0.02em; margin-top: 0.3rem; }
+    .hero__lede { max-width: var(--measure); font-size: var(--step-1); line-height: 1.35; margin-top: var(--space-xs); }
+    .hero__meta { margin-top: var(--space-xs); display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill { display: inline-block; border: 2px solid currentColor; border-radius: 999px; padding: 0.1rem 0.7rem; font-size: var(--step--1); font-weight: 700; background: transparent; }
+    .warning { background: var(--warn-tint); }
+    .layout { display: grid; gap: var(--space-s); grid-template-columns: minmax(0, 1fr); }
+    @media (min-width: 64rem) { .layout { grid-template-columns: 16rem minmax(0, 1fr); align-items: start; } .toc { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; } }
+    .toc h2 { font-size: var(--step-1); }
+    .toc ol { padding-left: 1.2em; margin-top: 0.5rem; display: grid; gap: 0.3rem; }
+    .toc a { text-decoration: none; } .toc a:hover { text-decoration: underline; }
+    .content { display: grid; gap: var(--space-s); min-width: 0; }
+    .section > h2 { font-size: var(--step-2); }
+    .section > * + * { margin-top: var(--space-xs); }
+    .section p, .section li { max-width: var(--measure); }
+    .section ul, .section ol { padding-left: 1.25em; }
+    .area-status { font-size: var(--step--1); font-weight: 700; }
+    .cards { display: grid; gap: var(--space-xs); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+    .card { border: 2px solid var(--line); border-radius: var(--radius-s); padding: var(--space-xs); background: var(--surface); }
+    .card h3 { font-size: var(--step-1); }
+    .card dl { display: grid; gap: 0.35rem; margin-top: 0.6rem; }
+    .card dt { font-weight: 700; font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    .card dd { margin: 0 0 0.3rem; }
+    .who { display: inline-block; margin-top: 0.35rem; font-size: var(--step--1); font-weight: 700; padding: 0.05rem 0.6rem; border-radius: 999px; background: var(--tint); border: 1.5px solid var(--line); }
+    .flag { display: inline-block; font-size: var(--step--1); font-weight: 700; padding: 0.05rem 0.6rem; border-radius: 999px; background: var(--warn-tint); color: var(--ink); border: 1.5px solid var(--line); margin-left: 0.3rem; }
+    .uncertain { margin-top: 0.5rem; padding: 0.6rem 0.8rem; border-left: 5px solid var(--warn); background: var(--warn-tint); border-radius: 6px; }
+    .refs { font-size: var(--step--1); }
+    .table-wrap { overflow-x: auto; border: 2px solid var(--line); border-radius: var(--radius-s); }
+    table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95em; }
+    caption { text-align: left; font-weight: 700; padding: 0.6rem 0.8rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.8rem; border-top: 1.5px solid var(--line); }
+    thead th { background: var(--tint); }
+    form { display: grid; gap: var(--space-xs); }
+    fieldset { border: 2px solid var(--line); border-radius: var(--radius-s); padding: var(--space-xs); display: grid; gap: 0.8rem; min-width: 0; }
+    legend { font-family: var(--font-display); font-weight: 700; padding: 0 0.4rem; }
+    .fields { display: grid; gap: 0.8rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+    label { font-weight: 700; display: block; }
+    .hint { font-size: var(--step--1); color: var(--muted); font-weight: 400; display: block; }
+    input, select { font: inherit; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 10px; padding: 0.45rem 0.6rem; width: 100%; min-height: 2.75rem; }
+    .check { display: flex; gap: 0.6rem; align-items: flex-start; font-weight: 700; }
+    .check input { width: 1.4rem; min-height: 1.4rem; margin-top: 0.15rem; flex: none; }
+    button { font: inherit; font-weight: 700; color: var(--on-tone); background: var(--tone); border: var(--border); border-radius: 999px; padding: 0.6rem 1.4rem; box-shadow: 3px 3px 0 var(--shadow); cursor: pointer; min-height: 2.75rem; }
+    button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--shadow); }
+    .result { display: grid; gap: var(--space-xs); }
+    .result h3 { font-size: var(--step-1); }
+    .status { display: inline-block; font-size: var(--step--1); font-weight: 700; padding: 0.05rem 0.55rem; border-radius: 999px; border: 1.5px solid var(--line); }
+    .status--attivo { background: var(--ok-tint); } .status--futuro { background: var(--warn-tint); } .status--scaduto { background: var(--off-tint); }
+    .rights { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+    .rights li { border: 2px solid var(--line); border-radius: var(--radius-s); padding: 0.7rem 0.9rem; }
+    .rights li p { max-width: none; }
+    .bar { display: flex; height: 1.6rem; border: 2px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 0.4rem; }
+    .bar span { display: block; height: 100%; }
+    .seg-100 { background: var(--t100); } .seg-80 { background: var(--t80); } .seg-30 { background: var(--t30); } .seg-0 { background: repeating-linear-gradient(45deg, var(--t0) 0 6px, transparent 6px 12px); }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: var(--step--1); margin-top: 0.4rem; list-style: none; padding: 0; }
+    .legend i { display: inline-block; width: 0.9rem; height: 0.9rem; border: 1.5px solid var(--line); border-radius: 3px; vertical-align: -0.1rem; margin-right: 0.3rem; }
+    .timeline { list-style: none; padding: 0; border-left: 3px solid var(--line); margin-left: 0.5rem; display: grid; gap: 0.7rem; }
+    .timeline li { position: relative; padding-left: 1.1rem; }
+    .timeline li::before { content: ""; position: absolute; left: -0.6rem; top: 0.4rem; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--tone); border: 2px solid var(--line); }
+    .timeline time { font-weight: 700; font-family: var(--font-display); }
+    .faq details { border: 2px solid var(--line); border-radius: var(--radius-s); padding: 0.6rem 0.9rem; }
+    .faq details + details { margin-top: 0.6rem; }
+    .faq summary { font-weight: 700; cursor: pointer; }
+    .faq details > p { margin-top: 0.5rem; }
+    .sources li { margin-top: 0.4rem; }
+    footer.tile p + p { margin-top: 0.6rem; }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+    @media print { .toc, form, .skip-link { display: none; } .tile { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+  <div class="page">
+    <header class="tile hero">
+      <a class="hero__back" href="./">← Tutte le pagine</a>
+      <p class="hero__kicker">Genitori e lavoro</p>
+      <h1>Diritti del medico genitore nel SSN</h1>
+      <p class="hero__lede">Cosa può chiedere un dirigente medico dipendente del Servizio sanitario nazionale che diventa madre o padre: quando, con quale retribuzione e a chi. Ogni regola rimanda al testo di legge o di contratto ed è datata.</p>
+      <p class="hero__meta"><span class="pill" id="pill-aggiornamento">Aggiornata al …</span> <span class="pill" id="pill-aree">Aree verificate: …</span></p>
+    </header>
+
+    <aside class="tile warning" aria-label="Avvertenza">
+      <p><strong>Pagina informativa.</strong> Non sostituisce l'ufficio del personale della tua Azienda, il sindacato o una consulenza. Le regole sono verificate sulle fonti indicate alla data scritta accanto a ciascuna; le norme cambiano spesso (ogni legge di bilancio tocca questi istituti). Dove la lettura delle fonti non è univoca la pagina lo dice e mostra l'alternativa.</p>
+    </aside>
+
+    <div class="layout">
+      <nav class="tile toc" aria-labelledby="indice-titolo">
+        <h2 id="indice-titolo">Indice</h2>
+        <ol id="toc-list">
+          <li><a href="#timeline">La tua timeline</a></li>
+        </ol>
+      </nav>
+
+      <main id="contenuto" class="content">
+        <section class="tile section" id="timeline" aria-labelledby="timeline-titolo">
+          <h2 id="timeline-titolo">La tua timeline</h2>
+          <p>Inserisci le date: la pagina calcola quali diritti sono attivi oggi, quanti giorni restano e a quale percentuale, con il regime giusto per le tue date. I calcoli usano le stesse regole che leggi più sotto. Un mese di congedo vale 30 giorni.</p>
+          <form id="form-timeline" novalidate>
+            <fieldset>
+              <legend>Il figlio</legend>
+              <div class="fields">
+                <div>
+                  <label for="f-evento">Evento</label>
+                  <select id="f-evento" name="evento">
+                    <option value="nascita">Nascita</option>
+                    <option value="adozione_nazionale">Adozione nazionale</option>
+                    <option value="adozione_internazionale">Adozione internazionale</option>
+                    <option value="affidamento">Affidamento</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-nascita">Data di nascita <span class="hint">Vuota se non è ancora nato</span></label>
+                  <input type="date" id="f-nascita" name="dataNascita">
+                </div>
+                <div>
+                  <label for="f-presunta">Data presunta del parto <span class="hint">Serve per maternità e paternità</span></label>
+                  <input type="date" id="f-presunta" name="dataPresunta">
+                </div>
+                <div>
+                  <label for="f-ingresso">Data di ingresso in famiglia <span class="hint">Solo adozione o affidamento</span></label>
+                  <input type="date" id="f-ingresso" name="dataIngresso">
+                </div>
+                <div>
+                  <label for="f-opzione">Come la madre usa la maternità</label>
+                  <select id="f-opzione" name="opzioneMaternita">
+                    <option value="ordinaria">2 mesi prima + 3 dopo</option>
+                    <option value="flessibile">1 mese prima + 4 dopo (flessibilità)</option>
+                    <option value="solo_dopo">5 mesi tutti dopo il parto</option>
+                  </select>
+                </div>
+              </div>
+              <label class="check"><input type="checkbox" id="f-plurimo" name="partoPlurimo"> Parto plurimo (gemelli o più)</label>
+              <label class="check"><input type="checkbox" id="f-disabilita" name="disabilitaGrave"> Figlio con disabilità grave (L. 104/1992, art. 3 c. 3)</label>
+            </fieldset>
+            <fieldset>
+              <legend>I genitori</legend>
+              <div class="fields">
+                <div>
+                  <label for="f-solo">Genitore solo?</label>
+                  <select id="f-solo" name="genitoreSolo">
+                    <option value="">No</option>
+                    <option value="madre">Sì, la madre</option>
+                    <option value="padre">Sì, il padre</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-lettura">Lettura del cumulo CCNL/legge</label>
+                  <select id="f-lettura" name="letturaCCNL">
+                    <option value="assorbe">30 giorni al 100% assorbono un mese all'80% (lettura scelta)</option>
+                    <option value="aggiuntivo">30 giorni al 100% in aggiunta ai mesi all'80% (alternativa)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="fields">
+                <div>
+                  <label for="m-tipo">Madre: lavoro</label>
+                  <select id="m-tipo" name="madre.tipo">
+                    <option value="ssn">Dirigente SSN</option>
+                    <option value="pubblico">Altra dipendente pubblica</option>
+                    <option value="privato">Dipendente privata</option>
+                    <option value="libera_professione">Libera professionista</option>
+                    <option value="non_occupato">Non lavora</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="m-fine">Madre: fine maternità <span class="hint">Se vuota la stimo</span></label>
+                  <input type="date" id="m-fine" name="madre.fineCongedo">
+                </div>
+                <div>
+                  <label for="m-usati">Madre: giorni di parentale già usati</label>
+                  <input type="number" id="m-usati" name="madre.parentaleGiorni" min="0" max="400" step="1" value="0" inputmode="numeric">
+                </div>
+                <div>
+                  <label for="m-80">di cui pagati all'80%</label>
+                  <input type="number" id="m-80" name="madre.parentale80Giorni" min="0" max="90" step="1" value="0" inputmode="numeric">
+                </div>
+              </div>
+              <div class="fields">
+                <div>
+                  <label for="p-tipo">Padre: lavoro</label>
+                  <select id="p-tipo" name="padre.tipo">
+                    <option value="ssn">Dirigente SSN</option>
+                    <option value="pubblico">Altro dipendente pubblico</option>
+                    <option value="privato">Dipendente privato</option>
+                    <option value="libera_professione">Libero professionista</option>
+                    <option value="non_occupato">Non lavora</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="p-fine">Padre: fine congedo di paternità <span class="hint">Ultimo dei 10 giorni, se già usati</span></label>
+                  <input type="date" id="p-fine" name="padre.fineCongedo">
+                </div>
+                <div>
+                  <label for="p-usati">Padre: giorni di parentale già usati</label>
+                  <input type="number" id="p-usati" name="padre.parentaleGiorni" min="0" max="400" step="1" value="0" inputmode="numeric">
+                </div>
+                <div>
+                  <label for="p-80">di cui pagati all'80%</label>
+                  <input type="number" id="p-80" name="padre.parentale80Giorni" min="0" max="90" step="1" value="0" inputmode="numeric">
+                </div>
+              </div>
+            </fieldset>
+            <div class="fields">
+              <div>
+                <label for="f-oggi">Calcola alla data <span class="hint">Di solito oggi</span></label>
+                <input type="date" id="f-oggi" name="oggi">
+              </div>
+            </div>
+            <p><button type="submit">Calcola</button></p>
+          </form>
+          <div id="risultato" class="result" aria-live="polite"></div>
+        </section>
+        <div id="aree"></div>
+        <section class="tile section" id="tabelle" aria-labelledby="tabelle-titolo">
+          <h2 id="tabelle-titolo">Tabelle riassuntive</h2>
+          <div id="tabelle-contenuto"></div>
+        </section>
+        <section class="tile section faq" id="faq" aria-labelledby="faq-titolo">
+          <h2 id="faq-titolo">Domande frequenti</h2>
+          <div id="faq-contenuto"></div>
+        </section>
+        <section class="tile section" id="incerti" aria-labelledby="incerti-titolo">
+          <h2 id="incerti-titolo">Punti da verificare</h2>
+          <p>Regole per cui le fonti ammettono due letture, o per cui non ho trovato una fonte primaria che chiuda la questione. Per ciascuna trovi la lettura usata nei calcoli e l'effetto dell'alternativa. Portale all'ufficio del personale o al sindacato.</p>
+          <ol id="incerti-contenuto"></ol>
+        </section>
+        <section class="tile section sources" id="fonti" aria-labelledby="fonti-titolo">
+          <h2 id="fonti-titolo">Fonti</h2>
+          <p>Da dove ho letto davvero ogni testo e quando. La matrice completa regola → fonte è nel file <code>docs/fonti_diritti_genitore.md</code> del repository.</p>
+          <ul id="fonti-contenuto"></ul>
+        </section>
+      </main>
+    </div>
+
+    <footer class="tile">
+      <p><strong id="footer-aggiornamento">Ultimo aggiornamento: …</strong></p>
+      <p>Questa pagina è informativa e non sostituisce l'ufficio del personale della tua Azienda sanitaria, il sindacato o una consulenza professionale. Verifica sempre le regole sulla tua situazione prima di presentare una domanda.</p>
+      <p><a href="./">Torna all'indice</a></p>
+    </footer>
+  </div>
+
+<script type="application/json" id="dati">
+{
+  "meta": {
+    "aggiornamento": "2026-11-26",
+    "areeComplete": [1, 2, 3, 4],
+    "areeMancanti": [],
+    "nomiAree": {
+      "1": "Congedi e permessi",
+      "2": "Il contratto della dirigenza (CCNL Area Sanità)",
+      "3": "Disabilità, adozione e affidamento",
+      "4": "Previdenza, ENPAM e bonus"
+    }
+  },
+  "parametri": {
+    "mese": 30,
+    "maternita": {
+      "ordinaria": { "preMesi": 2, "postMesi": 3 },
+      "flessibile": { "preMesi": 1, "postMesi": 4 },
+      "solo_dopo": { "preMesi": 0, "postMesi": 5 },
+      "totaleMesi": 5,
+      "adozioneMesi": 5, "affidamentoMesi": 3, "adozioneEntroMesi": 5,
+      "percentualeLegge": 80,
+      "preavvisoRipresaGiorni": 10
+    },
+    "paternita": { "giorni": 10, "giorniPlurimo": 20, "finestraPreMesi": 2, "finestraPostMesi": 5, "preavvisoGiorni": 5, "percentuale": 100 },
+    "parentale": {
+      "limiteEta": [ { "dal": "2022-08-13", "anni": 12 }, { "dal": "2026-01-01", "anni": 14 } ],
+      "individualeGiorni": 180,
+      "padreBonusGiorni": 30,
+      "sogliaPadreBonusGiorni": 90,
+      "coppiaGiorni": 300,
+      "coppiaBonusGiorni": 330,
+      "genitoreSoloGiorni": 330,
+      "nonTrasferibiliGiorni": 90,
+      "trasferibiliGiorni": 90,
+      "genitoreSoloIndennizzatiGiorni": 270,
+      "percentualeBase": 30,
+      "percentualeMaggiorata": 80,
+      "etaMaggiorataAnni": 6,
+      "ccnlGiorni100": 30,
+      "preavvisoGiorni": 5,
+      "preavvisoOrarioGiorni": 2,
+      "preavvisoUrgenzaOre": 48,
+      "regimiMaggiorati": [
+        { "mesi": 1, "eventoDal": "2023-01-01", "fineCongedoDopo": "2022-12-31", "norma": "L. 197/2022, art. 1 c. 359" },
+        { "mesi": 2, "eventoDal": "2024-01-01", "fineCongedoDopo": "2023-12-31", "norma": "L. 213/2023, art. 1 c. 179; L. 207/2024, art. 1 cc. 217-218" },
+        { "mesi": 3, "eventoDal": "2025-01-01", "fineCongedoDopo": "2024-12-31", "norma": "L. 207/2024, art. 1 cc. 217-218" }
+      ]
+    },
+    "riposi": { "oreGiornaliere": 2, "oreSottoSoglia": 1, "sogliaOrarioOre": 6, "etaAnni": 1 },
+    "malattiaFiglio": {
+      "etaSenzaLimiteAnni": 3,
+      "regimi": [ { "dal": "2001-04-27", "giorni": 5, "etaMaxAnni": 8 }, { "dal": "2026-01-01", "giorni": 10, "etaMaxAnni": 14 } ],
+      "ccnlGiorniAnno100": 30,
+      "adozioneEtaSenzaLimiteAnni": 6
+    },
+    "notte": { "divietoEtaAnni": 1, "esoneroAnni": 3, "esoneroGenitoreSoloAnni": 12, "adozioneAnniDaIngresso": 3, "adozioneEtaMaxAnni": 12 },
+    "licenziamento": { "etaAnni": 1 },
+    "bonus": { "nuoviNati": { "eventoDal": "2026-01-01", "eventoAl": "2026-12-31", "giorniDomanda": 120, "importo": 1000 }, "assegnoUnicoMaggiorazionePrimoAnno": 50 },
+    "disabilita": { "prolungamentoMesiTotali": 36, "permessoOreGiornaliere": 2, "permessoOreEtaAnni": 3, "permessiGiorniMese": 3, "congedoStraordinarioAnni": 2 }
+  },
+  "fonti": {
+    "tu151": { "titolo": "D.Lgs. 26 marzo 2001, n. 151 (Testo unico maternità e paternità), testo vigente", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2001-03-26;151", "articoli": true, "lettoDa": "Normattiva, testo vigente articolo per articolo, con le note di aggiornamento", "verificato": "2026-11-25" },
+    "dlgs105": { "titolo": "D.Lgs. 30 giugno 2022, n. 105 (attuazione direttiva UE 2019/1158), in vigore dal 13 agosto 2022", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2022-06-30;105", "lettoDa": "Normattiva (le modifiche sono lette nel testo vigente del D.Lgs. 151/2001) e circolare INPS 122/2022", "verificato": "2026-11-25" },
+    "l197": { "titolo": "L. 29 dicembre 2022, n. 197 (bilancio 2023), art. 1 c. 359", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2022-12-29;197", "lettoDa": "Normattiva, nota di aggiornamento (48) all'art. 34 D.Lgs. 151/2001; nota DFP 27/3/2023", "verificato": "2026-11-25" },
+    "l213": { "titolo": "L. 30 dicembre 2023, n. 213 (bilancio 2024), art. 1 c. 179", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2023-12-30;213", "lettoDa": "Normattiva, nota di aggiornamento (49) all'art. 34 D.Lgs. 151/2001; circolare INPS 95/2025", "verificato": "2026-11-25" },
+    "l207": { "titolo": "L. 30 dicembre 2024, n. 207 (bilancio 2025), art. 1 cc. 217-218", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2024-12-30;207", "lettoDa": "Normattiva, nota di aggiornamento (51) all'art. 34 D.Lgs. 151/2001; circolare INPS 95/2025", "verificato": "2026-11-25" },
+    "l199": { "titolo": "L. 30 dicembre 2025, n. 199 (bilancio 2026), art. 1 cc. 219-220", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2025-12-30;199", "lettoDa": "Effetti letti nel testo vigente degli artt. 32, 33, 34, 36, 47 D.Lgs. 151/2001 su Normattiva (in vigore dal 1/1/2026) e nel messaggio INPS 251/2026 (c. 219). Il numero del c. 220 (malattia del figlio) viene da fonti secondarie: la pagina Normattiva della legge non si è caricata dalla sandbox", "verificato": "2026-11-25" },
+    "ccnl2024": { "titolo": "CCNL Area Sanità 23 gennaio 2024 (triennio 2019-2021), GU Serie generale n. 59 dell'11/3/2024", "url": "https://www.aranagenzia.it/documento_pubblico/contratto-collettivo-nazionale-di-lavoro-dellarea-sanita-triennio-2019-2021/", "lettoDa": "Copia del testo in Gazzetta Ufficiale pubblicata da Anaao Assomed (anaao.it/public/aaa_9348614_testogu.pdf); pagina ufficiale ARAN verificata", "verificato": "2026-11-25" },
+    "ccnl2026": { "titolo": "CCNL Area Sanità 27 febbraio 2026 (triennio 2022-2024), GU Serie generale n. 80 del 7/4/2026", "url": "https://www.aranagenzia.it/documento_pubblico/contratto-collettivo-nazionale-di-lavoro-dellarea-sanita-triennio-2022-2024/", "lettoDa": "Copia del testo firmato pubblicata da Anaao Assomed (anaao.it/public/aaa_2476166_2026.02.27-ccnl-area-sanita-2022-2024.pdf); pagina ufficiale ARAN verificata. Non modifica gli articoli su congedi dei genitori (art. 3, Conferme)", "verificato": "2026-11-25" },
+    "dfp2023": { "titolo": "Dipartimento della Funzione Pubblica, nota DFP-0020810-P del 27/3/2023 a un'Azienda sanitaria (congedo parentale all'80% e CCNL)", "url": "https://www.lentepubblica.it/wp-content/uploads/2023/04/DPF-20810-P-27-3-2023.pdf", "lettoDa": "PDF della nota protocollata, copia pubblicata da lentepubblica.it", "verificato": "2026-11-25" },
+    "inps122": { "titolo": "INPS, circolare n. 122 del 27/10/2022 (novità D.Lgs. 105/2022)", "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2022.10.circolare-numero-122-del-27-10-2022_13986.html", "lettoDa": "PDF della circolare (copia pubblicata dall'Università di Palermo)", "verificato": "2026-11-25" },
+    "inps95": { "titolo": "INPS, circolare n. 95 del 26/5/2025 (congedo parentale all'80%: secondo e terzo mese)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2025/05/Circolare_14931/Allegati/16094_Circolare-numero-95-del-26-05-2025.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-25" },
+    "inps251": { "titolo": "INPS, messaggio n. 251 del 26/1/2026 (congedo parentale fino a 14 anni)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2026/01/Circolare_15144/Allegati/16535_Messaggio-numero-251-del-26-01-2026.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-25" },
+    "aran-parere": { "titolo": "ARAN, parere su retribuzione al 100% dei primi 30 giorni oltre i 6 anni (riportato da Anaao)", "url": "https://www.anaao.it/content.php?cont=38975", "lettoDa": "Solo il commento Anaao: il testo del parere ARAN non è stato trovato. Usato come indizio", "verificato": "2026-11-25" },
+    "ccnl2019": { "titolo": "CCNL Area Sanità 19 dicembre 2019 (triennio 2016-2018)", "url": "https://www.aranagenzia.it/documento_pubblico/contratto-collettivo-nazionale-di-lavoro-dellarea-sanita-triennio-2016-2018/", "lettoDa": "Copia del testo ARAN pubblicata dall'Università di Perugia (unipg.it/files/pagine/1275/ccnl-2016-2018.pdf); pagina ufficiale ARAN verificata. Artt. 45 e 110 ancora vigenti", "verificato": "2026-11-25" },
+    "l81": { "titolo": "L. 22 maggio 2017, n. 81 (lavoro agile)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2017-05-22;81~art18", "lettoDa": "Normattiva, testo vigente dell'art. 18 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
+    "dlgs81": { "titolo": "D.Lgs. 15 giugno 2015, n. 81 (part-time)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2015-06-15;81~art8", "lettoDa": "Normattiva, testo vigente dell'art. 8 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
+    "l104": { "titolo": "L. 5 febbraio 1992, n. 104", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:1992-02-05;104~art33", "lettoDa": "Normattiva, testo vigente dell'art. 33 (in vigore dal 13/8/2022)", "verificato": "2026-11-25" },
+    "enpam-reg": {"titolo": "ENPAM, Regolamento a tutela della genitorialità (in vigore da marzo 2020)", "url": "https://www.enpam.it/wp-content/uploads/Regolamento-Enpam-genitorialita.pdf", "lettoDa": "PDF ufficiale ENPAM", "verificato": "2026-11-26"},
+    "enpam-maternita": {"titolo": "ENPAM, pagina Indennità di maternità", "url": "https://www.enpam.it/comefareper/genitorialita/maternita/", "lettoDa": "Sito ufficiale ENPAM", "verificato": "2026-11-26"},
+    "enpam-importi": {"titolo": "ENPAM, Importi delle prestazioni e limiti di reddito", "url": "https://www.enpam.it/importi-delle-prestazioni-e-limiti-di-reddito/", "lettoDa": "Sito ufficiale ENPAM (valori 2026)", "verificato": "2026-11-26"},
+    "enpam-bando": {"titolo": "ENPAM, Bando 2026 per i sussidi a sostegno della neonatalità (delibera 27/2026)", "url": "https://www.enpam.it/wp-content/uploads/Bando-Neonatalita-2026.pdf", "lettoDa": "PDF ufficiale ENPAM", "verificato": "2026-11-26"},
+    "enpam-quotaa": {"titolo": "ENPAM, Contributi di Quota A", "url": "https://www.enpam.it/comefareper/pagare-i-contributi/contributi-di-quota-a/", "lettoDa": "Sito ufficiale ENPAM", "verificato": "2026-11-26"},
+    "enpam-volontario": {"titolo": "ENPAM, Contributo volontario per genitorialità", "url": "https://www.enpam.it/comefareper/genitorialita/contributo-volontario/", "lettoDa": "Sito ufficiale ENPAM", "verificato": "2026-11-26"},
+    "enpam-ricongiunzione": {"titolo": "ENPAM, Ricongiunzione dei contributi", "url": "https://www.enpam.it/comefareper/pensione/ricongiunzione-dei-contributi/", "lettoDa": "Sito ufficiale ENPAM", "verificato": "2026-11-26"},
+    "l45": {"titolo": "L. 5 marzo 1990, n. 45 (ricongiunzione per i liberi professionisti)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:1990-03-05;45", "lettoDa": "Normattiva, testo vigente artt. 1-2", "verificato": "2026-11-26"},
+    "dlgs42": {"titolo": "D.Lgs. 2 febbraio 2006, n. 42 (totalizzazione)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2006-02-02;42~art1", "lettoDa": "Normattiva, testo vigente art. 1", "verificato": "2026-11-26"},
+    "inps140": {"titolo": "INPS, circolare n. 140 del 12/10/2017 (cumulo con le casse professionali)", "url": "https://servizi2.inps.it/CircolariZIP/Circolare%20numero%20140%20del%2012-10-2017.pdf", "lettoDa": "PDF ufficiale INPS. Il testo della L. 228/2012 c. 239 non si è caricato su Normattiva dalla sandbox", "verificato": "2026-11-26"},
+    "inps7": {"titolo": "INPS, circolare n. 7 del 30/1/2026 e allegato 1 (assegno unico 2026)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2026/01/Circolare_15152/Allegati/16548_Circolare-numero-7-del-30-01-2026.pdf", "lettoDa": "PDF ufficiali INPS (circolare e tabella)", "verificato": "2026-11-26"},
+    "inps29": {"titolo": "INPS, circolare n. 29 del 27/3/2026 (bonus asilo nido)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2026/03/Circolare_15207/Allegati/16651_Circolare-numero-29-del-27-03-2026.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-26"},
+    "inps45": {"titolo": "INPS, circolare n. 45 del 10/4/2026 (bonus nuovi nati 2026)", "url": "https://www.inps.it/content/dam/inps-site/it/scorporati/circolari-e-messaggi/2026/04/Circolare_15234/Allegati/16714_Circolare-numero-45-del-10-04-2026.pdf", "lettoDa": "PDF ufficiale INPS", "verificato": "2026-11-26"},
+    "inps106": {"titolo": "INPS, circolare n. 106 del 16/10/2026 (nuovo bonus mamme 2026)", "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa.html", "lettoDa": "PDF della circolare, copia pubblicata da informazionefiscale.it (file 18014_circolare-numero-106-del-16-10-2026.pdf); il link porta all'elenco ufficiale delle circolari INPS", "verificato": "2026-11-26"},
+    "inps27": {"titolo": "INPS, circolare n. 27 del 31/1/2024 (esonero contributivo lavoratrici madri)", "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa.html", "lettoDa": "PDF della circolare, copia pubblicata da dirittobancario.it; il link porta all'elenco ufficiale delle circolari INPS", "verificato": "2026-11-26"},
+    "cortecost115": { "titolo": "Corte costituzionale, sentenza n. 115/2025 (congedo di paternità alla madre intenzionale in coppia di donne)", "url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2001-03-26;151~art27bis", "lettoDa": "Nota di aggiornamento (52) all'art. 27-bis su Normattiva", "verificato": "2026-11-25" }
+  },
+  "regole": [
+    {
+      "id": "maternita",
+      "area": 1,
+      "titolo": "Congedo di maternità",
+      "chi": "madre",
+      "aChi": "Alla dirigente medica dipendente, a tempo indeterminato o determinato, anche part-time (per il part-time verticale il congedo spetta per intero anche nei giorni non lavorativi: CCNL 23/1/2024, art. 87 c. 9).",
+      "durata": "{{p.maternita.totaleMesi}} mesi in tutto. Se il parto arriva dopo la data presunta, si aggiungono i giorni tra data presunta e parto. Se arriva prima, i giorni non goduti prima del parto si aggiungono dopo, anche oltre i 5 mesi.",
+      "finestra": "Di regola {{p.maternita.ordinaria.preMesi}} mesi prima della data presunta e {{p.maternita.ordinaria.postMesi}} dopo il parto. Con il certificato del ginecologo del SSN (o convenzionato) e del medico competente: {{p.maternita.flessibile.preMesi}} mese prima e {{p.maternita.flessibile.postMesi}} dopo, oppure tutti i 5 mesi dopo il parto.",
+      "retribuzione": "Retribuzione intera: la legge prevede l'80% ({{p.maternita.percentualeLegge}}%), il CCNL dà la «retribuzione individuale mensile per particolari istituti» (art. 59 c. 2 lett. c CCNL 23/1/2024) con i ratei di tredicesima. Restano fuori le voci legate alla presenza (guardie, pronta disponibilità, straordinari). Il periodo conta per anzianità, ferie e tredicesima.",
+      "comeChiedere": "All'ufficio del personale dell'Azienda (per i dipendenti pubblici paga l'Azienda, non l'INPS): certificato di gravidanza con data presunta del parto, poi certificato di nascita o autocertificazione. Per la flessibilità o i 5 mesi dopo il parto servono i due certificati medici prima di iniziare.",
+      "fonti": [ { "f": "tu151", "art": "16" }, { "f": "tu151", "art": "20" }, { "f": "tu151", "art": "22" }, { "f": "tu151", "art": "2" }, { "f": "ccnl2024", "art": "41 c. 2; 59 c. 2 lett. c; 87 c. 9" } ],
+      "dataDecisiva": "Data presunta e data effettiva del parto.",
+      "regime": "Art. 16 c. 1.1 (5 mesi dopo il parto) in vigore dal 1/1/2019; il resto invariato dal 2001.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "maternita-casi",
+      "area": 1,
+      "titolo": "Maternità: ricovero del neonato, interruzione o lutto",
+      "chi": "madre",
+      "aChi": "Alla madre dipendente.",
+      "durata": "Se il neonato è ricoverato, la madre può sospendere il congedo dopo il parto e riprenderlo, in tutto o in parte, dalle dimissioni del bambino (una sola volta per figlio, con certificato medico che attesta che può lavorare). Dopo un'interruzione di gravidanza oltre il 180° giorno, o se il bambino muore alla nascita o durante il congedo, può tornare al lavoro quando vuole.",
+      "finestra": "Durante il congedo di maternità dopo il parto.",
+      "retribuzione": "Come il congedo di maternità per i giorni di congedo; retribuzione ordinaria per i giorni lavorati.",
+      "comeChiedere": "Domanda all'Azienda con certificato medico. Per tornare al lavoro dopo interruzione o lutto: preavviso di {{p.maternita.preavvisoRipresaGiorni}} giorni e attestazione del ginecologo del SSN e del medico competente.",
+      "fonti": [ { "f": "tu151", "art": "16-bis" }, { "f": "tu151", "art": "16" } ],
+      "dataDecisiva": "Data del ricovero e delle dimissioni del neonato.",
+      "regime": "Art. 16-bis in vigore dal 24/9/2015.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "interdizione",
+      "area": 1,
+      "titolo": "Gravidanza: lavori vietati e interdizione anticipata",
+      "chi": "madre",
+      "aChi": "Alla dirigente in gravidanza e, per alcuni rischi, fino a 7 mesi dopo il parto.",
+      "durata": "Il medico in gravidanza non può essere adibito a lavori pericolosi, faticosi o insalubri (allegati A e B del D.Lgs. 151/2001), né a zone con radiazioni ionizzanti; durante l'allattamento non può essere esposta a contaminazione. Non può lavorare dalle 24 alle 6 dalla scoperta della gravidanza fino a un anno del bambino. L'Azienda deve spostarla ad altre mansioni conservando la retribuzione; se non può, l'Ispettorato del lavoro dispone l'interdizione. Per complicanze della gravidanza decide l'ASL.",
+      "finestra": "Dalla comunicazione della gravidanza all'inizio della maternità (complicanze); fino a 7 mesi dopo il parto per i rischi del lavoro.",
+      "retribuzione": "Nell'interdizione spetta lo stesso trattamento della maternità (art. 17 richiamato dal CCNL: retribuzione intera).",
+      "comeChiedere": "Comunicare subito la gravidanza all'Azienda e al medico competente. Complicanze: domanda all'ASL con certificato del ginecologo (provvedimento entro 7 giorni). Rischi del lavoro: provvede l'Ispettorato territoriale del lavoro, d'ufficio o su domanda.",
+      "fonti": [ { "f": "tu151", "art": "7" }, { "f": "tu151", "art": "8" }, { "f": "tu151", "art": "12" }, { "f": "tu151", "art": "17" }, { "f": "tu151", "art": "53" }, { "f": "ccnl2024", "art": "41 c. 2" } ],
+      "dataDecisiva": "Data di accertamento della gravidanza e data del parto.",
+      "regime": "Art. 17 come modificato dal D.L. 5/2012 (dal 1/4/2012).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "paternita",
+      "area": 1,
+      "titolo": "Congedo di paternità obbligatorio",
+      "chi": "padre",
+      "aChi": "Al padre dipendente, anche adottivo o affidatario, e al padre che usa la paternità alternativa. Dalla sentenza della Corte costituzionale 115/2025 spetta anche alla madre intenzionale in una coppia di donne registrata come genitori nello stato civile.",
+      "durata": "{{p.paternita.giorni}} giorni lavorativi ({{p.paternita.giorniPlurimo}} con parto plurimo), anche non consecutivi, non frazionabili a ore. Spetta anche in caso di morte perinatale.",
+      "finestra": "Da {{p.paternita.finestraPreMesi}} mesi prima della data presunta del parto a {{p.paternita.finestraPostMesi}} mesi dopo la nascita. Si può usare mentre la madre è in maternità.",
+      "retribuzione": "100% ({{p.paternita.percentuale}}%): per i dipendenti pubblici paga l'Azienda (art. 2 c. 2 D.Lgs. 151/2001; CCNL art. 41 c. 2 lo include espressamente).",
+      "comeChiedere": "Comunicazione scritta all'Azienda (o con il sistema aziendale di gestione delle assenze) con almeno {{p.paternita.preavvisoGiorni}} giorni di anticipo, indicando i giorni.",
+      "fonti": [ { "f": "tu151", "art": "27-bis" }, { "f": "tu151", "art": "29" }, { "f": "ccnl2024", "art": "41 c. 2" }, { "f": "inps122", "art": "par. 2" }, { "f": "cortecost115", "art": "" } ],
+      "dataDecisiva": "Data presunta del parto e data di nascita.",
+      "regime": "In vigore dal 13/8/2022 (D.Lgs. 105/2022); testo aggiornato dalla Corte costituzionale il 24/7/2025.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "paternita-alternativa",
+      "area": 1,
+      "titolo": "Congedo di paternità alternativo",
+      "chi": "padre",
+      "aChi": "Al padre dipendente se la madre muore, ha una grave infermità, abbandona il figlio, o se il figlio è affidato in esclusiva al padre. Vale anche se la madre è lavoratrice autonoma.",
+      "durata": "Tutta la maternità o la parte che restava alla madre.",
+      "finestra": "Negli stessi tempi in cui l'avrebbe avuta la madre.",
+      "retribuzione": "Come la maternità: retribuzione intera per il dirigente SSN (CCNL art. 41 c. 2).",
+      "comeChiedere": "All'Azienda con la certificazione della condizione (in caso di abbandono, dichiarazione sostitutiva).",
+      "fonti": [ { "f": "tu151", "art": "28" }, { "f": "tu151", "art": "29" }, { "f": "ccnl2024", "art": "41 c. 2" } ],
+      "dataDecisiva": "Data dell'evento che riguarda la madre.",
+      "regime": "Testo in vigore dal 13/8/2022.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "parentale",
+      "area": 1,
+      "titolo": "Congedo parentale",
+      "chi": "entrambi",
+      "aChi": "A ciascun genitore dipendente, anche se l'altro non ne ha diritto (per esempio è libero professionista o non lavora).",
+      "durata": "Madre fino a 6 mesi, padre fino a 6 mesi (7 se ne usa almeno 3). Insieme non più di 10 mesi, 11 se il padre ne usa almeno 3. Genitore solo: 11 mesi. Si può usare a mesi, giorni o ore.",
+      "finestra": "Fino ai 14 anni del figlio (12 anni per i giorni usati fino al 31/12/2025). La madre dopo la maternità, il padre dalla nascita.",
+      "retribuzione": "Al dirigente SSN: i primi {{p.parentale.ccnlGiorni100}} giorni, contati insieme per i due genitori, sono pagati al 100% (CCNL). Per legge, poi: fino a 3 mesi all'80% per la coppia entro i 6 anni del figlio, il resto al 30% per 3 mesi a ciascun genitore più 3 mesi da dividere (9 mesi al genitore solo), il resto senza indennità (salvo reddito sotto 2,5 volte il minimo di pensione: un medico non ci rientra quasi mai). Quanti mesi all'80% spettano dipende dalle date: vedi la regola dedicata.",
+      "comeChiedere": "Domanda all'ufficio del personale con l'indicazione della durata almeno {{p.parentale.preavvisoGiorni}} giorni prima (CCNL), anche per PEC o raccomandata; entro {{p.parentale.preavvisoUrgenzaOre}} ore prima in caso di oggettiva impossibilità. Per il congedo a ore la legge fissa 2 giorni. Al dipendente pubblico non serve la domanda all'INPS.",
+      "fonti": [ { "f": "tu151", "art": "32" }, { "f": "tu151", "art": "34" }, { "f": "tu151", "art": "35" }, { "f": "ccnl2024", "art": "41 cc. 3, 5, 6, 7" }, { "f": "l199", "art": "c. 219" }, { "f": "inps251", "art": "" }, { "f": "inps122", "art": "par. 3" } ],
+      "dataDecisiva": "Data in cui si usa il congedo (12 o 14 anni); data di nascita o di ingresso (finestre di età).",
+      "regime": "Limiti di 10/11 mesi e 3+3+3 mesi indennizzati in vigore dal 13/8/2022; 14 anni dal 1/1/2026 per i soli dipendenti.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "parentale-80",
+      "area": 1,
+      "titolo": "Congedo parentale: i mesi all'80% e i 30 giorni al 100%",
+      "chi": "entrambi",
+      "aChi": "Ai genitori dipendenti. I mesi all'80% sono della coppia e si usano dentro i 3 mesi non trasferibili di ciascun genitore.",
+      "durata": "Da 0 a 3 mesi all'80%, secondo le date. Nato o entrato in famiglia dal 2025: 3 mesi. Nato prima: 3 mesi se almeno un genitore dipendente ha finito maternità o paternità (anche quella obbligatoria di 10 giorni) dopo il 31/12/2024; altrimenti 2 mesi se nato dal 2024 o se il congedo è finito dopo il 31/12/2023; 1 mese se nato dal 2023 o finito dopo il 31/12/2022; altrimenti nessuno.",
+      "finestra": "Entro i 6 anni del figlio (6 anni dall'ingresso in famiglia, non oltre i 18 anni). I 30 giorni al 100% del CCNL valgono per tutta la finestra del congedo parentale (oggi 14 anni).",
+      "retribuzione": "80% per i mesi maggiorati. Per il dirigente SSN la Funzione Pubblica ritiene che i 30 giorni al 100% del CCNL coprano il primo mese all'80%: quindi 30 giorni al 100% e, se le date lo consentono, altri 2 mesi all'80%.",
+      "comeChiedere": "Come il congedo parentale. Indica nella domanda che chiedi i mesi maggiorati e la data di fine maternità/paternità.",
+      "fonti": [ { "f": "tu151", "art": "34" }, { "f": "l197", "art": "c. 359" }, { "f": "l213", "art": "c. 179" }, { "f": "l207", "art": "cc. 217-218" }, { "f": "inps95", "art": "par. 2-3" }, { "f": "dfp2023", "art": "" }, { "f": "ccnl2024", "art": "41 c. 3" } ],
+      "dataDecisiva": "Data di nascita o ingresso e data di fine della maternità o paternità di uno dei genitori dipendenti; data in cui si usa il congedo (prima dei 6 anni).",
+      "regime": "1° mese per fine congedo dopo il 31/12/2022; 2° dopo il 31/12/2023 (60% nel 2025, poi 80% per i giorni usati dal 1/1/2025); 3° dopo il 31/12/2024, usabile solo dal 1/1/2025.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "I 30 giorni al 100% del CCNL assorbono uno dei mesi all'80% se usati entro i 6 anni (nota DFP 27/3/2023, scritta a un'Azienda sanitaria quando il mese all'80% era uno solo). Totale massimo per la coppia di dirigenti SSN: 30 giorni al 100% + 60 giorni all'80%.",
+      "alternativa": "I 30 giorni al 100% si aggiungono ai 3 mesi all'80%: totale 30 giorni al 100% + 90 all'80%. La sostiene la circolare INPS 95/2025, che dichiara i trattamenti contrattuali compatibili con i mesi all'80% e vieta che li limitino (scritta però per il settore privato). Effetto: 30 giorni in più all'80% invece che al 30%. Puoi vedere i due risultati nella timeline con il menu «Lettura del cumulo»."
+    },
+    {
+      "id": "riposi",
+      "area": 1,
+      "titolo": "Riposi giornalieri (allattamento)",
+      "chi": "entrambi",
+      "aChi": "Alla madre dipendente. Al padre dipendente se il figlio è affidato solo a lui, se la madre dipendente non li usa, se la madre non è lavoratrice dipendente (per esempio libera professionista) o se è morta o gravemente inferma.",
+      "durata": "{{p.riposi.oreGiornaliere}} ore al giorno se l'orario giornaliero è di almeno {{p.riposi.sogliaOrarioOre}} ore, {{p.riposi.oreSottoSoglia}} ora se è inferiore. Raddoppiano con parto plurimo, e le ore in più può usarle il padre. Mezz'ora ciascuno se c'è un nido aziendale nell'unità o vicino.",
+      "finestra": "Fino al primo compleanno del figlio (un anno dall'ingresso in famiglia per adozione e affidamento).",
+      "retribuzione": "100%: sono ore lavorate a tutti gli effetti.",
+      "comeChiedere": "Domanda all'Azienda con il certificato di nascita; il padre allega la documentazione della condizione della madre.",
+      "fonti": [ { "f": "tu151", "art": "39" }, { "f": "tu151", "art": "40" }, { "f": "tu151", "art": "41" }, { "f": "tu151", "art": "43" }, { "f": "tu151", "art": "45" } ],
+      "dataDecisiva": "Data di nascita o di ingresso in famiglia.",
+      "regime": "Invariato dal 2001 (art. 45 corretto dalla Corte costituzionale 104/2003 per l'adozione).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "malattia-figlio",
+      "area": 1,
+      "titolo": "Congedo per malattia del figlio",
+      "chi": "entrambi",
+      "aChi": "A ciascun genitore dipendente, in alternativa all'altro negli stessi giorni.",
+      "durata": "Fino ai 3 anni: senza limite di giorni. Dai 3 ai 14 anni: {{p.malattiaFiglio.regimi.1.giorni}} giorni lavorativi all'anno per ciascun genitore e per ogni figlio (fino al 31/12/2025 erano 5 giorni, fino agli 8 anni).",
+      "finestra": "Per i giorni di malattia certificati dal pediatra o medico del SSN.",
+      "retribuzione": "Per legge senza retribuzione. Il CCNL dà al dirigente SSN {{p.malattiaFiglio.ccnlGiorniAnno100}} giorni retribuiti al 100% per ciascun anno di vita del figlio fino ai 3 anni, contati insieme per i due genitori; gli altri giorni non sono retribuiti. Fino ai 3 anni c'è contribuzione figurativa piena.",
+      "comeChiedere": "Il pediatra invia il certificato all'INPS per via telematica; il genitore lo comunica all'Azienda. Non ci sono visite fiscali.",
+      "fonti": [ { "f": "tu151", "art": "47" }, { "f": "tu151", "art": "48" }, { "f": "tu151", "art": "49" }, { "f": "tu151", "art": "50" }, { "f": "ccnl2024", "art": "41 cc. 4-5" }, { "f": "l199", "art": "c. 220" } ],
+      "dataDecisiva": "Data in cui si usa il congedo (regime 2026) ed età del figlio in quel giorno.",
+      "regime": "10 giorni e 14 anni dal 1/1/2026; prima 5 giorni tra 3 e 8 anni.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "I 10 giorni sono per ciascun genitore («ciascun genitore, alternativamente») e per ogni anno di età del figlio.",
+      "alternativa": "Il limite annuo potrebbe essere contato per anno solare invece che per anno di età: cambia solo come si distribuiscono i giorni a cavallo del compleanno. Il messaggio INPS 251/2026 non tratta la malattia del figlio; chiedi all'Azienda come conta l'anno."
+    },
+    {
+      "id": "notte",
+      "area": 1,
+      "titolo": "Lavoro notturno e guardie notturne",
+      "chi": "entrambi",
+      "aChi": "Divieto per la madre; esonero a richiesta per madre o padre.",
+      "durata": "Divieto di lavoro dalle 24 alle 6 per la madre dalla scoperta della gravidanza fino al primo anno del figlio. Non sono obbligati al lavoro notturno: la madre con figlio sotto i 3 anni o, in alternativa, il padre convivente; il genitore unico affidatario di un figlio convivente sotto i 12 anni; il genitore adottivo o affidatario nei primi 3 anni dall'ingresso (non oltre i 12 anni); chi ha a carico una persona con disabilità (L. 104/1992). Le guardie notturne del CCNL sono lavoro notturno.",
+      "finestra": "Vedi durata.",
+      "retribuzione": "Nessuna perdita sulla retribuzione fissa; si perdono i compensi delle guardie non svolte.",
+      "comeChiedere": "Per l'esonero: dichiarazione scritta all'Azienda e al direttore della struttura, in tempo per la programmazione dei turni.",
+      "fonti": [ { "f": "tu151", "art": "53" }, { "f": "ccnl2024", "art": "29" } ],
+      "dataDecisiva": "Data di nascita o ingresso ed età del figlio.",
+      "regime": "Testo in vigore dal 13/8/2022.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "tutele",
+      "area": 1,
+      "titolo": "Divieto di licenziamento e rientro",
+      "chi": "entrambi",
+      "aChi": "Alla madre e al padre che usa il congedo di paternità.",
+      "durata": "La madre non può essere licenziata dall'inizio della gravidanza al primo anno del figlio (salvo giusta causa, scadenza del termine del contratto, esito negativo della prova). Al padre il divieto si applica per la paternità e fino al primo anno. È nullo il licenziamento causato dalla domanda di congedo parentale o malattia del figlio. Al rientro: stessa sede o altra nello stesso comune, stesse mansioni o equivalenti.",
+      "finestra": "Fino al primo anno del figlio (un anno dall'ingresso in famiglia).",
+      "retribuzione": "—",
+      "comeChiedere": "In caso di licenziamento nel periodo protetto: presentare il certificato di gravidanza; rivolgersi subito al sindacato.",
+      "fonti": [ { "f": "tu151", "art": "54" }, { "f": "tu151", "art": "56" } ],
+      "dataDecisiva": "Data di inizio gravidanza e di nascita.",
+      "regime": "Testo in vigore dal 13/8/2022.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "tempo-determinato",
+      "area": 1,
+      "titolo": "Dirigenti a tempo determinato",
+      "chi": "entrambi",
+      "aChi": "Al dirigente con contratto a termine.",
+      "durata": "Ha gli stessi congedi di legge dei colleghi a tempo indeterminato (CCNL art. 85 c. 1 lett. g). La scadenza del contratto non è vietata durante gravidanza e maternità, ma l'indennità di maternità continua a essere pagata se il rapporto finisce durante il congedo (anche dall'INPS, se il rapporto con l'Azienda è finito) e spetta se il congedo inizia entro 60 giorni dalla fine del contratto.",
+      "finestra": "Durante il contratto; per la maternità anche dopo, nei limiti dell'art. 24.",
+      "retribuzione": "Come i colleghi finché dura il contratto; dopo la scadenza, indennità di maternità dell'80% a carico dell'INPS.",
+      "comeChiedere": "All'Azienda; dopo la scadenza del contratto, domanda di maternità all'INPS.",
+      "fonti": [ { "f": "tu151", "art": "24" }, { "f": "tu151", "art": "54" }, { "f": "ccnl2024", "art": "85" } ],
+      "dataDecisiva": "Data di scadenza del contratto rispetto all'inizio e alla fine della maternità.",
+      "regime": "Art. 24 in vigore dal 19/7/2018.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "Dopo la scadenza del contratto l'indennità (80%) la paga l'INPS: il dirigente a termine è assicurato per la maternità all'INPS.",
+      "alternativa": "Alcune Aziende continuano a pagare loro fino alla fine del congedo. Non ho trovato una circolare INPS o della Funzione Pubblica recente sul dirigente SSN a termine: chiedi all'ufficio del personale chi paga e in che misura."
+    },
+    {
+      "id": "ccnl-economico",
+      "area": 2,
+      "titolo": "Cosa aggiunge il CCNL alla legge (sintesi economica)",
+      "chi": "entrambi",
+      "aChi": "Al dirigente medico e sanitario dipendente di Aziende ed Enti del SSN.",
+      "durata": "Maternità, interdizione, paternità obbligatoria e alternativa: retribuzione intera invece dell'80% (o del 100% per la paternità). Congedo parentale: i primi {{p.parentale.ccnlGiorni100}} giorni per la coppia al 100% invece del 30%/80%, senza riduzione di ferie e tredicesima. Malattia del figlio sotto i 3 anni: {{p.malattiaFiglio.ccnlGiorniAnno100}} giorni l'anno al 100% per la coppia invece di zero. Questi giorni fanno parte dei congedi di legge: non sono giorni di assenza in più.",
+      "finestra": "Per il congedo parentale, per tutta la finestra di legge (oggi 14 anni). Per la malattia del figlio, fino ai 3 anni.",
+      "retribuzione": "«Retribuzione individuale mensile per particolari istituti»: stipendio tabellare, indennità di specificità medica, retribuzione di posizione, esclusività, indennità di struttura complessa e di rischio radiologico se spettanti, retribuzione di risultato. Non le guardie, la pronta disponibilità, gli straordinari.",
+      "comeChiedere": "Non serve una domanda a parte: l'Azienda applica il CCNL alla domanda di congedo.",
+      "fonti": [ { "f": "ccnl2024", "art": "41; 59 c. 2" }, { "f": "ccnl2026", "art": "3" }, { "f": "tu151", "art": "2" } ],
+      "dataDecisiva": "Data del congedo (vale il CCNL in vigore in quel momento).",
+      "regime": "Art. 41 CCNL 23/1/2024, confermato dal CCNL 27/2/2026 (art. 3); ha sostituito l'art. 44 del CCNL 19/12/2019 con contenuto analogo.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "guardie",
+      "area": 2,
+      "titolo": "Guardie notturne e pronta disponibilità",
+      "chi": "entrambi",
+      "aChi": "A tutti i dirigenti, esclusi i direttori di struttura complessa salvo carenza di personale.",
+      "durata": "Il CCNL non prevede esoneri specifici per i genitori: valgono quelli di legge (art. 53 D.Lgs. 151/2001, vedi «Lavoro notturno»). Limiti per tutti: in media non più di 5 guardie notturne al mese nel quadrimestre, non più di 10 turni di pronta disponibilità al mese nel quadrimestre, non più di 12 servizi complessivi (guardie più pronte disponibilità) al mese nel bimestre.",
+      "finestra": "—",
+      "retribuzione": "Guardie: 100 euro a turno (120 in pronto soccorso). Pronta disponibilità: 2 euro l'ora. Nei congedi questi compensi non sono dovuti.",
+      "comeChiedere": "Chi ha diritto all'esonero dal lavoro notturno lo comunica per iscritto all'Azienda in tempo per i turni.",
+      "fonti": [ { "f": "ccnl2024", "art": "29 cc. 2-3; 30 cc. 2-3, 6-7" }, { "f": "tu151", "art": "53" } ],
+      "dataDecisiva": "Età del figlio alla data del turno.",
+      "regime": "Artt. 29-30 CCNL 23/1/2024, non modificati dal CCNL 27/2/2026.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "La pronta disponibilità notturna rientra nel divieto per la madre fino al primo anno e nell'esonero fino ai 3 anni, perché la chiamata in servizio è lavoro tra le 24 e le 6 che l'Azienda non può escludere in anticipo.",
+      "alternativa": "La pronta disponibilità in sé non è lavoro (lo è solo la chiamata): l'Azienda potrebbe programmarla sostenendo che il divieto scatta solo se c'è la chiamata. Non ho trovato una norma, una circolare o un orientamento ARAN che chiuda la questione: chiedi all'Azienda di escluderla per iscritto."
+    },
+    {
+      "id": "orario-flessibile",
+      "area": 2,
+      "titolo": "Orario flessibile e ferie estive",
+      "chi": "entrambi",
+      "aChi": "Al dirigente con figli minori di 12 anni (priorità nell'orario flessibile), con figli con DSA nel primo ciclo scolastico, con figli in età di obbligo scolastico (ferie), alle famiglie monoparentali e alle coppie di dirigenti entrambi turnisti.",
+      "durata": "Priorità nell'impiego flessibile dell'orario, se compatibile con l'organizzazione. Almeno 15 giorni lavorativi continuativi di ferie tra il 15 giugno e il 15 settembre per chi ha figli in età di obbligo scolastico (per gli altri tra il 1° giugno e il 30 settembre).",
+      "finestra": "Fino ai 12 anni del figlio (orario); finché il figlio è in età di obbligo scolastico (ferie).",
+      "retribuzione": "Nessun effetto sulla retribuzione.",
+      "comeChiedere": "Richiesta al direttore della struttura nella programmazione di turni e ferie.",
+      "fonti": [ { "f": "ccnl2024", "art": "27 c. 10 lett. g, h, i" }, { "f": "ccnl2026", "art": "9 c. 10" } ],
+      "dataDecisiva": "Età del figlio al momento della programmazione.",
+      "regime": "Ferie: art. 9 CCNL 27/2/2026 (in vigore dalla pubblicazione, GU 7/4/2026), che ha portato i 15 giorni a «lavorativi». Orario: art. 27 CCNL 23/1/2024.",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "lavoro-agile",
+      "area": 2,
+      "titolo": "Lavoro agile",
+      "chi": "entrambi",
+      "aChi": "A tutti i dirigenti, anche a tempo determinato o part-time, per le attività che l'Azienda individua come compatibili. Esclusi i lavori in turno e le attività che richiedono presenza fisica: per il medico di reparto è raro.",
+      "durata": "Per legge l'Azienda che stipula accordi di lavoro agile deve dare priorità ai genitori con figli fino a 12 anni, o senza limite di età se il figlio ha una disabilità (L. 104/1992 art. 3 c. 3). Chi lo chiede non può essere sanzionato, trasferito o penalizzato.",
+      "finestra": "Fino ai 12 anni del figlio (senza limite con disabilità).",
+      "retribuzione": "Stessa retribuzione; niente compensi legati ai turni non svolti.",
+      "comeChiedere": "Accordo individuale scritto con l'Azienda.",
+      "fonti": [ { "f": "l81", "art": "art. 18 c. 3-bis" }, { "f": "ccnl2024", "art": "93; 94" } ],
+      "dataDecisiva": "Età del figlio alla richiesta.",
+      "regime": "Priorità in vigore dal 13/8/2022 (D.Lgs. 105/2022).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "part-time",
+      "area": 2,
+      "titolo": "Part-time (rapporto a impegno orario ridotto)",
+      "chi": "entrambi",
+      "aChi": "Ai dirigenti con rapporto esclusivo. Non compatibile con un incarico gestionale (viene revocato e sostituito con un incarico professionale); la libera professione intramuraria è sospesa.",
+      "durata": "Due strade. (1) Su domanda per assistere figli fino a 8 anni: l'Azienda decide entro 60 giorni, nei limiti del 3% dei posti (elevabile al 7% dal contratto integrativo) e se il servizio non ne risente. (2) Come diritto, una sola volta, al posto del congedo parentale o nei limiti del congedo ancora spettante, con riduzione dell'orario non oltre il 50%: l'Azienda deve concederlo entro 15 giorni, fuori dalle quote. Per legge c'è poi la priorità per chi ha un figlio convivente fino a 13 anni o con disabilità.",
+      "finestra": "Finché dura l'esigenza (strada 1) o nei limiti del congedo parentale residuo (strada 2).",
+      "retribuzione": "Proporzionale all'orario. Nel part-time verticale maternità e paternità spettano per intero; congedo parentale e riposi solo per i giorni che sarebbero lavorativi.",
+      "comeChiedere": "Domanda all'Azienda; si firma una modifica scritta del contratto individuale con durata e distribuzione dell'orario.",
+      "fonti": [ { "f": "ccnl2019", "art": "110 cc. 1-4, 6-10" }, { "f": "dlgs81", "art": "art. 8 cc. 5, 5-bis, 7" }, { "f": "ccnl2024", "art": "87 c. 9" } ],
+      "dataDecisiva": "Età del figlio alla domanda; congedo parentale residuo (strada 2).",
+      "regime": "Art. 110 CCNL 19/12/2019, ancora vigente (lo richiama il CCNL 23/1/2024).",
+      "verificato": "2026-11-25"
+    },
+    {
+      "id": "parentale-ore",
+      "area": 2,
+      "titolo": "Congedo parentale a ore e permessi orari",
+      "chi": "entrambi",
+      "aChi": "A ciascun genitore dirigente, a tempo pieno o ridotto.",
+      "durata": "Il congedo parentale si può prendere a ore. Il CCNL lo consente ma non fissa criteri di calcolo, quindi vale la regola di legge: metà dell'orario medio giornaliero del mese precedente, non cumulabile nello stesso giorno con altri permessi o riposi del D.Lgs. 151/2001. In più il CCNL dà 18 ore l'anno di assenza retribuita per motivi personali o familiari, senza documentazione.",
+      "finestra": "Come il congedo parentale.",
+      "retribuzione": "Le ore di congedo seguono la percentuale del congedo parentale; le 18 ore sono retribuite per intero.",
+      "comeChiedere": "Congedo a ore: preavviso di 2 giorni. Le 18 ore: richiesta compatibile con le esigenze di servizio.",
+      "fonti": [ { "f": "ccnl2019", "art": "45" }, { "f": "tu151", "art": "32" }, { "f": "ccnl2024", "art": "34" } ],
+      "dataDecisiva": "Data d'uso.",
+      "regime": "Art. 32 c. 1-ter in vigore dal 25/6/2015; art. 45 CCNL 19/12/2019 non sostituito.",
+      "verificato": "2026-11-25",
+      "incerta": true,
+      "lettura": "L'art. 45 del CCNL 19/12/2019 permette il congedo a ore ma rinvia alle «disposizioni attuative» senza fissare il calcolo: si applica quindi la regola di legge della metà dell'orario medio giornaliero (art. 32 c. 1-ter).",
+      "alternativa": "Se un contratto integrativo aziendale ha fissato criteri diversi (per esempio l'equivalenza di un certo numero di ore a una giornata), vale quello: chiedi all'ufficio del personale se esiste."
+    },
+    {
+      "id": "assegnazione-temporanea",
+      "area": 2,
+      "titolo": "Assegnazione temporanea vicino all'altro genitore",
+      "chi": "entrambi",
+      "aChi": "Al genitore dipendente pubblico con figli fino a 3 anni.",
+      "durata": "Fino a 3 anni complessivi, anche frazionati, in una sede nella stessa provincia o regione in cui lavora l'altro genitore, se c'è un posto vacante di pari livello e con l'assenso delle due amministrazioni. Il dissenso deve essere motivato e limitato a casi eccezionali.",
+      "finestra": "Fino ai 3 anni del figlio (adozione: primi 3 anni dall'ingresso, a qualsiasi età).",
+      "retribuzione": "La norma non regola il trattamento economico durante l'assegnazione: chiedilo alle due Aziende prima di accettare.",
+      "comeChiedere": "Domanda all'Azienda di appartenenza e a quella di destinazione: devono rispondere entro 30 giorni.",
+      "fonti": [ { "f": "tu151", "art": "42-bis" }, { "f": "tu151", "art": "45" } ],
+      "dataDecisiva": "Età del figlio alla domanda.",
+      "regime": "Testo in vigore dal 6/6/2024.",
+      "verificato": "2026-11-25"
+    },
+    {"id": "disabilita-prolungamento", "area": 3, "titolo": "Figlio con disabilità grave: prolungamento del congedo parentale", "chi": "entrambi", "aChi": "Alla madre o, in alternativa, al padre dipendente di un figlio con disabilità grave accertata (L. 104/1992, art. 4 c. 1), se il figlio non è ricoverato a tempo pieno (salvo che i sanitari chiedano la presenza del genitore). Spetta anche se l'altro genitore non ne ha diritto.", "durata": "Fino a 3 anni in tutto per figlio, compresi i mesi di congedo parentale ordinario già usati da entrambi i genitori.", "finestra": "Entro i 14 anni del figlio (12 per i giorni usati fino al 31/12/2025). Decorre dopo la fine del congedo parentale massimo spettante al genitore che lo chiede.", "retribuzione": "30% per tutto il prolungamento, senza limiti di reddito. Contribuzione figurativa.", "comeChiedere": "Domanda all'Azienda con il verbale di handicap grave (art. 3 c. 3 L. 104/1992); preavviso come per il congedo parentale.", "fonti": [{"f": "tu151", "art": "33"}, {"f": "tu151", "art": "34"}, {"f": "tu151", "art": "35"}], "dataDecisiva": "Data d'uso (14 anni dal 2026); data dell'accertamento della disabilità.", "regime": "14 anni dal 1/1/2026 (L. 199/2025).", "verificato": "2026-11-25"},
+    {"id": "disabilita-permessi", "area": 3, "titolo": "Figlio con disabilità grave: 2 ore al giorno o 3 giorni al mese", "chi": "entrambi", "aChi": "Ai genitori dipendenti, anche adottivi o affidatari, di un figlio con disabilità grave non ricoverato a tempo pieno.", "durata": "Fino ai 3 anni del figlio: in alternativa tra loro, 2 ore di permesso al giorno, oppure il prolungamento del congedo, oppure 3 giorni al mese. Dopo i 3 anni: 3 giorni di permesso al mese, che i due genitori possono dividersi, anche continuativi. Si cumulano con il congedo parentale ordinario e con la malattia del figlio. Negli stessi giorni in cui un genitore usa permessi o prolungamento, l'altro non può usarli.", "finestra": "Le 2 ore fino ai 3 anni; i 3 giorni al mese senza limite di età.", "retribuzione": "100%, con contribuzione figurativa. Per il CCNL i 3 giorni maturano ferie e tredicesima e si possono prendere a ore fino a 18 ore al mese.", "comeChiedere": "Domanda all'Azienda con il verbale. Il CCNL chiede una programmazione mensile entro il giorno 20 del mese precedente (o in tempo per i turni); in urgenza 24 ore prima.", "fonti": [{"f": "tu151", "art": "42"}, {"f": "tu151", "art": "43"}, {"f": "tu151", "art": "44"}, {"f": "l104", "art": "art. 33 cc. 2, 3, 4, 6-bis"}, {"f": "ccnl2024", "art": "35 cc. 1-3"}], "dataDecisiva": "Età del figlio nel giorno di permesso.", "regime": "Art. 33 L. 104/1992 in vigore dal 13/8/2022.", "verificato": "2026-11-25"},
+    {"id": "congedo-straordinario", "area": 3, "titolo": "Congedo straordinario per assistere il figlio con disabilità grave", "chi": "entrambi", "aChi": "A un genitore per volta, anche adottivo, se il figlio non ha un coniuge o convivente che lo assista (per un figlio minorenne spetta ai genitori). Il figlio non deve essere ricoverato a tempo pieno.", "durata": "Fino a 2 anni per ciascuna persona assistita e nell'arco della vita lavorativa, continuativi o frazionati. Non si può dare a più di un lavoratore per la stessa persona; i due genitori possono alternarsi ma non negli stessi giorni.", "finestra": "Nessun limite di età del figlio. Va concesso entro 30 giorni dalla domanda; spetta anche se la convivenza inizia dopo la domanda.", "retribuzione": "Indennità pari all'ultima retribuzione (voci fisse e continuative), entro un tetto annuo complessivo (indennità più contributi) di 43.579,06 euro rivalutato ogni anno dal 2011 sull'indice ISTAT. Contribuzione figurativa. Non matura ferie, tredicesima e TFR.", "comeChiedere": "Domanda all'Azienda con il verbale di handicap grave e le dichiarazioni sulla convivenza e sugli altri familiari.", "fonti": [{"f": "tu151", "art": "42"}], "dataDecisiva": "Data della domanda (l'Azienda ha 30 giorni).", "regime": "Testo in vigore dal 13/8/2022, con la sentenza della Corte costituzionale 197/2025 (convivente di fatto, testo anteriore al 2022).", "verificato": "2026-11-25", "incerta": true, "lettura": "Il tetto annuo è quello rivalutato che l'INPS pubblica ogni anno: la pagina non riporta l'importo del 2026 perché non l'ho letto su una fonte primaria.", "alternativa": "Nessuna alternativa di merito: chiedi all'Azienda l'importo del tetto in vigore nell'anno in cui usi il congedo."},
+    {"id": "adozione-maternita", "area": 3, "titolo": "Adozione e affidamento: congedo di maternità (e paternità alternativa)", "chi": "entrambi", "aChi": "Alla madre adottiva o affidataria dipendente; al padre, alle stesse condizioni, se la madre non lo chiede (anche se la madre non lavora, per il periodo all'estero).", "durata": "Adozione nazionale e internazionale: 5 mesi, qualunque sia l'età del minore. Affidamento: 3 mesi. Nell'adozione internazionale chi non usa il congedo durante la permanenza all'estero può avere un congedo non retribuito per quel periodo.", "finestra": "Adozione nazionale: nei 5 mesi dopo l'ingresso in famiglia. Internazionale: anche prima dell'ingresso in Italia, durante la permanenza all'estero certificata dall'ente autorizzato, e comunque entro 5 mesi dall'ingresso. Affidamento: entro 5 mesi dall'affidamento. Vale anche la sospensione per ricovero del minore (art. 16-bis).", "retribuzione": "Lettura scelta: retribuzione intera del CCNL, come per la maternità biologica.", "comeChiedere": "Domanda all'Azienda con il provvedimento di adozione o affidamento e la data di ingresso; per l'estero, certificazione dell'ente autorizzato.", "fonti": [{"f": "tu151", "art": "26"}, {"f": "tu151", "art": "31"}, {"f": "ccnl2024", "art": "41 c. 2"}], "dataDecisiva": "Data di ingresso in famiglia (o in Italia).", "regime": "Art. 26 in vigore dal 25/6/2015.", "verificato": "2026-11-25", "incerta": true, "lettura": "Il congedo per adozione è lo stesso congedo di maternità («come regolato dal presente Capo», art. 26 c. 1), quindi il dirigente SSN ha la retribuzione intera dell'art. 41 c. 2 CCNL.", "alternativa": "L'art. 41 c. 2 CCNL nomina solo gli artt. 16, 17, 27-bis e 28 del D.Lgs. 151/2001, non l'art. 26: un'Azienda potrebbe pagare solo l'80% di legge. Effetto: 20% di retribuzione in meno per 5 mesi. Non ho trovato orientamenti ARAN: chiedi conferma scritta."},
+    {"id": "adozione-altri", "area": 3, "titolo": "Adozione e affidamento: gli altri diritti", "chi": "entrambi", "aChi": "Ai genitori adottivi e affidatari dipendenti.", "durata": "Paternità obbligatoria: 10 giorni nei 5 mesi dall'ingresso (nell'adozione internazionale anche all'estero). Congedo parentale: stesse durate, entro 14 anni dall'ingresso e non oltre i 18 anni del figlio; i mesi all'80% entro 6 anni dall'ingresso. Riposi giornalieri nel primo anno dall'ingresso. Malattia del figlio: senza limite fino ai 6 anni, poi a giorni annui. Esonero dal lavoro notturno nei primi 3 anni dall'ingresso (non oltre i 12 anni). Divieto di licenziamento fino a un anno dall'ingresso (per l'adozione internazionale da quando arriva la proposta di incontro). Assegnazione temporanea (art. 42-bis) nei primi 3 anni dall'ingresso.", "finestra": "Tutte le finestre decorrono dall'ingresso in famiglia.", "retribuzione": "Come per i figli biologici.", "comeChiedere": "All'Azienda con il provvedimento e la data di ingresso.", "fonti": [{"f": "tu151", "art": "27-bis"}, {"f": "tu151", "art": "36"}, {"f": "tu151", "art": "45"}, {"f": "tu151", "art": "50"}, {"f": "tu151", "art": "53"}, {"f": "tu151", "art": "54"}, {"f": "inps122", "art": "par. 2.2"}, {"f": "inps251", "art": ""}], "dataDecisiva": "Data di ingresso in famiglia; data di nascita del minore (limite dei 18 anni).", "regime": "14 anni dall'ingresso dal 1/1/2026.", "verificato": "2026-11-25", "incerta": true, "lettura": "Malattia del figlio adottato: senza limite fino ai 6 anni; poi 10 giorni l'anno fino ai 14 anni come per tutti i figli (art. 47 c. 2 dal 2026); se il minore entra tra i 6 e i 12 anni, almeno nei primi 3 anni dall'ingresso.", "alternativa": "L'art. 50 c. 2 dice ancora «fino al compimento dell'ottavo anno» e non è stato aggiornato dalla legge di bilancio 2026: letto alla lettera, per i figli adottati i giorni annui finirebbero agli 8 anni. Lo ritengo superato perché l'art. 47 c. 2 ora copre tutti i figli fino a 14 anni, ma l'INPS non si è espresso."}
+,
+    {"id": "enpam-maternita", "area": 4, "titolo": "ENPAM: indennità di maternità e dirigente dipendente", "chi": "madre", "aChi": "Alle iscritte ENPAM che non hanno un trattamento per lo stesso evento da un'altra gestione o dal datore di lavoro. La dirigente SSN in maternità ha la retribuzione dell'Azienda: per lo stesso parto non ha l'indennità ENPAM piena.", "durata": "ENPAM paga solo un'integrazione: fino a completare le cinque mensilità e a garantire l'importo minimo (6.045,10 euro nel 2026). Per la dirigente a tempo pieno l'Azienda paga già più del minimo, quindi di regola non spetta nulla; per la dirigente part-time ENPAM integra fino al minimo.", "finestra": "Domanda dalla 26ª settimana compiuta di gravidanza ed entro 180 giorni dal parto (termine perentorio); per adozione e affidamento entro 180 giorni dall'ingresso.", "retribuzione": "Indennità piena (solo per chi non ha altra tutela): 80% di 5/12 del reddito professionale imponibile ENPAM del secondo anno precedente, minimo 6.045,10 e massimo 30.225,50 euro (2026). Non si cumula con la maternità pagata dall'Azienda.", "comeChiedere": "Area riservata ENPAM, con certificato di gravidanza e dichiarazione sugli altri trattamenti. Se hai anche redditi da libera professione, chiedi a ENPAM se ti spetta l'integrazione.", "fonti": [{"f": "enpam-reg", "art": "artt. 2, 5, 6"}, {"f": "tu151", "art": "70"}, {"f": "tu151", "art": "71"}, {"f": "enpam-importi", "art": ""}, {"f": "enpam-maternita", "art": ""}], "dataDecisiva": "Data effettiva del parto (per il reddito di riferimento e per i 180 giorni).", "regime": "Regolamento ENPAM a tutela della genitorialità in vigore da marzo 2020; importi 2026.", "verificato": "2026-11-26"},
+    {"id": "enpam-paternita-rischio", "area": 4, "titolo": "ENPAM: paternità e gravidanza a rischio", "chi": "entrambi", "aChi": "Paternità: al padre iscritto ENPAM solo se la madre è libera professionista e muore, è gravemente inferma, abbandona il figlio o il figlio è affidato in esclusiva al padre. Gravidanza a rischio: alla iscritta che sospende ogni attività e non ha un trattamento da altre gestioni o dal datore di lavoro.", "durata": "Paternità: il periodo che sarebbe spettato alla madre, o la parte residua. Gravidanza a rischio: fino a 6 mensilità, fino ai due mesi prima del parto.", "finestra": "Paternità: domanda entro 180 giorni dalla nascita o dall'ingresso.", "retribuzione": "Come l'indennità di maternità ENPAM. La dirigente SSN in interdizione anticipata ha la retribuzione dell'Azienda: l'indennità ENPAM per gravidanza a rischio non si cumula.", "comeChiedere": "Area riservata ENPAM.", "fonti": [{"f": "enpam-reg", "art": "artt. 7, 8"}, {"f": "tu151", "art": "70"}], "dataDecisiva": "Data della nascita o dell'evento che riguarda la madre.", "regime": "Regolamento ENPAM da marzo 2020.", "verificato": "2026-11-26"},
+    {"id": "enpam-sussidio", "area": 4, "titolo": "ENPAM: sussidio per i nuovi nati (nido e baby sitter)", "chi": "entrambi", "aChi": "A ogni genitore iscritto ENPAM, anche dipendente, in regola con i contributi; se entrambi i genitori sono medici, spetta a tutti e due. Limite di reddito: reddito lordo medio degli ultimi tre anni dell'intero nucleo non oltre 8 volte il trattamento minimo INPS (62.753,60 euro nel bando 2026), più 7.844,20 euro per ogni familiare oltre al richiedente. Per due dirigenti medici il limite è spesso superato.", "durata": "Una volta per figlio. Bando 2026: 2.000 euro agli iscritti Quota A, più 3.000 euro a chi è anche iscritto Quota B (almeno tre anni di contributi Quota B negli ultimi dieci, uno nel 2022-2024).", "finestra": "Bando 2026: figli nati o entrati in famiglia dal 1/1/2025; domande dal 13/4/2026 al 10/9/2026 (chiuse). Per i figli nati dopo serve il bando 2027, non ancora pubblicato.", "retribuzione": "Somma una tantum; ENPAM non prevede incompatibilità con i bonus di altri enti.", "comeChiedere": "Solo online nell'area riservata ENPAM, nel periodo del bando, con stato di famiglia e certificato di nascita.", "fonti": [{"f": "enpam-bando", "art": "artt. 3-5"}, {"f": "enpam-reg", "art": "art. 10"}, {"f": "enpam-importi", "art": ""}], "dataDecisiva": "Data di nascita o ingresso e date del bando annuale.", "regime": "Bando 2026 (delibera CdA 27/2026); cambia ogni anno.", "verificato": "2026-11-26", "incerta": true, "lettura": "Per i figli nati dopo il 10/9/2026 il sussidio sarà nel bando 2027, con regole simili.", "alternativa": "Il bando è annuale e può cambiare importi, limiti di reddito o finestre di nascita: controlla il bando 2027 quando ENPAM lo pubblica."},
+    {"id": "enpam-quote", "area": 4, "titolo": "ENPAM: cosa paga e cosa matura il medico dipendente", "chi": "entrambi", "aChi": "A tutti i medici iscritti all'Ordine, compresi i dipendenti SSN.", "durata": "Il dipendente versa la Quota A (contributo fisso per età: 2.049,83 euro l'anno dai 40 anni) più 84,26 euro l'anno di contributo per maternità, adozione e aborto. La Quota B è dovuta solo sul reddito da libera professione oltre la soglia coperta dalla Quota A. La pensione principale del dirigente SSN è quella INPS (gestione dipendenti pubblici); ENPAM paga la pensione di Quota A (e B se versata).", "finestra": "Per tutta l'iscrizione all'Ordine, fino all'età della pensione di Quota A.", "retribuzione": "—", "comeChiedere": "Pagamento a ENPAM (unica soluzione o rate con domiciliazione). Chi sospende del tutto la libera professione per maternità o adozione può coprire quei periodi con il contributo volontario Quota B.", "fonti": [{"f": "enpam-quotaa", "art": ""}, {"f": "enpam-reg", "art": "art. 9"}, {"f": "enpam-volontario", "art": ""}], "dataDecisiva": "Età e anno di contribuzione.", "regime": "Importi della pagina ENPAM consultata il 26/11/2026.", "verificato": "2026-11-26"},
+    {"id": "figurativi", "area": 4, "titolo": "Contributi per la pensione durante congedi e permessi", "chi": "entrambi", "aChi": "Al dirigente SSN, iscritto alla gestione INPS dei dipendenti pubblici.", "durata": "Maternità e paternità: contributi pieni, senza anzianità minima. Congedo parentale: per i dipendenti pubblici con retribuzione ridotta o assente c'è la contribuzione figurativa per la parte che manca, sulla retribuzione media. Malattia del figlio: figurativa piena fino ai 3 anni; dai 3 agli 8 anni ridotta (200% dell'assegno sociale), integrabile a proprie spese. Riposi giornalieri: ore lavorate. Permessi L. 104 e congedo straordinario: figurativi (il congedo straordinario entro il tetto annuo).", "finestra": "Automatica, nei periodi indicati.", "retribuzione": "—", "comeChiedere": "Nessuna domanda: li accredita l'Azienda nelle denunce. Controlla l'estratto conto INPS.", "fonti": [{"f": "tu151", "art": "25"}, {"f": "tu151", "art": "35"}, {"f": "tu151", "art": "44"}, {"f": "tu151", "art": "49"}, {"f": "tu151", "art": "42"}], "dataDecisiva": "Data del congedo.", "regime": "Art. 35 e 49 invariati dal 2001.", "verificato": "2026-11-26", "incerta": true, "lettura": "Per la malattia del figlio tra 8 e 14 anni (giorni nuovi dal 2026) la legge non ha aggiornato l'art. 49: copertura figurativa non prevista.", "alternativa": "L'INPS potrebbe estendere la copertura ridotta dell'art. 49 c. 2 fino ai 14 anni. Non ho trovato istruzioni INPS: chiedi all'Azienda come registra quei giorni."},
+    {"id": "riscatti", "area": 4, "titolo": "Maternità e congedi fuori dal rapporto di lavoro: accredito e riscatto", "chi": "entrambi", "aChi": "A chi ha avuto un figlio quando non lavorava (per esempio prima dell'assunzione, durante studi o tra due contratti).", "durata": "Maternità fuori dal rapporto di lavoro: i 5 mesi sono accreditati come contribuzione figurativa se all'atto della domanda hai almeno 5 anni di contributi versati lavorando. Periodi corrispondenti al congedo parentale fuori dal rapporto: riscattabili, fino a 5 anni, con lo stesso requisito dei 5 anni di contributi.", "finestra": "In qualsiasi momento prima della pensione.", "retribuzione": "Accredito della maternità gratuito; riscatto del parentale a pagamento (riserva matematica).", "comeChiedere": "Domanda all'INPS (gestione dipendenti pubblici) con i certificati di nascita.", "fonti": [{"f": "tu151", "art": "25"}, {"f": "tu151", "art": "35"}], "dataDecisiva": "Data della domanda (requisito dei 5 anni).", "regime": "Invariato dal 2001.", "verificato": "2026-11-26"},
+    {"id": "ricongiunzione", "area": 4, "titolo": "Ricongiunzione, cumulo, totalizzazione (INPS ed ENPAM)", "chi": "entrambi", "aChi": "Al medico con contributi sia all'INPS (dipendente SSN, Gestione separata) sia all'ENPAM.", "durata": "Ricongiunzione: sposta tutti i contributi in un'unica gestione (verso INPS o verso ENPAM); può costare, la differenza tra riserva matematica e contributi trasferiti (rivalutati al 4,5%), pagabile a rate. La Gestione separata INPS non è ricongiungibile secondo l'INPS. Cumulo: gratuito, unisce i periodi non coincidenti per un'unica pensione pagata dall'INPS, anche con la Gestione separata e con ENPAM (dal 2017). Totalizzazione: gratuita, con calcolo contributivo, a 65 anni e 20 di contributi o 40 di contributi.", "finestra": "Ricongiunzione: in qualsiasi momento, conviene farla presto (il costo cresce avvicinandosi alla pensione). Cumulo e totalizzazione: al momento della pensione.", "retribuzione": "—", "comeChiedere": "Ricongiunzione: all'ente in cui vuoi spostare i contributi (verso ENPAM: area riservata, «Riscatti e ricongiunzioni»); la proposta va accettata entro 60 giorni. Cumulo: con la domanda di pensione all'ultima gestione di iscrizione.", "fonti": [{"f": "l45", "art": "artt. 1-2"}, {"f": "dlgs42", "art": "art. 1"}, {"f": "inps140", "art": "par. 1-2"}, {"f": "enpam-ricongiunzione", "art": ""}], "dataDecisiva": "Data della domanda (ricongiunzione) o di pensione (cumulo, totalizzazione).", "regime": "Cumulo con le casse professionali dal 1/1/2017 (L. 232/2016 c. 195).", "verificato": "2026-11-26"},
+    {"id": "assegno-unico", "area": 4, "titolo": "Assegno unico universale", "chi": "entrambi", "aChi": "A tutti i genitori con figli a carico, qualunque sia il reddito: anche ai dirigenti medici, nella misura minima se l'ISEE è alto.", "durata": "Ogni mese, per ciascun figlio minorenne; importi ridotti per i figli tra 18 e 20 anni; senza limiti di età per i figli con disabilità.", "finestra": "La domanda vale anche per gli anni successivi; serve l'ISEE aggiornato ogni anno (DSU entro il 30 giugno per avere gli arretrati da marzo).", "retribuzione": "2026, per figlio minorenne: da 203,8 euro al mese (ISEE fino a 17.468,51 euro) a 58,3 euro (ISEE oltre 46.582,71 euro o senza ISEE). +50% fino al primo compleanno. Con due dirigenti medici di solito si è nella fascia minima. Dal 2026 l'ISEE di riferimento non conta l'assegno unico stesso.", "comeChiedere": "Domanda all'INPS una volta sola (online, patronato o contact center), poi aggiornare la nascita di nuovi figli e l'ISEE.", "fonti": [{"f": "inps7", "art": "par. 1-3 e allegato 1"}], "dataDecisiva": "ISEE valido nel mese; età del figlio.", "regime": "Importi 2026 rivalutati dell'1,4% (circolare INPS 7/2026).", "verificato": "2026-11-26"},
+    {"id": "bonus-nido", "area": 4, "titolo": "Bonus asilo nido", "chi": "entrambi", "aChi": "Al genitore di un figlio sotto i 3 anni iscritto a un nido pubblico o privato autorizzato (o con grave patologia cronica, per il supporto a domicilio).", "durata": "Rimborso della retta in 11 mensilità. Dal 2026 la domanda vale fino ai 3 anni del bambino: negli anni successivi si selezionano solo le mensilità.", "finestra": "Fino al terzo compleanno.", "retribuzione": "Nati dal 1/1/2024: 3.600 euro l'anno con ISEE (neutralizzato dall'assegno unico) fino a 40.000 euro, 1.500 euro oltre o senza ISEE. Nati prima: 3.000 (ISEE fino a 25.000,99), 2.500 (fino a 40.000), 1.500 euro. Non si cumula con la detrazione fiscale per le stesse spese.", "comeChiedere": "Domanda online all'INPS con le ricevute della retta.", "fonti": [{"f": "inps29", "art": "par. 2-3"}], "dataDecisiva": "Data di nascita del figlio (prima o dal 2024) e ISEE del mese precedente.", "regime": "Regole 2026 (circolare INPS 29/2026).", "verificato": "2026-11-26"},
+    {"id": "bonus-nuovi-nati", "area": 4, "titolo": "Bonus nuovi nati (1.000 euro)", "chi": "entrambi", "aChi": "Al genitore di un figlio nato, adottato o in affidamento preadottivo nel 2026, con ISEE per prestazioni familiari (senza assegno unico) fino a 40.000 euro e residenza in Italia.", "durata": "1.000 euro una tantum per figlio.", "finestra": "Domanda entro 120 giorni dalla nascita o dall'ingresso, a pena di decadenza.", "retribuzione": "1.000 euro, pagati in ordine di domanda fino a esaurimento dei fondi.", "comeChiedere": "Domanda online all'INPS.", "fonti": [{"f": "inps45", "art": "par. 2-4"}], "dataDecisiva": "Data di nascita o ingresso (eventi del 2026).", "regime": "L. 207/2024 cc. 206-208; ISEE per prestazioni familiari dalla L. 199/2025 c. 208.", "verificato": "2026-11-26"},
+    {"id": "bonus-mamme", "area": 4, "titolo": "Bonus mamme 2026 ed esonero contributivo per tre figli", "chi": "madre", "aChi": "Bonus: alla lavoratrice dipendente (anche pubblica) o autonoma con due figli, il più piccolo sotto i 10 anni, o con tre o più figli e contratto non a tempo indeterminato, e redditi da lavoro 2026 fino a 40.000 euro. Esonero: alla dipendente a tempo indeterminato, pubblica o privata, con tre o più figli, il più piccolo sotto i 18 anni, senza limite di reddito.", "durata": "Bonus: 60 euro per ogni mese di lavoro nel 2026 (massimo 720 euro), pagati in un'unica soluzione a dicembre 2026. Esonero: 100% dei contributi pensionistici a carico della lavoratrice, fino a 3.000 euro l'anno, per i periodi di paga fino al 31/12/2026.", "finestra": "Anno 2026. Dal 2027 la legge prevede un esonero contributivo parziale ancora da attuare.", "retribuzione": "Il reddito di una dirigente medica a tempo pieno supera di solito i 40.000 euro: il bonus non spetta, mentre l'esonero per tre figli sì.", "comeChiedere": "Bonus: domanda all'INPS. Esonero: si chiede all'ufficio stipendi dell'Azienda, che lo applica in busta paga.", "fonti": [{"f": "inps106", "art": "par. 1-4"}, {"f": "inps27", "art": "par. 1-2"}], "dataDecisiva": "Mesi di lavoro nel 2026; età dei figli; tipo di contratto.", "regime": "L. 199/2025 c. 207 (bonus 2026); L. 213/2023 c. 180 (esonero 2024-2026).", "verificato": "2026-11-26", "incerta": true, "lettura": "La dirigente con tre figli a tempo indeterminato ha l'esonero tramite l'Azienda, come ogni dipendente pubblica (circolare INPS 27/2024).", "alternativa": "Le modalità per le pubbliche amministrazioni possono richiedere passaggi diversi: chiedi all'ufficio stipendi se l'esonero è già applicato in busta paga."}
+  ],
+  "faq": [
+    { "d": "Mia moglie è libera professionista (iscritta solo all'ENPAM): io, dirigente SSN, che congedi ho?", "r": "I 10 giorni di paternità obbligatoria al 100%. Il congedo parentale per intero: fino a 7 mesi tuoi (6 + 1 se ne prendi almeno 3), di cui 6 indennizzati, perché il congedo spetta anche se l'altro genitore non ne ha diritto; i primi 30 giorni al 100% e i mesi all'80% se le date lo consentono. I riposi giornalieri (2 ore al giorno fino a un anno), perché la madre non è lavoratrice dipendente (art. 40 lett. c D.Lgs. 151/2001)." },
+    { "d": "Siamo due dirigenti SSN: i 30 giorni al 100% sono 30 a testa?", "r": "No. Il CCNL dice «computati complessivamente per entrambi i genitori»: sono 30 giorni per la coppia, per ciascun figlio (art. 41 c. 3 CCNL 23/1/2024). Se uno dei due lavora nel privato o ha un rapporto di diritto pubblico non contrattualizzato, l'ARAN ritiene che i giorni dell'altro non si sottraggano." },
+    { "d": "Mio figlio ha compiuto 12 anni nel 2025 e non avevamo finito il congedo parentale: è perso?", "r": "No, se è ancora sotto i 14 anni. Dal 1° gennaio 2026 i genitori dipendenti con figli che non hanno compiuto 14 anni possono usare il congedo residuo (messaggio INPS 251/2026). I giorni usati fino al 31/12/2025 restavano soggetti al limite di 12 anni." },
+    { "d": "Nei giorni di congedo parentale si contano anche sabati e domeniche?", "r": "Sì, se il congedo è continuativo, e anche se è frazionato quando tra un periodo e l'altro non torni al lavoro (art. 41 c. 5 CCNL 23/1/2024). Per non perdere i festivi, rientra al lavoro tra un periodo e l'altro." },
+    { "d": "Posso rifiutare le guardie notturne?", "r": "La madre non può fare notti fino al primo anno del figlio. Dopo, fino ai 3 anni, la madre (o in alternativa il padre convivente) può chiedere di non essere adibita al lavoro notturno; il genitore unico affidatario fino ai 12 anni del figlio (art. 53 D.Lgs. 151/2001). Il CCNL non prevede un esonero ulteriore per i genitori." },
+    { "d": "Posso chiedere il part-time per stare con mio figlio?", "r": "Sì, in due modi. Su domanda, se il figlio ha fino a 8 anni: l'Azienda decide entro 60 giorni e può dire no se è raggiunta la quota (3%, fino al 7% con il contratto integrativo) o se il servizio ne risente. Come diritto, una sola volta, al posto del congedo parentale che ti resta, con riduzione non oltre il 50%: l'Azienda deve concederlo entro 15 giorni (art. 110 CCNL 19/12/2019; art. 8 c. 7 D.Lgs. 81/2015). In entrambi i casi perdi l'eventuale incarico gestionale e sospendi l'intramoenia." },
+    { "d": "Abbiamo adottato un bambino di 7 anni: che congedi abbiamo?", "r": "Congedo di maternità di 5 mesi nei 5 mesi dall'ingresso in famiglia (qualunque sia l'età), 10 giorni di paternità obbligatoria, congedo parentale entro 14 anni dall'ingresso ma non oltre i 18 anni del figlio (quindi fino al giorno prima dei 18 anni), con i mesi all'80% entro 6 anni dall'ingresso. Riposi giornalieri nel primo anno dall'ingresso (art. 45 D.Lgs. 151/2001). Malattia del figlio a giorni annui: vedi il punto da verificare sull'art. 50." },
+    { "d": "Sono dirigente SSN e iscritta ENPAM: in maternità prendo anche l'indennità ENPAM?", "r": "Di regola no. Il regolamento ENPAM esclude l'indennità se per lo stesso evento hai un trattamento da legge o contratto, e la dirigente ha la retribuzione intera dall'Azienda. ENPAM integra solo fino all'importo minimo (6.045,10 euro nel 2026) e fino a cinque mensilità: utile soprattutto con il part-time. Puoi invece chiedere il sussidio ENPAM per i nuovi nati, se rientri nel limite di reddito familiare." },
+    { "d": "Chi paga: INPS o Azienda?", "r": "Per il dirigente SSN dipendente paga l'Azienda tutti i trattamenti (maternità, paternità, congedo parentale, riposi): le indennità di legge «corrispondono, per le pubbliche amministrazioni, ai trattamenti economici» di legge e contratto, e non possono essere inferiori (art. 2 c. 2 D.Lgs. 151/2001). La domanda va all'ufficio del personale, non all'INPS." }
+  ]
+}
+</script>
+
+<script id="motore">
+/* Motore di calcolo della timeline. Funzioni pure: nessun accesso al DOM.
+   Date come stringhe ISO "AAAA-MM-GG", calcoli in UTC. */
+(function (root) {
+  'use strict';
+  var GIORNO = 86400000;
+  function d(s) { if (!s) return null; var p = String(s).split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+  function iso(t) { var x = new Date(t); return x.getUTCFullYear() + '-' + String(x.getUTCMonth() + 1).padStart(2, '0') + '-' + String(x.getUTCDate()).padStart(2, '0'); }
+  function addDays(s, n) { return iso(d(s) + n * GIORNO); }
+  function addMonths(s, n) {
+    var x = new Date(d(s)); var y = x.getUTCFullYear(), m = x.getUTCMonth() + n, g = x.getUTCDate();
+    var fine = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    return iso(Date.UTC(y, m, Math.min(g, fine)));
+  }
+  function addYears(s, n) { return addMonths(s, 12 * n); }
+  function diffDays(a, b) { return Math.round((d(b) - d(a)) / GIORNO); }
+  function min(a, b) { return a <= b ? a : b; }
+  function max(a, b) { return a >= b ? a : b; }
+  /* Ultimo giorno prima del compimento di "anni" anni: il diritto "fino a N anni" vale fino al giorno prima del compleanno. */
+  function primaDelCompleanno(nascita, anni) { return addDays(addYears(nascita, anni), -1); }
+  function stato(oggi, dal, al) { if (dal && oggi < dal) return 'futuro'; if (al && oggi > al) return 'scaduto'; return 'attivo'; }
+  function regimePerData(regimi, data) { var r = regimi[0]; for (var i = 0; i < regimi.length; i++) if (data >= regimi[i].dal) r = regimi[i]; return r; }
+  function dipendente(tipo) { return tipo === 'ssn' || tipo === 'pubblico' || tipo === 'privato'; }
+
+  /* Congedo di maternità (art. 16 e 20 D.Lgs. 151/2001). */
+  function maternita(P, presunta, parto, opzione) {
+    var o = P.maternita[opzione || 'ordinaria'];
+    var inizioPrevisto = addMonths(presunta, -o.preMesi);
+    if (!parto) return { inizio: inizioPrevisto, fine: addMonths(presunta, o.postMesi), stimata: true, giorniAggiunti: 0 };
+    var preTot = diffDays(inizioPrevisto, presunta);
+    var goduti = Math.min(Math.max(diffDays(inizioPrevisto, parto), 0), preTot);
+    var aggiunti = preTot - goduti;             /* art. 16 c. 1 lett. d: giorni non goduti prima del parto */
+    var inizio = parto < inizioPrevisto ? parto : inizioPrevisto;
+    return { inizio: inizio, fine: addDays(addMonths(parto, o.postMesi), aggiunti), stimata: false, giorniAggiunti: aggiunti };
+  }
+
+  /* Numero di mesi di congedo parentale all'80% (art. 34 c. 1; circ. INPS 95/2025 par. 3). */
+  function mesiMaggiorati(P, dataEvento, fineCongedo) {
+    var n = 0, norma = 'nessun mese maggiorato';
+    P.parentale.regimiMaggiorati.forEach(function (r) {
+      if (dataEvento >= r.eventoDal || (fineCongedo && fineCongedo > r.fineCongedoDopo)) { n = r.mesi; norma = r.norma; }
+    });
+    return { mesi: n, norma: norma };
+  }
+
+  /* Giorni ancora disponibili di congedo parentale per un genitore, divisi per fascia di retribuzione. */
+  function parentaleGenitore(P, chi, inp, ctx) {
+    var pp = P.parentale, M = inp.madre, F = inp.padre;
+    var io = chi === 'madre' ? M : F, altro = chi === 'madre' ? F : M;
+    var nomeAltro = chi === 'madre' ? 'padre' : 'madre';
+    if (!dipendente(io.tipo)) return { spetta: false, motivo: 'Il congedo parentale di questa pagina spetta ai genitori lavoratori dipendenti.' };
+    if (inp.genitoreSolo === nomeAltro) return { spetta: false, motivo: 'C\'è un solo genitore: l\'altro.' };
+    var solo = inp.genitoreSolo === chi;
+    var usM = solo && chi === 'padre' ? 0 : +M.parentaleGiorni || 0;
+    var usF = solo && chi === 'madre' ? 0 : +F.parentaleGiorni || 0;
+    var usIo = chi === 'madre' ? usM : usF, usTot = usM + usF;
+    var cap;
+    if (solo) cap = pp.genitoreSoloGiorni - usIo;
+    else if (chi === 'padre') {
+      var c = min(pp.individualeGiorni + pp.padreBonusGiorni - usF, pp.coppiaBonusGiorni - usTot);
+      cap = (usF + c >= pp.sogliaPadreBonusGiorni) ? c : min(pp.individualeGiorni - usF, pp.coppiaGiorni - usTot);
+    } else {
+      var coppia = usF >= pp.sogliaPadreBonusGiorni ? pp.coppiaBonusGiorni : pp.coppiaGiorni;
+      cap = min(pp.individualeGiorni - usM, coppia - usTot);
+    }
+    cap = max(0, cap);
+    var finestra = { dal: chi === 'madre' && ctx.fineMaternita ? addDays(ctx.fineMaternita, 1) : ctx.dataEvento, al: ctx.fineParentale };
+    var st = stato(inp.oggi, finestra.dal, finestra.al);
+    if (st === 'scaduto') cap = 0;
+    /* Fasce di indennità */
+    var nt = max(0, pp.nonTrasferibiliGiorni - usIo);
+    var condivisiUsati = min(pp.trasferibiliGiorni, max(0, usM - pp.nonTrasferibiliGiorni) + max(0, usF - pp.nonTrasferibiliGiorni));
+    var condivisi = pp.trasferibiliGiorni - condivisiUsati;
+    var indennizzabili = solo ? max(0, pp.genitoreSoloIndennizzatiGiorni - usIo) : nt + condivisi;
+    var entro6 = inp.oggi <= ctx.fineMaggiorata;
+    var pubblico = function (t) { return t === 'ssn' || t === 'pubblico'; };
+    var usatiPA = (pubblico(M.tipo) ? usM : 0) + (pubblico(F.tipo) ? usF : 0);
+    var usati100 = min(pp.ccnlGiorni100, usatiPA);
+    var assorbe = (inp.letturaCCNL || 'assorbe') === 'assorbe' && ctx.mesi80 > 0;
+    var pool = ctx.mesi80 * P.mese;
+    var poolUsati = (+M.parentale80Giorni || 0) + (+F.parentale80Giorni || 0) + (assorbe && entro6 ? usati100 : 0);
+    var poolResto = max(0, pool - poolUsati);
+    var t100 = io.tipo === 'ssn' ? min(min(max(0, pp.ccnlGiorni100 - usati100), indennizzabili), cap) : 0;
+    var ntDopo, indDopo = indennizzabili - t100;
+    if (solo) ntDopo = indDopo;
+    else if (assorbe) ntDopo = max(0, nt - t100);
+    else ntDopo = max(0, nt - max(0, t100 - condivisi));  /* lettura alternativa: i 30 giorni al 100% consumano prima i mesi condivisi */
+    var poolDisp = assorbe && entro6 ? max(0, poolResto - t100) : poolResto;
+    var t80 = (entro6 && st !== 'scaduto') ? max(0, min(min(poolDisp, ntDopo), cap - t100)) : 0;
+    var t30 = max(0, min(indDopo - t80, cap - t100 - t80));
+    var t0 = max(0, cap - t100 - t80 - t30);
+    return {
+      spetta: true, stato: st, finestra: finestra, totale: cap,
+      fasce: { p100: t100, p80: t80, p30: t30, p0: t0 },
+      entroIlMaggiorato: entro6 ? ctx.fineMaggiorata : null,
+      genitoreSolo: solo
+    };
+  }
+
+  function calcola(inp, P) {
+    var oggi = inp.oggi;
+    var avvisi = [], diritti = [], scadenze = [];
+    var adozione = inp.evento && inp.evento !== 'nascita';
+    var nascita = inp.dataNascita || null;
+    var presunta = inp.dataPresunta || nascita;
+    var dataEvento = adozione ? inp.dataIngresso : (nascita || presunta);
+    if (!dataEvento) return { errore: adozione ? 'Inserisci la data di ingresso in famiglia.' : 'Inserisci la data di nascita o la data presunta del parto.' };
+    if (!adozione && !nascita) avvisi.push('Il figlio non è ancora nato: le date dopo il parto sono stimate sulla data presunta.');
+    if (dataEvento < '2022-08-13' && ((+inp.madre.parentaleGiorni || 0) + (+inp.padre.parentaleGiorni || 0)) > 0) avvisi.push('Per i congedi usati prima del 13/8/2022 valevano regole diverse sugli indennizzi: il totale dei giorni residui è corretto, la divisione per percentuale può non esserlo (circolare INPS 122/2022, par. 3.1.2). Chiedi il conteggio all\'ufficio del personale.');
+
+    /* Maternità e paternità */
+    var mat = null, fineMaternita = inp.madre.fineCongedo || null;
+    if (!adozione && dipendente(inp.madre.tipo)) {
+      mat = maternita(P, presunta, nascita, inp.opzioneMaternita);
+      if (!fineMaternita) { fineMaternita = mat.fine; }
+      diritti.push({ id: 'maternita', titolo: 'Congedo di maternità', chi: 'madre', dal: mat.inizio, al: fineMaternita, stato: stato(oggi, mat.inizio, fineMaternita),
+        dettaglio: 'Retribuzione intera (CCNL).' + (mat.giorniAggiunti ? ' Include ' + mat.giorniAggiunti + ' giorni non goduti prima del parto.' : '') + (mat.stimata || !inp.madre.fineCongedo ? ' Date stimate.' : '') });
+    }
+    if (adozione && dipendente(inp.madre.tipo) && inp.genitoreSolo !== 'padre') {
+      var mesiAd = inp.evento === 'affidamento' ? P.maternita.affidamentoMesi : P.maternita.adozioneMesi;
+      var adAl = addMonths(dataEvento, P.maternita.adozioneEntroMesi);
+      var adDal = inp.evento === 'adozione_internazionale' ? null : dataEvento;
+      diritti.push({ id: 'maternita-adozione', titolo: 'Congedo di maternità per ' + (inp.evento === 'affidamento' ? 'affidamento' : 'adozione'), chi: 'madre (o il padre, se lei non lo chiede)', dal: adDal, al: adAl, stato: stato(oggi, adDal, adAl),
+        dettaglio: mesiAd + ' mesi entro i 5 mesi dall\'ingresso' + (inp.evento === 'adozione_internazionale' ? '; si può iniziare prima dell\'ingresso in Italia, durante la permanenza all\'estero' : '') + '.' });
+    }
+    var basePat = adozione ? dataEvento : presunta;
+    if (dipendente(inp.padre.tipo) && inp.genitoreSolo !== 'madre') {
+      var patDal = adozione ? dataEvento : addMonths(basePat, -P.paternita.finestraPreMesi);
+      var patAl = addMonths(adozione ? dataEvento : (nascita || presunta), P.paternita.finestraPostMesi);
+      var gg = inp.partoPlurimo ? P.paternita.giorniPlurimo : P.paternita.giorni;
+      diritti.push({ id: 'paternita', titolo: 'Congedo di paternità obbligatorio', chi: 'padre', dal: patDal, al: patAl, stato: stato(oggi, patDal, patAl),
+        dettaglio: gg + ' giorni lavorativi al 100%. Preavviso di ' + P.paternita.preavvisoGiorni + ' giorni.' });
+      scadenze.push({ data: patAl, testo: 'Ultimo giorno per il congedo di paternità obbligatorio' });
+    }
+
+    /* Regime dei mesi all'80% */
+    var fineCongedoMax = [fineMaternita && dipendente(inp.madre.tipo) ? fineMaternita : null, inp.padre.fineCongedo && dipendente(inp.padre.tipo) ? inp.padre.fineCongedo : null]
+      .filter(Boolean).sort().pop() || null;
+    var reg = mesiMaggiorati(P, dataEvento, fineCongedoMax);
+
+    /* Finestre del congedo parentale */
+    var anni = regimePerData(P.parentale.limiteEta, oggi).anni;
+    var fineParentale, fineMaggiorata;
+    if (adozione) {
+      var diciotto = nascita ? primaDelCompleanno(nascita, 18) : null;
+      fineParentale = primaDelCompleanno(dataEvento, anni);
+      fineMaggiorata = primaDelCompleanno(dataEvento, P.parentale.etaMaggiorataAnni);
+      if (diciotto) { fineParentale = min(fineParentale, diciotto); fineMaggiorata = min(fineMaggiorata, diciotto); }
+    } else {
+      var base = nascita || presunta;
+      fineParentale = primaDelCompleanno(base, anni);
+      fineMaggiorata = primaDelCompleanno(base, P.parentale.etaMaggiorataAnni);
+    }
+    var ctx = { dataEvento: dataEvento, fineMaternita: adozione ? null : fineMaternita, fineParentale: fineParentale, fineMaggiorata: fineMaggiorata, mesi80: reg.mesi };
+    var parentale = { madre: parentaleGenitore(P, 'madre', inp, ctx), padre: parentaleGenitore(P, 'padre', inp, ctx) };
+    if (reg.mesi > 0 && oggi <= fineMaggiorata) scadenze.push({ data: fineMaggiorata, testo: 'Ultimo giorno per i mesi di congedo parentale all\'80%' });
+    scadenze.push({ data: fineParentale, testo: 'Ultimo giorno di congedo parentale (' + anni + ' anni)' });
+
+    /* Riposi giornalieri */
+    var base1 = adozione ? dataEvento : (nascita || presunta);
+    var fineRiposi = primaDelCompleanno(base1, P.riposi.etaAnni);
+    var riposiChi = null;
+    if (dipendente(inp.madre.tipo) && inp.genitoreSolo !== 'padre') riposiChi = 'madre (o il padre dipendente se lei non li usa)';
+    else if (dipendente(inp.padre.tipo)) riposiChi = 'padre';
+    if (riposiChi) {
+      var ore = P.riposi.oreGiornaliere * (inp.partoPlurimo ? 2 : 1);
+      diritti.push({ id: 'riposi', titolo: 'Riposi giornalieri', chi: riposiChi, dal: base1, al: fineRiposi, stato: stato(oggi, base1, fineRiposi),
+        dettaglio: ore + ' ore al giorno retribuite (' + (inp.partoPlurimo ? 'raddoppiate per parto plurimo' : '1 sola ora con orario sotto le 6 ore') + ').' });
+      scadenze.push({ data: fineRiposi, testo: 'Fine dei riposi giornalieri' });
+    }
+
+    /* Lavoro notturno */
+    if (!adozione) {
+      var fineDivieto = primaDelCompleanno(nascita || presunta, P.notte.divietoEtaAnni);
+      var fineEsonero = primaDelCompleanno(nascita || presunta, inp.genitoreSolo ? P.notte.esoneroGenitoreSoloAnni : P.notte.esoneroAnni);
+      if (dipendente(inp.madre.tipo)) diritti.push({ id: 'notte-divieto', titolo: 'Divieto di lavoro notturno (24-6)', chi: 'madre', dal: null, al: fineDivieto, stato: stato(oggi, null, fineDivieto), dettaglio: 'Dalla gravidanza al primo anno del figlio.' });
+      diritti.push({ id: 'notte-esonero', titolo: 'Esonero dal lavoro notturno a richiesta', chi: inp.genitoreSolo ? 'genitore solo' : 'madre o, in alternativa, padre convivente', dal: null, al: fineEsonero, stato: stato(oggi, null, fineEsonero), dettaglio: 'Si può chiedere di non essere adibiti alle notti.' });
+      scadenze.push({ data: fineEsonero, testo: 'Fine del diritto a rifiutare il lavoro notturno' });
+    } else {
+      var fineEsAd = primaDelCompleanno(dataEvento, P.notte.adozioneAnniDaIngresso);
+      if (nascita) fineEsAd = min(fineEsAd, primaDelCompleanno(nascita, P.notte.adozioneEtaMaxAnni));
+      diritti.push({ id: 'notte-esonero', titolo: 'Esonero dal lavoro notturno a richiesta', chi: 'madre o, in alternativa, padre convivente', dal: dataEvento, al: fineEsAd, stato: stato(oggi, dataEvento, fineEsAd), dettaglio: 'Primi 3 anni dall\'ingresso, non oltre i 12 anni.' });
+    }
+
+    /* Malattia del figlio */
+    var regMal = regimePerData(P.malattiaFiglio.regimi, oggi);
+    var nascitaFiglio = nascita || (adozione ? null : presunta);
+    if (nascitaFiglio) {
+      var etaLibera = adozione ? P.malattiaFiglio.adozioneEtaSenzaLimiteAnni : P.malattiaFiglio.etaSenzaLimiteAnni;
+      var fineLibera = primaDelCompleanno(nascitaFiglio, etaLibera);
+      var fineMalattia = primaDelCompleanno(nascitaFiglio, regMal.etaMaxAnni);
+      if (adozione) {
+        var etaIngresso = diffDays(nascitaFiglio, dataEvento) / 365.25;
+        if (etaIngresso >= 6 && etaIngresso < 12) fineMalattia = max(fineMalattia, primaDelCompleanno(dataEvento, 3));
+      }
+      diritti.push({ id: 'malattia-libera', titolo: 'Malattia del figlio senza limite di giorni', chi: 'ciascun genitore, in alternativa', dal: adozione ? dataEvento : nascitaFiglio, al: fineLibera, stato: stato(oggi, adozione ? dataEvento : nascitaFiglio, fineLibera),
+        dettaglio: 'Non retribuita per legge. Dirigente SSN: ' + P.malattiaFiglio.ccnlGiorniAnno100 + ' giorni al 100% per ogni anno di vita fino ai 3 anni, contati per la coppia.' });
+      var dalAnnua = adozione ? max(addDays(fineLibera, 1), dataEvento) : addDays(fineLibera, 1);
+      diritti.push({ id: 'malattia-annua', titolo: 'Malattia del figlio, ' + regMal.giorni + ' giorni l\'anno', chi: 'ciascun genitore', dal: dalAnnua, al: fineMalattia, stato: stato(oggi, dalAnnua, fineMalattia),
+        dettaglio: regMal.giorni + ' giorni lavorativi all\'anno per ciascun genitore, non retribuiti.' });
+      if (oggi <= fineLibera) scadenze.push({ data: fineLibera, testo: 'Fine della malattia del figlio senza limite (e dei 30 giorni CCNL al 100%)' });
+      scadenze.push({ data: fineMalattia, testo: 'Fine del congedo per malattia del figlio' });
+    }
+
+    /* Figlio con disabilità grave (art. 33, 42 D.Lgs. 151/2001; art. 33 L. 104/1992) */
+    if (inp.disabilitaGrave && (dipendente(inp.madre.tipo) || dipendente(inp.padre.tipo))) {
+      var D = P.disabilita;
+      var usTotD = (dipendente(inp.madre.tipo) ? +inp.madre.parentaleGiorni || 0 : 0) + (dipendente(inp.padre.tipo) ? +inp.padre.parentaleGiorni || 0 : 0);
+      var residuoProl = max(0, D.prolungamentoMesiTotali * P.mese - usTotD);
+      var baseD = nascita || presunta || dataEvento;
+      var fineProl = primaDelCompleanno(baseD, anni);
+      if (oggi > fineProl) residuoProl = 0;
+      diritti.push({ id: 'prolungamento', titolo: 'Prolungamento del congedo parentale', chi: 'madre o, in alternativa, padre', dal: null, al: fineProl, stato: stato(oggi, null, fineProl),
+        dettaglio: 'Fino a 3 anni in tutto, compresi i congedi parentali già usati: restano ' + residuoProl + ' giorni, al 30%. Decorre dopo il congedo parentale massimo del genitore che lo chiede.' });
+      var fineOre = primaDelCompleanno(baseD, D.permessoOreEtaAnni);
+      var dalD = adozione ? dataEvento : baseD;
+      diritti.push({ id: 'permesso-ore', titolo: 'Due ore di permesso al giorno', chi: 'madre o, in alternativa, padre', dal: dalD, al: fineOre, stato: stato(oggi, dalD, fineOre),
+        dettaglio: D.permessoOreGiornaliere + ' ore al giorno retribuite al 100%, in alternativa al prolungamento.' });
+      diritti.push({ id: 'permessi-104', titolo: 'Tre giorni di permesso al mese (L. 104/1992)', chi: 'entrambi i genitori, alternativamente', dal: dalD, al: null, stato: stato(oggi, dalD, null),
+        dettaglio: D.permessiGiorniMese + ' giorni al mese retribuiti al 100% (anche 18 ore mensili), senza limite di età del figlio; sotto i 3 anni in alternativa alle 2 ore e al prolungamento.' });
+      diritti.push({ id: 'congedo-straordinario', titolo: 'Congedo straordinario retribuito', chi: 'un genitore per volta', dal: dalD, al: null, stato: stato(oggi, dalD, null),
+        dettaglio: 'Fino a ' + D.congedoStraordinarioAnni + ' anni nella vita lavorativa, con l\'ultima retribuzione fissa entro un tetto annuo rivalutato ogni anno. Concesso entro 30 giorni dalla domanda.' });
+      if (oggi <= fineOre) scadenze.push({ data: fineOre, testo: 'Fine delle 2 ore di permesso giornaliero (figlio con disabilità)' });
+      if (oggi <= fineProl) scadenze.push({ data: fineProl, testo: 'Ultimo giorno per il prolungamento del congedo parentale' });
+    }
+
+    /* Bonus e assegno unico (area 4) */
+    var bn = P.bonus.nuoviNati;
+    var dataBonus = adozione ? dataEvento : nascita;
+    if (dataBonus && dataBonus >= bn.eventoDal && dataBonus <= bn.eventoAl) {
+      var fineBn = addDays(dataBonus, bn.giorniDomanda);
+      diritti.push({ id: 'bonus-nuovi-nati', titolo: 'Domanda del bonus nuovi nati (' + bn.importo + ' euro)', chi: 'un genitore', dal: dataBonus, al: fineBn, stato: stato(oggi, dataBonus, fineBn),
+        dettaglio: 'Con ISEE per prestazioni familiari fino a 40.000 euro; domanda all\'INPS entro ' + bn.giorniDomanda + ' giorni, a pena di decadenza.' });
+      if (oggi <= fineBn) scadenze.push({ data: fineBn, testo: 'Ultimo giorno per la domanda del bonus nuovi nati' });
+    }
+    if (nascita || adozione) {
+      var baseAuu = adozione ? dataEvento : nascita;
+      var fineAuu = primaDelCompleanno(nascita || dataEvento, 1);
+      if (fineAuu >= baseAuu) {
+        diritti.push({ id: 'assegno-unico-primo-anno', titolo: 'Assegno unico maggiorato del ' + P.bonus.assegnoUnicoMaggiorazionePrimoAnno + '%', chi: 'chi riceve l\'assegno unico', dal: baseAuu, al: fineAuu, stato: stato(oggi, baseAuu, fineAuu),
+          dettaglio: 'Fino al primo compleanno del figlio. Ricorda di aggiungere il figlio alla domanda di assegno unico.' });
+      }
+    }
+
+    /* Divieto di licenziamento */
+    var fineTutela = primaDelCompleanno(adozione ? dataEvento : (nascita || presunta), P.licenziamento.etaAnni);
+    diritti.push({ id: 'licenziamento', titolo: 'Divieto di licenziamento e rientro nella stessa sede', chi: 'madre (padre durante e dopo la paternità)', dal: null, al: fineTutela, stato: stato(oggi, null, fineTutela), dettaglio: 'Dall\'inizio della gravidanza.' });
+
+    scadenze = scadenze.filter(function (s) { return s.data >= oggi; }).sort(function (a, b) { return a.data < b.data ? -1 : 1; });
+    return {
+      dataEvento: dataEvento, fineMaternita: adozione ? null : fineMaternita, regime: { mesi80: reg.mesi, norma: reg.norma, fineCongedoUsata: fineCongedoMax, anniParentale: anni, malattia: regMal },
+      fineParentale: fineParentale, fineMaggiorata: fineMaggiorata, parentale: parentale, diritti: diritti, scadenze: scadenze, avvisi: avvisi
+    };
+  }
+
+  root.Motore = { calcola: calcola, maternita: maternita, mesiMaggiorati: mesiMaggiorati, parentaleGenitore: parentaleGenitore,
+    util: { addDays: addDays, addMonths: addMonths, addYears: addYears, diffDays: diffDays, primaDelCompleanno: primaDelCompleanno } };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+
+<script id="interfaccia">
+(function () {
+  'use strict';
+  var dati = JSON.parse(document.getElementById('dati').textContent);
+  var P = dati.parametri, F = dati.fonti;
+  var CHI = { madre: 'Madre', padre: 'Padre', entrambi: 'Madre e padre' };
+
+  function el(tag, attrs, children) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { if (k === 'text') n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); });
+    (children || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function valore(path) { return path.split('.').reduce(function (o, k) { return o == null ? o : o[k]; }, { p: P }); }
+  function testo(s) { return String(s).replace(/\{\{([^}]+)\}\}/g, function (_, k) { var v = valore(k.trim()); return v == null ? '?' : v; }); }
+  function dataIt(s) { if (!s) return '—'; var p = s.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  function linkFonte(ref) {
+    var f = F[ref.f]; if (!f) return el('span', { text: ref.f });
+    var url = f.url;
+    if (f.articoli && ref.art) url += '~art' + ref.art.replace(/[^0-9a-z]/gi, '').toLowerCase();
+    var etichetta = f.articoli ? 'D.Lgs. 151/2001, art. ' + ref.art : f.titolo.split(' (')[0] + (ref.art ? ', ' + (/^\d/.test(ref.art) ? 'art. ' : '') + ref.art : '');
+    return el('a', { href: url, rel: 'noopener', text: etichetta });
+  }
+
+  /* Intestazione e indice */
+  document.getElementById('pill-aggiornamento').textContent = 'Aggiornata al ' + dataIt(dati.meta.aggiornamento);
+  document.getElementById('pill-aree').textContent = 'Aree verificate: ' + dati.meta.areeComplete.length + ' di 4';
+  document.getElementById('footer-aggiornamento').textContent = 'Ultimo aggiornamento: ' + dataIt(dati.meta.aggiornamento) + '. Ogni regola riporta la sua data di verifica.';
+
+  var toc = document.getElementById('toc-list');
+  var aree = document.getElementById('aree');
+  Object.keys(dati.meta.nomiAree).forEach(function (n) {
+    var nome = dati.meta.nomiAree[n];
+    var completa = dati.meta.areeComplete.indexOf(+n) >= 0;
+    toc.appendChild(el('li', null, [el('a', { href: '#area-' + n, text: nome })]));
+    var sez = el('section', { class: 'tile section', id: 'area-' + n, 'aria-labelledby': 'area-' + n + '-titolo' });
+    sez.appendChild(el('h2', { id: 'area-' + n + '-titolo', text: n + '. ' + nome }));
+    var regole = dati.regole.filter(function (r) { return String(r.area) === n; });
+    if (!completa) {
+      sez.appendChild(el('p', { class: 'area-status', text: 'Area non ancora verificata: in questa versione della guida non ci sono regole per questa area.' }));
+    } else {
+      sez.appendChild(el('p', { class: 'area-status', text: regole.length + ' regole, tutte verificate sulle fonti al ' + dataIt(dati.meta.aggiornamento) + '.' }));
+      var cards = el('div', { class: 'cards' });
+      regole.forEach(function (r) {
+        var h = el('h3', { id: 'r-' + r.id, text: r.titolo });
+        if (r.incerta) h.appendChild(el('span', { class: 'flag', text: 'da verificare' }));
+        var dl = el('dl');
+        [['A chi spetta', r.aChi], ['Durata', r.durata], ['Quando', r.finestra], ['Retribuzione', r.retribuzione], ['Come e a chi si chiede', r.comeChiedere], ['Quale data decide', r.dataDecisiva], ['Regime', r.regime]].forEach(function (c) {
+          if (!c[1]) return; dl.appendChild(el('dt', { text: c[0] })); dl.appendChild(el('dd', { text: testo(c[1]) }));
+        });
+        var refs = el('p', { class: 'refs' }, ['Fonti: ']);
+        r.fonti.forEach(function (ref, i) { if (i) refs.appendChild(document.createTextNode(' · ')); refs.appendChild(linkFonte(ref)); });
+        refs.appendChild(document.createTextNode(' — verificata il ' + dataIt(r.verificato)));
+        var card = el('article', { class: 'card' }, [h, el('span', { class: 'who', text: CHI[r.chi] || r.chi }), dl, refs]);
+        if (r.incerta) card.appendChild(el('div', { class: 'uncertain' }, [el('p', null, [el('strong', { text: 'Lettura usata: ' }), testo(r.lettura)]), el('p', null, [el('strong', { text: 'Alternativa: ' }), testo(r.alternativa)])]));
+        cards.appendChild(card);
+      });
+      sez.appendChild(cards);
+    }
+    aree.appendChild(sez);
+  });
+  [['#tabelle', 'Tabelle riassuntive'], ['#faq', 'Domande frequenti'], ['#incerti', 'Punti da verificare'], ['#fonti', 'Fonti']].forEach(function (x) {
+    toc.appendChild(el('li', null, [el('a', { href: x[0], text: x[1] })]));
+  });
+
+  /* Tabelle */
+  var tab = document.getElementById('tabelle-contenuto');
+  function tabella(caption, intest, righe) {
+    var t = el('table'); t.appendChild(el('caption', { text: caption }));
+    var tr = el('tr'); intest.forEach(function (h) { tr.appendChild(el('th', { scope: 'col', text: h })); }); t.appendChild(el('thead', null, [tr]));
+    var tb = el('tbody'); righe.forEach(function (r) { var x = el('tr'); r.forEach(function (c, i) { x.appendChild(el(i ? 'td' : 'th', i ? { text: testo(c) } : { scope: 'row', text: testo(c) })); }); tb.appendChild(x); });
+    t.appendChild(tb); return el('div', { class: 'table-wrap', role: 'region', 'aria-label': caption, tabindex: '0' }, [t]);
+  }
+  dati.meta.areeComplete.forEach(function (n) {
+    var reg = dati.regole.filter(function (r) { return r.area === n; });
+    tab.appendChild(tabella(n + '. ' + dati.meta.nomiAree[n] + ': chi, quando, come è pagato il dirigente SSN', ['Diritto', 'A chi', 'Quando', 'Retribuzione'],
+      reg.map(function (r) { return [r.titolo, CHI[r.chi] || r.chi, r.finestra, r.retribuzione]; })));
+    tab.appendChild(el('p', { text: '' }));
+  });
+  var pp = P.parentale;
+  tab.appendChild(el('p', { text: '' }));
+  tab.appendChild(tabella('Congedo parentale: quanti mesi e a quale percentuale', ['Situazione', 'Mesi in totale', 'Retribuiti', 'Entro'], [
+    ['Coppia di genitori dipendenti', (pp.coppiaGiorni / P.mese) + ' (' + (pp.coppiaBonusGiorni / P.mese) + ' se il padre ne usa almeno 3)', 'Dirigente SSN: 30 giorni al 100% per la coppia; fino a 3 mesi all\'80% secondo le date (entro 6 anni); poi al 30% fino a 9 mesi in tutto; il resto non retribuito', '{{p.parentale.limiteEta.1.anni}} anni del figlio'],
+    ['Madre', (pp.individualeGiorni / P.mese) + ' mesi', '3 mesi suoi non trasferibili + quota dei 3 condivisi', '{{p.parentale.limiteEta.1.anni}} anni'],
+    ['Padre', (pp.individualeGiorni / P.mese) + ' mesi (' + ((pp.individualeGiorni + pp.padreBonusGiorni) / P.mese) + ' se ne usa almeno 3)', '3 mesi suoi non trasferibili + quota dei 3 condivisi', '{{p.parentale.limiteEta.1.anni}} anni'],
+    ['Genitore solo', (pp.genitoreSoloGiorni / P.mese) + ' mesi', (pp.genitoreSoloIndennizzatiGiorni / P.mese) + ' mesi indennizzati (30%, con i mesi all\'80% se spettano)', '{{p.parentale.limiteEta.1.anni}} anni']
+  ]));
+  tab.appendChild(el('p', { text: '' }));
+  tab.appendChild(tabella('Mesi di congedo parentale all\'80%: quale regime si applica', ['Figlio nato o entrato in famiglia', 'Fine maternità o paternità di un genitore dipendente', 'Mesi all\'80%'], [
+    ['dal 1/1/2025', 'qualsiasi', '3'],
+    ['prima del 2025', 'dopo il 31/12/2024', '3'],
+    ['nel 2024', 'entro il 31/12/2024', '2'],
+    ['prima del 2024', 'nel 2024', '2'],
+    ['nel 2023', 'entro il 31/12/2023', '1'],
+    ['prima del 2023', 'nel 2023', '1'],
+    ['prima del 2023', 'entro il 31/12/2022', '0']
+  ]));
+
+  /* FAQ */
+  var faq = document.getElementById('faq-contenuto');
+  dati.faq.forEach(function (q) { faq.appendChild(el('details', null, [el('summary', { text: q.d }), el('p', { text: testo(q.r) })])); });
+
+  /* Punti incerti */
+  var inc = document.getElementById('incerti-contenuto');
+  dati.regole.filter(function (r) { return r.incerta; }).forEach(function (r) {
+    inc.appendChild(el('li', null, [el('a', { href: '#r-' + r.id, text: r.titolo }), el('p', null, [el('strong', { text: 'Lettura usata: ' }), testo(r.lettura)]), el('p', null, [el('strong', { text: 'Alternativa: ' }), testo(r.alternativa)])]));
+  });
+
+  /* Fonti */
+  var fl = document.getElementById('fonti-contenuto');
+  Object.keys(F).forEach(function (k) {
+    var f = F[k];
+    fl.appendChild(el('li', null, [el('a', { href: f.url, rel: 'noopener', text: f.titolo }), '. Letta da: ' + f.lettoDa + '. Verificata il ' + dataIt(f.verificato) + '.']));
+  });
+
+  /* Timeline */
+  var form = document.getElementById('form-timeline');
+  var out = document.getElementById('risultato');
+  var oggiInput = document.getElementById('f-oggi');
+  var oggi = new Date(); oggiInput.value = oggi.getFullYear() + '-' + String(oggi.getMonth() + 1).padStart(2, '0') + '-' + String(oggi.getDate()).padStart(2, '0');
+
+  function leggi() {
+    var g = function (id) { return document.getElementById(id).value || null; };
+    var n = function (id) { var v = parseInt(document.getElementById(id).value, 10); return isNaN(v) || v < 0 ? 0 : v; };
+    return {
+      oggi: g('f-oggi'), evento: g('f-evento'), dataNascita: g('f-nascita'), dataPresunta: g('f-presunta'), dataIngresso: g('f-ingresso'),
+      opzioneMaternita: g('f-opzione'), partoPlurimo: document.getElementById('f-plurimo').checked, disabilitaGrave: document.getElementById('f-disabilita').checked,
+      genitoreSolo: g('f-solo'), letturaCCNL: g('f-lettura'),
+      madre: { tipo: g('m-tipo'), fineCongedo: g('m-fine'), parentaleGiorni: n('m-usati'), parentale80Giorni: n('m-80') },
+      padre: { tipo: g('p-tipo'), fineCongedo: g('p-fine'), parentaleGiorni: n('p-usati'), parentale80Giorni: n('p-80') }
+    };
+  }
+  function barra(f, tot) {
+    var b = el('div', { class: 'bar', role: 'img', 'aria-label': f.p100 + ' giorni al 100%, ' + f.p80 + ' all\'80%, ' + f.p30 + ' al 30%, ' + f.p0 + ' non retribuiti' });
+    [['p100', 'seg-100'], ['p80', 'seg-80'], ['p30', 'seg-30'], ['p0', 'seg-0']].forEach(function (x) { if (f[x[0]] > 0) b.appendChild(el('span', { class: x[1], style: 'width:' + (100 * f[x[0]] / tot) + '%' })); });
+    return b;
+  }
+  function mostra(r, inp) {
+    out.innerHTML = '';
+    if (r.errore) { out.appendChild(el('p', { class: 'uncertain', text: r.errore })); return; }
+    out.appendChild(el('h3', { text: 'Risultato al ' + dataIt(inp.oggi) }));
+    r.avvisi.forEach(function (a) { out.appendChild(el('p', { class: 'uncertain', text: a })); });
+    var reg = r.regime;
+    out.appendChild(el('p', null, [el('strong', { text: 'Regime applicato: ' }), 'congedo parentale fino a ' + reg.anniParentale + ' anni; ' + reg.mesi80 + ' mesi all\'80% per la coppia (' + reg.norma + (reg.fineCongedoUsata ? ', fine maternità/paternità considerata: ' + dataIt(reg.fineCongedoUsata) : '') + '); malattia del figlio ' + reg.malattia.giorni + ' giorni l\'anno fino a ' + reg.malattia.etaMaxAnni + ' anni.']));
+    var lista = el('ul', { class: 'rights' });
+    var ordine = { attivo: 0, futuro: 1, scaduto: 2 };
+    r.diritti.slice().sort(function (a, b) { return ordine[a.stato] - ordine[b.stato]; }).forEach(function (x) {
+      lista.appendChild(el('li', null, [el('span', { class: 'status status--' + x.stato, text: x.stato === 'attivo' ? 'Attivo oggi' : x.stato === 'futuro' ? 'In futuro' : 'Scaduto' }), ' ', el('strong', { text: x.titolo }), el('p', { text: 'Chi: ' + x.chi + (x.dal ? '. Dal ' + dataIt(x.dal) + (x.al ? ' al ' + dataIt(x.al) : '') : (x.al ? '. Fino al ' + dataIt(x.al) : '')) + '. ' + x.dettaglio })]));
+    });
+    out.appendChild(el('h3', { text: 'Diritti' })); out.appendChild(lista);
+    out.appendChild(el('h3', { text: 'Congedo parentale: quanto resta' }));
+    ['madre', 'padre'].forEach(function (chi) {
+      var p = r.parentale[chi];
+      var box = el('div', { class: 'card' }, [el('h4', { text: CHI[chi] })]);
+      if (!p.spetta) { box.appendChild(el('p', { text: p.motivo })); out.appendChild(box); return; }
+      var f = p.fasce;
+      box.appendChild(el('p', { text: p.totale + ' giorni disponibili (finestra ' + dataIt(p.finestra.dal) + ' – ' + dataIt(p.finestra.al) + '): ' + f.p100 + ' al 100%, ' + f.p80 + ' all\'80%' + (p.entroIlMaggiorato ? ' (entro il ' + dataIt(p.entroIlMaggiorato) + ')' : '') + ', ' + f.p30 + ' al 30%, ' + f.p0 + ' non retribuiti.' }));
+      if (p.totale > 0) box.appendChild(barra(f, p.totale));
+      out.appendChild(box);
+    });
+    out.appendChild(el('ul', { class: 'legend' }, [el('li', null, [el('i', { class: 'seg-100' }), '100% (CCNL)']), el('li', null, [el('i', { class: 'seg-80' }), '80%']), el('li', null, [el('i', { class: 'seg-30' }), '30%']), el('li', null, [el('i', { class: 'seg-0' }), 'non retribuiti'])]));
+    out.appendChild(el('p', { class: 'hint', text: 'I 30 giorni al 100%, i mesi all\'80% e i 3 mesi trasferibili sono della coppia: quello che usa un genitore non resta all\'altro. Lettura del cumulo: ' + (inp.letturaCCNL === 'aggiuntivo' ? 'alternativa (in aggiunta).' : 'scelta (assorbimento).') }));
+    if (r.scadenze.length) {
+      out.appendChild(el('h3', { text: 'Prossime scadenze' }));
+      var tl = el('ol', { class: 'timeline' });
+      r.scadenze.forEach(function (s) { tl.appendChild(el('li', null, [el('time', { datetime: s.data, text: dataIt(s.data) }), ' — ' + s.testo])); });
+      out.appendChild(tl);
+    }
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inp = leggi();
+    if (!inp.oggi) { out.innerHTML = ''; out.appendChild(el('p', { class: 'uncertain', text: 'Inserisci la data di calcolo.' })); return; }
+    mostra(window.Motore.calcola(inp, P), inp);
+    out.focus && out.setAttribute('tabindex', '-1');
+  });
+})();
+</script>
+</body>
+</html>
