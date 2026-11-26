@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#fdf0e4">
+  <title>La grande scommessa, spiegata davvero</title>
+  <meta name="description" content="La crisi dei mutui subprime del 2008 raccontata attraverso il film La grande scommessa: mutui, MBS, CDO, CDS e la crisi dell'euro, con esempi numerici e domande di verifica.">
+  <link rel="icon" href="data:,">
+  <style>
+    /* La grande scommessa: stile da quotidiano finanziario, solo font di sistema.
+       Contrasti (WCAG): vedi i commenti accanto ai colori. */
+    :root {
+      --paper: #fdf0e4;       /* carta salmone, fondo pagina */
+      --paper-deep: #f5dcc6;  /* fondo riquadro "In due righe" */
+      --card: #fffaf5;        /* fondo riquadro domanda */
+      --ink: #1d1a17;         /* testo: 15.5:1 su paper, 13.1:1 su paper-deep, 16.7:1 su card */
+      --ink-soft: #57493f;    /* firma, scene, link indietro: 7.7:1 su paper */
+      --accent: #8c1c2c;      /* bordeaux: risposta, numeri indice: 8.1:1 su paper, 8.7:1 su card */
+      --rule: #d6bba4;        /* filetti (non testo, 1.6:1) */
+      --badge-esempio: #0b5566; /* testo bianco 8.4:1 */
+      --badge-dato: #8c1c2c;    /* testo bianco 9.1:1 */
+      --on-badge: #ffffff;
+      --font-text: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+      --font-display: Georgia, "Iowan Old Style", "Times New Roman", serif;
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --measure: 38em;
+      --toc-width: 17rem;
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+      line-height: 1.65;
+      font-kerning: normal;
+      overflow-wrap: break-word;
+    }
+
+    .skip-link {
+      position: absolute; left: 1rem; top: -3rem; z-index: 10;
+      background: var(--ink); color: var(--paper); padding: .5rem 1rem;
+      font-family: var(--font-sans); text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+    .skip-link:hover, .to-index:hover { color: var(--paper); }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+    /* --- Impaginazione ------------------------------------------------------ */
+    .layout {
+      max-width: calc(var(--measure) + 2rem);
+      margin: 0 auto;
+      padding: 0 1rem 5rem;
+    }
+    @media (min-width: 1100px) {
+      .layout {
+        max-width: calc(var(--toc-width) + var(--measure) + 6rem);
+        display: grid;
+        grid-template-columns: var(--toc-width) minmax(0, var(--measure));
+        grid-template-areas: "toc head" "toc main";
+        column-gap: 4rem;
+        padding: 0 2rem 6rem;
+      }
+      .masthead { grid-area: head; }
+      .toc { grid-area: toc; }
+      .article { grid-area: main; }
+    }
+
+    /* --- Testata ------------------------------------------------------------ */
+    .masthead {
+      padding: 1.25rem 0 1.5rem;
+      border-bottom: 3px double var(--ink);
+      margin-bottom: 1.75rem;
+    }
+    .back {
+      font-family: var(--font-sans); font-size: .875rem; color: var(--ink-soft);
+      text-decoration: none;
+    }
+    .back:hover { text-decoration: underline; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 1.4rem + 3.2vw, 3.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin: 1.5rem 0 .75rem;
+      font-weight: 700;
+      text-wrap: balance;
+    }
+    .byline {
+      margin: 0;
+      font-family: var(--font-sans); font-size: .9375rem; color: var(--ink-soft);
+      letter-spacing: .01em;
+    }
+
+    /* --- Indice ------------------------------------------------------------- */
+    .toc {
+      font-family: var(--font-sans);
+      font-size: .9375rem;
+      line-height: 1.35;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .toc__title {
+      margin: 0 0 .5rem;
+      font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    }
+    .toc__list { list-style: none; margin: 0; padding: 0; }
+    .toc__list li { border-top: 1px solid var(--rule); }
+    .toc__list a {
+      display: block; padding: .5rem 0;
+      color: var(--ink); text-decoration: none;
+    }
+    .toc__list a:hover { color: var(--accent); text-decoration: underline; }
+    .toc__num {
+      display: block;
+      font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--accent);
+    }
+    @media (min-width: 640px) and (max-width: 1099px) {
+      .toc__list { columns: 2; column-gap: 2rem; }
+      .toc__list li { break-inside: avoid; }
+    }
+    @media (min-width: 1100px) {
+      .toc { border: 0; padding: 0; margin: 0; }
+      .toc__inner {
+        position: sticky; top: 0;
+        max-height: 100vh; overflow-y: auto;
+        padding: 1.5rem .5rem 1.5rem 0;
+        font-size: .875rem;
+      }
+      .toc__list a { padding: .4rem 0; }
+    }
+
+    /* --- Testo -------------------------------------------------------------- */
+    .article > section { margin-bottom: 2.5rem; }
+    .lede {
+      font-size: 1.125em; line-height: 1.6;
+      margin-top: 0;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.45rem, 1.2rem + 1vw, 1.9rem);
+      line-height: 1.2;
+      margin: 2.75rem 0 1rem;
+      padding-top: .75rem;
+      border-top: 2px solid var(--ink);
+      text-wrap: balance;
+      scroll-margin-top: 1rem;
+    }
+    p, ul, ol { margin: 0 0 1.1em; }
+    ul, ol { padding-left: 1.4em; }
+    li { margin-bottom: .45em; }
+    li > p { margin-bottom: .6em; }
+    strong { font-weight: 700; }
+    a { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: .15em; }
+    a:hover { color: var(--accent); }
+
+    .scene {
+      color: var(--ink-soft);
+      border-left: 3px solid var(--rule);
+      padding-left: 1rem;
+    }
+    .label {
+      font-family: var(--font-sans);
+      font-size: .8125em; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .scene > .label { color: var(--ink); }
+
+    /* --- Badge -------------------------------------------------------------- */
+    .badge {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: .6875em; font-weight: 700; letter-spacing: .06em;
+      line-height: 1.5; text-transform: uppercase; white-space: nowrap;
+      color: var(--on-badge);
+      padding: .1em .55em;
+      border-radius: 3px;
+      vertical-align: .12em;
+    }
+    .badge--esempio { background: var(--badge-esempio); }
+    .badge--dato { background: var(--badge-dato); }
+    .badge__br { display: none; }
+
+    /* --- Riquadri ----------------------------------------------------------- */
+    .box {
+      margin: 1.75rem 0;
+      padding: 1rem 1.25rem;
+    }
+    .box > :last-child, .box p:last-child { margin-bottom: 0; }
+    .recap {
+      background: var(--paper-deep);
+      border-left: 4px solid var(--accent);
+    }
+    .check {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--ink);
+    }
+    .check > p:first-child { font-weight: 600; margin-bottom: .75rem; }
+    details { margin-top: .5rem; }
+    summary {
+      cursor: pointer;
+      font-family: var(--font-sans); font-size: .9375rem; font-weight: 700;
+      color: var(--accent);
+      padding: .35rem 0;
+      list-style-position: outside;
+      margin-left: 1rem;
+    }
+    summary:hover { text-decoration: underline; }
+    details[open] > summary { margin-bottom: .6rem; }
+    details > :not(summary) { margin-top: 0; }
+
+    /* --- Tabelle ------------------------------------------------------------ */
+    .table-wrap {
+      margin: 1.5rem 0 1.75rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-sans);
+      font-size: .875rem;
+      line-height: 1.4;
+      font-variant-numeric: tabular-nums;
+    }
+    table.cols-4 { min-width: 34rem; }
+    table.cols-5 { min-width: 38rem; }
+    table.cols-6 { min-width: 44rem; }
+    th, td {
+      text-align: left; vertical-align: top;
+      padding: .6rem .75rem .6rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    th:first-child, td:first-child { padding-left: .25rem; }
+    th {
+      font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      border-bottom: 1px solid var(--ink);
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+
+    /* --- Link "torna all'indice" (solo senza indice laterale) --------------- */
+    .to-index {
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      background: var(--ink); color: var(--paper);
+      font-family: var(--font-sans); font-size: .8125rem; font-weight: 700;
+      padding: .55rem .9rem; border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgb(0 0 0 / .18);
+    }
+    @media (min-width: 1100px) { .to-index { display: none; } }
+
+    @media print {
+      .toc, .to-index, .skip-link, .back { display: none; }
+      body { background: #fff; }
+      details > :not(summary) { display: block; }
+    }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+  <div class="layout">
+    <header class="masthead">
+      <a class="back" href="./">← Tutte le pagine</a>
+      <h1>La grande scommessa, spiegata davvero</h1>
+      <p class="byline">Alessandro Barbieri · <time datetime="2026-11-25">25 novembre 2026</time></p>
+    </header>
+    <nav aria-labelledby="indice-titolo" class="toc" id="indice"><div class="toc__inner"><p class="toc__title" id="indice-titolo">Indice</p><ol class="toc__list"><li><a href="#in-breve">In breve</a></li><li><a href="#come-leggere">Come leggere questa guida</a></li><li><a href="#personaggi">I personaggi: nome nel film e persona reale</a></li><li><a href="#linea-del-tempo">Linea del tempo essenziale</a></li><li><a href="#capitolo-1"><span class="toc__num">Cap. 1</span> Anni '70-2000: quando un mutuo diventa un titolo da vendere</a></li><li><a href="#capitolo-2"><span class="toc__num">Cap. 2</span> 2000-2006: la fabbrica dei mutui subprime</a></li><li><a href="#capitolo-3"><span class="toc__num">Cap. 3</span> Le tranche e i rating: la torre di Jenga</a></li><li><a href="#capitolo-4"><span class="toc__num">Cap. 4</span> Il CDO: lo stufato di pesce di Anthony Bourdain</a></li><li><a href="#intermezzo"><span class="toc__num">Intermezzo</span> La catena degli incentivi: chi guadagnava cosa</a></li><li><a href="#capitolo-5"><span class="toc__num">Cap. 5</span> 2005: Michael Burry legge le carte e trova il modo di scommettere contro</a></li><li><a href="#capitolo-6"><span class="toc__num">Cap. 6</span> 2006: Lippmann, Eisman e i ragazzi del garage entrano in gioco</a></li><li><a href="#capitolo-7"><span class="toc__num">Cap. 7</span> Gennaio 2007: Las Vegas e il CDO sintetico</a></li><li><a href="#capitolo-8"><span class="toc__num">Cap. 8</span> 2006-2007: perché la scommessa era quasi impossibile da tenere</a></li><li><a href="#capitolo-9"><span class="toc__num">Cap. 9</span> Estate 2007 - 2008: l'incasso (e il suo prezzo morale)</a></li><li><a href="#capitolo-10"><span class="toc__num">Cap. 10</span> Epilogo: dal crollo di Wall Street alla crisi dell'euro</a></li><li><a href="#film-e-fatti">Dove il film si discosta dai fatti (o semplifica)</a></li><li><a href="#avvertenze">Avvertenze sulle cifre</a></li><li><a href="#domande-finali">Le tre domande finali (con risposta modello)</a></li><li><a href="#fonti">Fonti principali</a></li></ol></div></nav>
+    <main id="contenuto" class="article">
+<p class="lede">Un mutuo americano ha messo in crisi le banche di mezzo mondo perché non è rimasto in mano a chi l'aveva concesso: è stato impacchettato insieme a migliaia di altri, trasformato in titoli con il voto massimo (AAA), rimpacchettato più volte e moltiplicato da scommesse collaterali. Quando i prezzi delle case americane sono scesi tutti insieme, cosa che nessun modello aveva previsto, le perdite sono esplose dentro banche, assicurazioni e fondi di tutto il mondo che si erano indebitati per comprarli. I protagonisti del film hanno guadagnato scommettendo contro quei titoli. Hanno rischiato di perdere tutto perché per anni hanno dovuto pagare per tenere aperta la scommessa, mentre i loro clienti volevano andarsene, i prezzi di mercato non si muovevano e le banche dall'altra parte del tavolo potevano fallire prima di pagarli.</p><section aria-labelledby="in-breve"><h2 id="in-breve">In breve</h2>
+<ul>
+<li><strong>Il meccanismo</strong>: mutui fragili (subprime) → impacchettati in titoli (MBS) divisi in "piani" (tranche) → i piani peggiori rimpacchettati in CDO e spacciati per AAA → scommesse sintetiche che moltiplicano l'esposizione. Il tutto reggeva su un'unica ipotesi sbagliata: che i prezzi delle case non potessero scendere tutti insieme. Invece l'indice nazionale Case-Shiller è sceso del 27,4% tra luglio 2006 e febbraio 2012.</li>
+<li><strong>Gli incentivi</strong>: ogni anello della catena (broker, banche, agenzie di rating) veniva pagato per <em>volume</em> e subito, non per la <em>qualità</em> nel tempo. Le agenzie erano pagate da chi emetteva i titoli che dovevano giudicare. Secondo la commissione d'inchiesta americana (FCIC), l'83% dei titoli ipotecari che Moody's aveva valutato AAA nel 2006 è stato poi declassato.</li>
+<li><strong>I protagonisti</strong>: hanno comprato credit default swap (CDS), cioè una "protezione" che costa poco ogni anno e paga molto se i titoli crollano. Secondo Lewis, il fondo di Michael Burry ha fatto guadagnare circa 725 milioni di dollari ai suoi investitori e Cornwall Capital ha ricavato oltre 80 milioni da una puntata da circa 1 milione. Secondo il Senato USA, la posizione di Greg Lippmann ha fatto guadagnare circa 1,5 miliardi a Deutsche Bank.</li>
+</ul>
+</section><section aria-labelledby="come-leggere"><h2 id="come-leggere">Come leggere questa guida</h2>
+<ul>
+<li><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> indica numeri di fantasia, scelti per essere semplici e per far tornare i conti. Seguiamo sempre lo stesso esempio, dal singolo debitore fino al CDO sintetico.</li>
+<li><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> indica cifre storiche, con la fonte. Se una cifra è approssimativa, è detto.</li>
+<li><strong>Scena:</strong> indica la scena del film corrispondente, utile quando lo rivedete.</li>
+<li><strong>Risposta:</strong> dopo ogni domanda di verifica c'è una risposta modello. Provate a rispondere prima di leggerla.</li>
+</ul>
+</section><section aria-labelledby="personaggi"><h2 id="personaggi">I personaggi: nome nel film e persona reale</h2>
+<div aria-label="Tabella 1, scorrevole: I personaggi: nome nel film e persona reale" class="table-wrap" role="region" tabindex="0"><table class="cols-3">
+<thead>
+<tr>
+<th>Nel film (attore)</th>
+<th>Persona reale</th>
+<th>Ruolo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Michael Burry (Christian Bale)</td>
+<td>Michael Burry, stesso nome</td>
+<td>Medico diventato gestore del fondo Scion Capital</td>
+</tr>
+<tr>
+<td>Mark Baum (Steve Carell)</td>
+<td>Steve Eisman</td>
+<td>Gestore di un fondo di FrontPoint Partners, società di Morgan Stanley</td>
+</tr>
+<tr>
+<td>Danny Moses, Vinnie Daniel, Porter Collins</td>
+<td>Danny Moses, Vincent Daniel, Porter Collins</td>
+<td>Il trader, l'analista e il gestore della squadra di Eisman</td>
+</tr>
+<tr>
+<td>Jared Vennett (Ryan Gosling, il narratore)</td>
+<td>Greg Lippmann</td>
+<td>Trader di Deutsche Bank sui titoli legati ai mutui</td>
+</tr>
+<tr>
+<td>Charlie Geller e Jamie Shipley, fondo "Brownfield Capital"</td>
+<td>Charlie Ledley e Jamie Mai, Cornwall Capital</td>
+<td>Due giovani investitori partiti da un garage</td>
+</tr>
+<tr>
+<td>Ben Rickert (Brad Pitt)</td>
+<td>Ben Hockett</td>
+<td>Ex trader di Deutsche Bank, il "mentore" di Cornwall</td>
+</tr>
+</tbody>
+</table></div>
+</section><section aria-labelledby="linea-del-tempo"><h2 id="linea-del-tempo">Linea del tempo essenziale</h2>
+<div aria-label="Tabella 2, scorrevole: Linea del tempo essenziale" class="table-wrap" role="region" tabindex="0"><table class="cols-2">
+<thead>
+<tr>
+<th>Data</th>
+<th>Evento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fine anni '70</td>
+<td>Lewis Ranieri e Salomon Brothers rendono popolari i titoli basati su mutui (scena d'apertura)</td>
+</tr>
+<tr>
+<td>2003</td>
+<td>Ledley e Mai fondano Cornwall Capital con circa 110.000 $ (Lewis)</td>
+</tr>
+<tr>
+<td>19 maggio 2005</td>
+<td>Burry compra i primi CDS sui titoli subprime, per circa 60 milioni $</td>
+</tr>
+<tr>
+<td>19 gennaio 2006</td>
+<td>Inizia a essere scambiato l'indice ABX, il "termometro" dei subprime</td>
+</tr>
+<tr>
+<td>Febbraio 2006</td>
+<td>Lippmann presenta la sua idea a FrontPoint (Eisman)</td>
+</tr>
+<tr>
+<td>Luglio 2006</td>
+<td>Picco dei prezzi delle case: Case-Shiller nazionale a 184,61</td>
+</tr>
+<tr>
+<td>28–31 gennaio 2007</td>
+<td>Convegno dell'American Securitization Forum a Las Vegas</td>
+</tr>
+<tr>
+<td>22 giugno – 31 luglio 2007</td>
+<td>Crollo dei due fondi di Bear Stearns investiti in CDO</td>
+</tr>
+<tr>
+<td>10 luglio 2007</td>
+<td>Moody's declassa in blocco 399 titoli subprime</td>
+</tr>
+<tr>
+<td>16 marzo 2008</td>
+<td>JPMorgan compra Bear Stearns a 2 $ per azione (poi 10 $), con sostegno Fed fino a 30 miliardi</td>
+</tr>
+<tr>
+<td>7 settembre 2008</td>
+<td>Fannie Mae e Freddie Mac passano sotto controllo pubblico</td>
+</tr>
+<tr>
+<td>15 settembre 2008</td>
+<td>Lehman Brothers fallisce: 639 miliardi $ di attivi</td>
+</tr>
+<tr>
+<td>16 settembre 2008</td>
+<td>La Fed presta fino a 85 miliardi $ ad AIG in cambio del 79,9%</td>
+</tr>
+<tr>
+<td>3 ottobre 2008</td>
+<td>Firmato il TARP: 700 miliardi $</td>
+</tr>
+<tr>
+<td>Giugno 2009</td>
+<td>Fine ufficiale della recessione USA, iniziata a dicembre 2007</td>
+</tr>
+<tr>
+<td>Ottobre 2009</td>
+<td>Disoccupazione USA al 10,0%; la Grecia rivela un deficit molto più alto</td>
+</tr>
+<tr>
+<td>2 maggio 2010</td>
+<td>Primo salvataggio della Grecia: 110 miliardi €</td>
+</tr>
+<tr>
+<td>9 novembre 2011</td>
+<td>Spread BTP-Bund al record di 574 punti; il 16 novembre nasce il governo Monti</td>
+</tr>
+<tr>
+<td>26 luglio 2012</td>
+<td>Draghi a Londra: "whatever it takes"</td>
+</tr>
+</tbody>
+</table></div>
+</section><section aria-labelledby="capitolo-1"><h2 id="capitolo-1">Capitolo 1 – Anni '70-2000: quando un mutuo diventa un titolo da vendere</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>l'apertura. Jared Vennett racconta come a fine anni '70, alla Salomon Brothers, Lewis Ranieri trasformò i mutui in titoli da comprare e vendere.</em></p>
+<p><strong>Obbligazione e interesse.</strong> Un'<strong>obbligazione</strong> è un pagherò: prestate soldi a qualcuno (uno Stato, un'azienda) e lui si impegna a restituirli a una certa data, pagandovi nel frattempo un <strong>interesse</strong>, cioè un "affitto" del denaro. <em>Analogia: prestate 100 € a un amico che ogni anno vi dà 5 € per il disturbo e alla fine vi restituisce i 100.</em> Più è probabile che l'amico non paghi, più interesse gli chiederete.</p>
+<p><strong>Il mutuo.</strong> Un <strong>mutuo</strong> è un prestito per comprare casa, garantito dalla casa stessa (l'<strong>ipoteca</strong>). Se il debitore smette di pagare, la banca si prende la casa e la rivende. <em>Analogia: il banco dei pegni, solo che il pegno è la casa.</em></p>
+<p><strong>La cartolarizzazione.</strong> Per decenni la banca che concedeva un mutuo se lo teneva fino alla fine: se il debitore non pagava, la perdita era sua, quindi stava attenta a chi prestava. L'innovazione di Ranieri e degli altri pionieri fu la <strong>cartolarizzazione</strong>: mettere tanti mutui in un unico contenitore e vendere a investitori di tutto il mondo titoli che danno diritto a una fetta dei pagamenti. Questi titoli si chiamano <strong>MBS</strong> (<em>mortgage-backed securities</em>, titoli garantiti da mutui). <em>Analogia: invece di tenere in cantina 10 bottiglie di vino diverse, le versate in una botte e vendete i bicchieri.</em></p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – I nostri 10 mutui.</strong> In una cittadina americana una banca concede 10 mutui da 100.000 € ciascuno: in tutto 1.000.000 €. Ogni debitore paga il 7% di interessi, cioè 7.000 € l'anno, per un totale di <strong>70.000 € l'anno</strong>. La banca non li tiene: li vende a una banca d'affari di Wall Street, che ne ricava un MBS da 1.000.000 €. La banca locale ha già incassato i suoi soldi (e può prestarli di nuovo), mentre il rischio che i debitori non paghino è passato a chi compra l'MBS.</p>
+<p>Qui nasce il problema chiave: <strong>chi concede il mutuo non sopporta più la perdita se il debitore non paga.</strong> Ha quindi interesse a farne tanti, non a farli bene.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Prima la banca che ti prestava i soldi per la casa ci rimetteva se non pagavi, e quindi stava attenta. Poi ha scoperto che poteva vendere il tuo debito ad altri, e ha smesso di stare attenta.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> perché la cartolarizzazione cambia la prudenza di chi concede il mutuo?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> perché separa chi decide il prestito da chi ne sopporta il rischio. Prima la banca guadagnava solo se il debitore pagava per trent'anni, quindi controllava redditi e garanzie. Con la cartolarizzazione rivende il mutuo dopo poche settimane e guadagna sulle commissioni di ogni contratto firmato. Se il debitore smetterà di pagare, la perdita sarà di chi ha comprato l'MBS. Per la banca conta il numero di mutui, non la loro qualità.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-2"><h2 id="capitolo-2">Capitolo 2 – 2000-2006: la fabbrica dei mutui subprime</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>Margot Robbie nella vasca da bagno, con un bicchiere di champagne, spiega i mutui subprime e perché le banche li adoravano.</em></p>
+<p><strong>Il mutuo subprime.</strong> Wall Street aveva ormai una macchina che trasformava mutui in titoli e voleva sempre più materia prima. Ma i debitori affidabili (<em>prime</em>) avevano già il loro mutuo. Si è passati allora ai <strong>subprime</strong>: persone con redditi bassi o incerti, o con una storia di debiti non pagati. Per invogliarli si usavano mutui con un <strong>tasso "civetta"</strong> (<em>teaser</em>): bassissimo per i primi due anni, poi molto più alto. Il tipo più diffuso era il "2/28": due anni a tasso fisso agevolato, ventotto a tasso variabile più caro. <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Secondo lo studio di Mayer, Pence e Sherlund per la Federal Reserve (<em>The Rise in Mortgage Defaults</em>, 2008), oltre il 75% dei mutui subprime erogati tra il 2003 e il 2007 era di questo tipo "ibrido", con 2 o 3 anni a tasso fisso. Per molti prestiti non si verificava nemmeno il reddito: nel gergo si parlava di mutui <em>NINJA</em> (<em>No Income, No Job, No Assets</em>: niente reddito, niente lavoro, niente patrimonio).</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Lo scalino del tasso.</strong> Uno dei nostri 10 debitori paga 7.000 € l'anno nei primi due anni (per semplicità contiamo solo gli interessi). Al terzo anno il tasso sale al 10% e la rata annua diventa 10.000 €: <strong>+43%</strong>. Lui non può permetterselo. Il broker gli aveva detto: "Tranquillo, tra due anni la casa varrà di più e rifinanzierai". Funziona solo se i prezzi delle case salgono. <em>Analogia: comprare l'auto con le prime rate quasi a zero, contando di rivenderla a un prezzo più alto prima che arrivino quelle vere.</em></p>
+<p class="scene"><strong class="label">Scena:</strong> <em>la gita in Florida di Mark Baum e Vinnie Daniel: villette vuote, un inquilino che paga l'affitto a un proprietario che ha smesso di pagare il mutuo, due broker che si vantano di prestare a chiunque, una spogliarellista con diverse case comprate a debito.</em></p>
+<p><strong>Perché i prezzi salivano.</strong> Più mutui facili significava più compratori, quindi prezzi più alti, quindi più fiducia, quindi altri mutui. Un circolo che si autoalimentava, finché ha retto. <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> L'indice S&amp;P/Case-Shiller dei prezzi delle case americane (base 100 a gennaio 2000) ha toccato il picco di <strong>184,61 a luglio 2006</strong>: in sei anni e mezzo i prezzi erano saliti di quasi l'85%.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Le banche hanno prestato soldi a persone che non potevano restituirli, con rate basse all'inizio e alte dopo. Funzionava solo se le case continuavano a costare sempre di più.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> che cosa succede al debitore del nostro esempio se, quando la rata sale, la casa non vale più di quanto l'ha pagata?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> resta in trappola, e l'unica via d'uscita rimasta è smettere di pagare. Il debitore ha un mutuo da 100.000 € e la rata sale da 7.000 a 10.000 € l'anno. Il piano su cui contava aveva tre vie d'uscita, e si chiudono tutte:</p>
+<ul>
+<li><strong>Pagare la rata nuova:</strong> non può, è il 43% in più e il suo reddito non è cambiato.</li>
+<li><strong>Rifinanziare</strong> (fare un mutuo nuovo a tasso basso per estinguere il vecchio): la casa è la garanzia della banca, e di solito la banca presta solo una parte del suo valore (per esempio l'80%), perché in caso di pignoramento rivendere costa (procedura, agenzia, mesi di attesa) e il prezzo può scendere ancora. Se la casa vale ancora 100.000 €, o meno, un nuovo mutuo da 100.000 € non ha margine e la banca non lo concede. Se invece fosse salita a 130.000 €, lo stesso prestito sarebbe stato il 77% del valore e la banca avrebbe rifinanziato volentieri. Negli anni della bolla alcuni istituti prestavano anche il 100% del valore, ma dal 2007 quei prestiti sono spariti quasi di colpo.</li>
+<li><strong>Vendere la casa e chiudere il debito:</strong> se la vende a 100.000 € o meno, togliendo le spese di vendita non gli resta abbastanza per ripagare il mutuo. Ne esce senza casa e ancora con un debito.</li>
+</ul>
+<p>A quel punto conviene smettere di pagare. La banca pignora la casa e la rivende. È l'inizio della catena del Capitolo 3: se la rivende a metà prezzo, cioè 50.000 €, ci sono 50.000 € di perdita, e li assorbe per primo il piano equity del nostro MBS. Se la stessa cosa succede a migliaia di debitori con mutui civetta che scattano negli stessi anni, troppe case pignorate finiscono in vendita insieme. I prezzi scendono ancora e altri debitori si trovano con case che valgono meno del mutuo: è la spirale che ha fatto crollare l'ipotesi del "le case non scendono mai tutte insieme". In sintesi, la rata più alta mette in difficoltà il debitore, ma è la casa che non vale di più a chiudergli ogni uscita.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-3"><h2 id="capitolo-3">Capitolo 3 – Le tranche e i rating: la torre di Jenga</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>Jared Vennett costruisce una torre di Jenga davanti alla squadra di Baum: i blocchi in alto sono i più sicuri, quelli in basso i più rischiosi. Poi sfila un blocco dal fondo e la torre crolla.</em></p>
+<p><strong>L'idea in una frase.</strong> L'MBS da 1.000.000 € del Capitolo 1 non viene venduto tutto uguale: viene diviso in tre fette, le <strong>tranche</strong>, che si distinguono per una cosa sola, cioè <strong>chi viene pagato per primo e chi perde per primo</strong>.</p>
+<p><strong>Un palazzo di tre piani.</strong> Immaginate l'MBS come un palazzo. Gli investitori non comprano tutto il palazzo, ma un piano.</p>
+<ul>
+<li><strong>Attico (tranche AAA): 800.000 €.</strong> Il più sicuro, quindi rende poco: 5% l'anno.</li>
+<li><strong>Primo piano (tranche BBB): 150.000 €.</strong> Più a rischio, quindi rende di più: 9% l'anno.</li>
+<li><strong>Seminterrato (tranche equity): 50.000 €.</strong> Il più rischioso, quindi rende moltissimo quando va tutto bene.</li>
+</ul>
+<p>Nel palazzo valgono due regole.</p>
+<ol>
+<li><strong>I soldi arrivano dall'alto.</strong> Gli interessi pagati dai 10 debitori, 70.000 € l'anno, vanno prima all'attico (40.000 €), poi al primo piano (13.500 €). La banca che ha costruito il titolo trattiene le sue commissioni (6.500 €) e il resto, 10.000 €, finisce al seminterrato.</li>
+<li><strong>Le perdite arrivano dal basso.</strong> Come l'acqua in un'alluvione: allaga prima il seminterrato; il primo piano si bagna solo quando il seminterrato è pieno; l'attico si bagna solo se l'acqua sale ancora.</li>
+</ol>
+<p>Per questo il seminterrato rende tanto e l'attico poco: chi sta in basso viene pagato per prendersi i danni per primo.</p>
+<p><strong>Chi decide le percentuali?</strong> La banca d'affari che costruisce l'MBS, nel momento in cui lo crea. Le scrive nel contratto e da quel momento restano fisse.</p>
+<ul>
+<li><strong>Gli interessi promessi (5% all'attico, 9% al primo piano)</strong> sono il minimo che gli investitori accettano per quel livello di rischio. Un titolo AAA deve rendere un po' più di un titolo di Stato americano, altrimenti nessuno lo comprerebbe; un BBB, essendo più a rischio, deve rendere parecchio di più. La banca cerca di promettere il meno possibile, perché ogni euro promesso ai piani alti è un euro in meno per lei e per il seminterrato.</li>
+<li><strong>Il seminterrato non ha un interesse promesso.</strong> Prende quello che avanza dopo che tutti gli altri sono stati pagati. Per questo il suo rendimento non è fisso: è il 20% quando va tutto bene, zero quando va male.</li>
+<li><strong>La grandezza dei piani (800.000 / 150.000 / 50.000)</strong> la decide la banca insieme alle agenzie di rating. L'agenzia dice: "Per dare la AAA all'attico, sotto ci deve essere un cuscinetto di almeno tot euro che perde prima". La banca cerca di fare l'attico più grande possibile, perché è quello che paga meno interessi e che si vende più facilmente.</li>
+</ul>
+<p><strong>Vengono pagati tutti?</strong> Negli anni normali sì. I debitori pagano 70.000 €; per pagare commissioni, attico e primo piano ne bastano 60.000 (6.500 + 40.000 + 13.500). Avanzano 10.000 € e vanno tutti al seminterrato. L'ordine di pagamento conta solo quando i soldi che arrivano non bastano per tutti.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Un anno in cui qualcuno salta le rate.</strong> Ogni famiglia che non paga fa mancare 7.000 € di interessi. I soldi scendono dall'alto come in una fontana a vaschette: si riempie la prima, l'acqua che trabocca va alla seconda, e così via. Per semplicità la banca si paga le commissioni per prima, come avviene di solito nella realtà.</p>
+<div aria-label="Tabella 3, scorrevole: Capitolo 3 – Le tranche e i rating: la torre di Jenga" class="table-wrap" role="region" tabindex="0"><table class="cols-6">
+<thead>
+<tr>
+<th>Famiglie che non pagano</th>
+<th>Soldi in arrivo</th>
+<th>Commissioni</th>
+<th>Attico (gli spettano 40.000)</th>
+<th>Primo piano (gli spettano 13.500)</th>
+<th>Seminterrato (prende il resto)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>70.000 €</td>
+<td>6.500</td>
+<td>40.000</td>
+<td>13.500</td>
+<td>10.000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>63.000 €</td>
+<td>6.500</td>
+<td>40.000</td>
+<td>13.500</td>
+<td>3.000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>56.000 €</td>
+<td>6.500</td>
+<td>40.000</td>
+<td>9.500 (mancano 4.000)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>49.000 €</td>
+<td>6.500</td>
+<td>40.000</td>
+<td>2.500 (mancano 11.000)</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<p>Con una famiglia in difficoltà il seminterrato vede crollare il suo guadagno, ma gli altri non se ne accorgono. Con due, il seminterrato non prende nulla e il primo piano comincia a ricevere meno del promesso. L'attico continua a incassare tutto. Lo stesso ordine vale per le perdite quando le case vengono pignorate, come mostra la tabella qui sotto. <em>Nella realtà il meccanismo ha qualche dettaglio in più (riserve, anticipi di cassa), ma la logica è questa.</em></p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Facciamo salire l'acqua.</strong> Ogni volta che un debitore smette di pagare, la banca si prende la casa e la rivende. Se i prezzi sono crollati, la rivende a metà prezzo: 50.000 € invece di 100.000. Quindi <strong>ogni insolvenza costa 50.000 €</strong>. Contiamo le famiglie che smettono di pagare, una alla volta:</p>
+<div aria-label="Tabella 4, scorrevole: Capitolo 3 – Le tranche e i rating: la torre di Jenga" class="table-wrap" role="region" tabindex="0"><table class="cols-5">
+<thead>
+<tr>
+<th>Famiglie che non pagano</th>
+<th>Perdita totale</th>
+<th>Seminterrato (50.000 €)</th>
+<th>Primo piano BBB (150.000 €)</th>
+<th>Attico AAA (800.000 €)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>50.000 €</td>
+<td>perde tutto</td>
+<td>asciutto</td>
+<td>asciutto</td>
+</tr>
+<tr>
+<td>2</td>
+<td>100.000 €</td>
+<td>perde tutto</td>
+<td>perde 50.000</td>
+<td>asciutto</td>
+</tr>
+<tr>
+<td>3</td>
+<td>150.000 €</td>
+<td>perde tutto</td>
+<td>perde 100.000</td>
+<td>asciutto</td>
+</tr>
+<tr>
+<td>4</td>
+<td>200.000 €</td>
+<td>perde tutto</td>
+<td>perde tutto</td>
+<td>asciutto</td>
+</tr>
+<tr>
+<td>6</td>
+<td>300.000 €</td>
+<td>perde tutto</td>
+<td>perde tutto</td>
+<td>perde 100.000</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>La lezione.</strong> Il primo piano, il BBB, sembra solido: ha un voto da "titolo per investire". Ma è sottile, solo 150.000 € su un milione: bastano 4 famiglie su 10 che smettono di pagare per azzerarlo. Sono questi i titoli contro cui scommetteranno Burry, Baum e Lippmann. Nella torre di Jenga del film sono i blocchi in basso: quando cedono, tutto quello che c'è sopra trema.</p>
+<p><strong>I rating: chi dà i voti.</strong> Chi decide che l'attico è "AAA"? Le <strong>agenzie di rating</strong> (Moody's, Standard &amp; Poor's, Fitch). Danno un voto come a scuola: AAA vuol dire sicurissimo, come i titoli di Stato americani; BBB vuol dire ancora accettabile, ma più a rischio; sotto c'è la "spazzatura". Il voto conta moltissimo, perché molti fondi pensione e assicurazioni possono comprare solo titoli con voti alti.</p>
+<p><strong>Il problema: lo studente paga il professore.</strong> Le agenzie erano pagate dalle banche che creavano i titoli da giudicare. Se un'agenzia dava un voto severo, la banca portava il titolo a un'altra agenzia, e la prima perdeva il cliente. <em>Analogia: è come se lo studente pagasse il professore, e potesse cambiare scuola quando il voto non gli piace.</em></p>
+<p class="scene"><strong class="label">Scena:</strong> <em>Baum va da un'analista di Standard &amp; Poor's (personaggio di fantasia) e lei gli spiega, in sostanza, che se l'agenzia non desse i voti che le banche vogliono, le banche andrebbero dalla concorrenza.</em></p>
+<p><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> La commissione d'inchiesta americana (FCIC, 2011) ha documentato quanto fosse grave:</p>
+<ul>
+<li>nel solo 2006 Moody's ha dato la AAA a circa 30 titoli ipotecari <strong>ogni giorno lavorativo</strong>;</li>
+<li>l'<strong>83%</strong> di quei titoli AAA del 2006 è stato poi declassato;</li>
+<li>negli anni 2005-2007 questi voti valevano quasi metà dei ricavi da rating di Moody's.</li>
+</ul>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – I titoli fatti con i mutui erano divisi in piani: chi sta in basso guadagna di più ma perde per primo. I voti sulla loro sicurezza li davano agenzie pagate proprio da chi vendeva i titoli.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> nel nostro esempio, quante famiglie devono smettere di pagare per azzerare il primo piano (BBB), se le case si rivendono a metà prezzo?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> quattro. Ogni famiglia che non paga fa perdere 50.000 €. La prima perdita se la prende tutta il seminterrato, che vale proprio 50.000 €. Dalla seconda in poi l'acqua sale al primo piano, che vale 150.000 €: servono altre tre famiglie (3 × 50.000 = 150.000) per sommergerlo. In tutto: 1 + 3 = 4 famiglie su 10.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-4"><h2 id="capitolo-4">Capitolo 4 – Il CDO: lo stufato di pesce di Anthony Bourdain</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>lo chef Anthony Bourdain spiega che il pesce avanzato del lunedì non lo butta: lo mette in uno stufato e lo rivende come piatto nuovo. Ecco il CDO.</em></p>
+<p><strong>Il problema delle banche.</strong> I piani AAA si vendevano facilmente (fondi pensione e assicurazioni ne compravano a valanghe). I piani BBB, quelli fragili, restavano invece invenduti. Soluzione: prendere i piani BBB di tanti MBS diversi, metterli in un nuovo contenitore e tagliare anche quello a piani. Il nuovo prodotto si chiama <strong>CDO</strong> (<em>collateralized debt obligation</em>, obbligazione garantita da altri debiti). <em>Analogia: lo stufato di Bourdain. Il pesce è sempre quello avanzato, ma nel piatto nuovo sembra fresco.</em></p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Il CDO costruito con i nostri piani BBB.</strong> Supponiamo che in altre nove città esistano MBS identici al nostro, sempre da 10 mutui da 100.000 €: in tutto 100 mutui per 10 milioni. Il piano BBB di ciascuno vale 150.000 €, quindi i dieci piani BBB valgono insieme <strong>1.500.000 €</strong>. La banca li mette in un CDO e lo taglia di nuovo:</p>
+<div aria-label="Tabella 5, scorrevole: Capitolo 4 – Il CDO: lo stufato di pesce di Anthony Bourdain" class="table-wrap" role="region" tabindex="0"><table class="cols-3">
+<thead>
+<tr>
+<th>Tranche del CDO</th>
+<th>Importo</th>
+<th>Voto assegnato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Senior</td>
+<td>1.200.000 € (80%)</td>
+<td><strong>AAA</strong></td>
+</tr>
+<tr>
+<td>Mezzanine</td>
+<td>225.000 € (15%)</td>
+<td>BBB</td>
+</tr>
+<tr>
+<td>Equity</td>
+<td>75.000 € (5%)</td>
+<td>nessuno</td>
+</tr>
+</tbody>
+</table></div>
+<p>Il trucco è qui: <strong>materiale che valeva BBB è diventato per l'80% AAA.</strong> Le agenzie ragionavano così: "È improbabile che le case crollino contemporaneamente in dieci città diverse; i guai di una città saranno compensati dalle altre".</p>
+<p><strong>L'ipotesi sbagliata alla base di tutto.</strong> Mettiamo alla prova quel ragionamento con due scenari.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Scenario A, "crisi locale" (quello che prevedevano i modelli).</strong> Solo la nostra città va male: 3 insolvenze. Come nella tabella del Capitolo 3, ogni casa rivenduta a metà prezzo fa perdere 50.000 €, quindi la perdita totale è di 150.000 €. I primi 50.000 li assorbe il seminterrato (equity), che viene azzerato; i 100.000 restanti cadono sul primo piano. Il piano BBB, quello finito nel CDO, perde quindi 100.000 €. Le altre nove città vanno bene. Il CDO perde 100.000 €: l'equity (75.000) è azzerata, la mezzanine perde 25.000 e la AAA resta intatta. Il sistema regge.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Scenario B, "crisi nazionale" (quello che è successo).</strong> I prezzi scendono ovunque insieme: 3 insolvenze in <em>ogni</em> città. Ogni piano BBB perde 100.000 €, per un totale di 1.000.000 € persi su 1.500.000. Nel CDO l'equity (75.000) e la mezzanine (225.000) vengono azzerate e <strong>la AAA perde 700.000 € su 1.200.000, cioè il 58%</strong>. Il titolo "sicuro come lo Stato" ha perso più di metà del valore.</p>
+<p>Perché l'ipotesi era sbagliata?</p>
+<ol>
+<li><strong>Era basata su un passato corto e fortunato.</strong> Nei dati usati dai modelli i prezzi delle case scendevano qua e là, ma non in tutto il Paese insieme. Un calo nazionale vero non si vedeva dagli anni '30.</li>
+<li><strong>Le cause erano comuni a tutte le città.</strong> Gli stessi mutui civetta, che scattavano negli stessi anni, gli stessi criteri di prestito allentati, gli stessi tassi decisi dalla banca centrale. Quando la rata sale per tutti, le insolvenze arrivano per tutti.</li>
+<li><strong>Il sistema si reggeva sui prezzi in salita.</strong> I debitori sopravvivevano solo rifinanziando grazie al rialzo delle case. Appena i prezzi si sono fermati, il rifinanziamento è diventato impossibile, le insolvenze hanno fatto aumentare le case in vendita e i prezzi sono scesi ancora: una spirale.</li>
+</ol>
+<p><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> L'indice Case-Shiller nazionale è sceso da 184,61 (luglio 2006) a 133,99 (febbraio 2012): <strong>−27,4%</strong> (S&amp;P Dow Jones Indices). Secondo Mayer, Pence e Sherlund (Federal Reserve, 2008), le insolvenze gravi sui mutui subprime (rate non pagate da 90 giorni o più, o pignoramento in corso) sono passate da circa il 5,6% a metà 2005 a <strong>oltre il 21% a luglio 2008</strong>, e a <strong>oltre il 29%</strong> per i subprime a tasso variabile.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Le banche hanno preso i pezzi peggiori dei mutui, li hanno mescolati e hanno ottenuto di nuovo il voto massimo, convinte che non potessero andare male tutti insieme. Invece sono andati male tutti insieme.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> nello scenario B, perché perde soldi anche la tranche AAA del CDO, che nello scenario A restava intatta?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> perché la AAA è protetta solo da un "cuscinetto" di 300.000 €: equity (75.000) più mezzanine (225.000). Nello scenario A la perdita è di 100.000 €, il cuscinetto la assorbe tutta e alla AAA non arriva nulla. Nello scenario B le perdite sono 1.000.000 €: il cuscinetto sparisce e i 700.000 € restanti cadono sulla AAA. Il cuscinetto era stato dimensionato pensando a crisi locali, che colpiscono una città alla volta. Quando tutte le città vanno male insieme, la diversificazione non protegge più e il voto AAA non vale niente.</p>
+</details></div>
+</section><section aria-labelledby="intermezzo"><h2 id="intermezzo">Intermezzo – La catena degli incentivi: chi guadagnava cosa</h2>
+<p>Quasi tutti venivano pagati <strong>subito e in base al volume</strong>, mentre il rischio arrivava <strong>dopo e a qualcun altro</strong>. Senza questa tabella la crisi non si capisce.</p>
+<div aria-label="Tabella 6, scorrevole: Intermezzo – La catena degli incentivi: chi guadagnava cosa" class="table-wrap" role="region" tabindex="0"><table class="cols-2">
+<thead>
+<tr>
+<th>Attore</th>
+<th>Da cosa guadagnava (in una riga)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Debitore</strong></td>
+<td>Otteneva una casa che non poteva permettersi, scommettendo che il suo valore salisse prima che salisse la rata.</td>
+</tr>
+<tr>
+<td><strong>Broker dei mutui</strong></td>
+<td>Prendeva una commissione per ogni mutuo firmato, spesso più alta per i mutui più cari: nessun interesse a sapere se il cliente avrebbe pagato.</td>
+</tr>
+<tr>
+<td><strong>Banca che concede il mutuo</strong></td>
+<td>Incassava commissioni e rivendeva subito il mutuo a Wall Street, liberandosi del rischio.</td>
+</tr>
+<tr>
+<td><strong>Banca d'affari (Wall Street)</strong></td>
+<td>Guadagnava commissioni a ogni impacchettamento (MBS, CDO, CDO sintetico); i trader prendevano bonus annuali sui profitti dell'anno.</td>
+</tr>
+<tr>
+<td><strong>Agenzie di rating</strong></td>
+<td>Erano pagate da chi emetteva i titoli per ogni rating; un voto severo spingeva il cliente verso la concorrenza.</td>
+</tr>
+<tr>
+<td><strong>Investitori (fondi pensione, assicurazioni, banche europee)</strong></td>
+<td>Volevano rendimenti un po' più alti dei titoli di Stato con lo stesso voto AAA, e spesso compravano indebitandosi.</td>
+</tr>
+<tr>
+<td><strong>Assicurazioni come AIG</strong></td>
+<td>Incassavano premi annuali vendendo protezione (CDS) su titoli che ritenevano non sarebbero mai falliti.</td>
+</tr>
+<tr>
+<td><strong>I protagonisti del film</strong></td>
+<td>Pagavano premi annuali per guadagnare moltissimo se i titoli crollavano; Burry ed Eisman, come gestori, prendevano anche una quota dei profitti dei loro fondi.</td>
+</tr>
+</tbody>
+</table></div>
+</section><section aria-labelledby="capitolo-5"><h2 id="capitolo-5">Capitolo 5 – 2005: Michael Burry legge le carte e trova il modo di scommettere contro</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>Burry, scalzo, con l'heavy metal nelle cuffie, passa le giornate a leggere i prospetti dei titoli. Poi va dalle grandi banche (Goldman Sachs e altre) a chiedere di costruirgli una scommessa contro i titoli ipotecari. I banchieri accettano ridendo: per loro sono soldi regalati.</em></p>
+<p><strong>Vendere allo scoperto.</strong> Normalmente si guadagna comprando qualcosa che poi sale. Si può però guadagnare anche quando qualcosa scende: è la <strong>vendita allo scoperto</strong>. Prendete in prestito un titolo, lo vendete subito a 100, aspettate che scenda a 60, lo ricomprate a 60, lo restituite e tenete la differenza. <em>Analogia: il vicino vi presta il suo biglietto per un concerto, voi lo vendete a 100 €; il concerto si rivela un flop, ricomprate un biglietto identico a 60 € e glielo restituite: 40 € in tasca.</em> I piani BBB degli MBS però erano difficili da prendere in prestito e vendere allo scoperto: servivano altri strumenti.</p>
+<p><strong>Il credit default swap (CDS).</strong> Lo strumento era il <strong>CDS</strong>: un contratto in cui una parte (chi "compra protezione") paga ogni anno un piccolo premio, e l'altra parte (chi "vende protezione") si impegna a rimborsare le perdite se un certo titolo non paga. Burry comprava protezione sui piani BBB degli MBS subprime: guadagnava se quei titoli crollavano.</p>
+<p><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il 19 maggio 2005 Burry concluse il suo primo contratto: CDS per circa 60 milioni di dollari su titoli ipotecari subprime. Nell'ottobre 2005 scrisse ai suoi investitori che Scion aveva almeno un miliardo di dollari di CDS su questi titoli.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Quanto costa aspettare e quanto si incassa.</strong> Un investitore alla Burry compra protezione sul piano BBB del nostro MBS (150.000 €) con un premio del 2% l'anno: <strong>3.000 € l'anno</strong>.</p>
+<div aria-label="Tabella 7, scorrevole: Capitolo 5 – 2005: Michael Burry legge le carte e trova il modo di scommettere contro" class="table-wrap" role="region" tabindex="0"><table class="cols-4">
+<thead>
+<tr>
+<th>Esito dopo 2 anni</th>
+<th>Premi pagati</th>
+<th>Incasso dal CDS</th>
+<th>Risultato netto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non succede nulla</td>
+<td>6.000 €</td>
+<td>0 €</td>
+<td><strong>−6.000 €</strong></td>
+</tr>
+<tr>
+<td>3 insolvenze: il BBB perde 100.000 €</td>
+<td>6.000 €</td>
+<td>100.000 €</td>
+<td><strong>+94.000 € (circa 15 volte la spesa)</strong></td>
+</tr>
+<tr>
+<td>4 o più insolvenze: BBB azzerato</td>
+<td>6.000 €</td>
+<td>150.000 €</td>
+<td><strong>+144.000 € (24 volte la spesa)</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Ecco l'asimmetria che attirava i protagonisti: <strong>si perde poco e lentamente, si può vincere moltissimo e tutto insieme.</strong> C'è anche una via intermedia: quando il mercato comincia a temere le insolvenze, il CDS diventa più richiesto e si può rivendere con profitto prima che le perdite arrivino davvero.</p>
+<p><strong>Malinteso comune: "il CDS è un'assicurazione".</strong> Il film lo chiama spesso così, e come prima immagine va bene. Ma ci sono quattro differenze cruciali.</p>
+<ol>
+<li>
+<p><strong>Non serve possedere il titolo.</strong> Con un'assicurazione vera potete assicurare solo la <em>vostra</em> casa. Con un CDS potete "assicurare" la casa del vicino e sperare che bruci. Burry non possedeva i titoli: scommetteva sul loro crollo.</p>
+</li>
+<li>
+<p><strong>Chi vende protezione non è obbligato ad avere riserve.</strong> Le compagnie assicurative devono mettere da parte capitale per pagare i sinistri. Nel mercato dei CDS di allora non esisteva un obbligo simile: così AIG ha potuto vendere protezione per somme enormi senza avere i soldi per pagarla.</p>
+</li>
+<li>
+<p><strong>Il rischio di controparte.</strong> Se chi vi ha venduto protezione fallisce, il vostro "risarcimento" vale zero. È come essere assicurati con una compagnia che crolla proprio durante il terremoto.</p>
+</li>
+<li>
+<p><strong>Il valore cambia ogni giorno.</strong> Con un'assicurazione vera non succede nulla finché non arriva il sinistro. Un CDS invece è un contratto che si può comprare e rivendere, e il suo valore sale e scende ogni giorno insieme alla paura del mercato. <span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> Supponiamo di aver comprato protezione sul piano BBB del nostro MBS pagando il 2% l'anno (3.000 €). Sei mesi dopo le insolvenze aumentano, e chi vuole la stessa protezione ora deve pagare l'8% l'anno. Il nostro contratto al 2% è diventato un affare: vale molto di più di quanto l'abbiamo pagato, e potremmo rivenderlo con un guadagno anche se nessun mutuo è ancora andato perso. <em>Analogia: avete prenotato un volo a 100 €; ora gli stessi posti costano 400 €. Il vostro biglietto vale di più, anche se non siete ancora partiti.</em></p>
+<p><strong>Le garanzie in denaro (il <em>collaterale</em>).</strong> Siccome il valore si muove, chi sta perdendo deve versare soldi a garanzia all'altro, per dimostrare che potrà pagare. Se il nostro contratto vale ormai 30.000 € in più, la banca che ci ha venduto la protezione deve depositarci 30.000 € di garanzia. Se la paura cala, succede il contrario e i soldi tornano indietro. Da qui vengono due rischi del film. Chi compra protezione può dover versare garanzie quando i prezzi gli vanno contro, ed è il problema di Cornwall nel Capitolo 8. Chi vende protezione può non avere i soldi da versare quando i prezzi salgono, ed è quello che è successo ad AIG nel Capitolo 10.</p>
+<p><strong>A quanto si rivende e chi decide il prezzo.</strong> Un CDS si rivende a quanto fa risparmiare a chi lo compra, rispetto a comprare la stessa protezione oggi. <span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> Il nostro contratto copre 150.000 € al 2% l'anno (3.000 €); oggi la stessa protezione costa l'8% (12.000 €). Chi rileva il nostro contratto risparmia 9.000 € l'anno. Se mancano circa 3 anni e mezzo alla scadenza sono circa 31.500 €: tolto qualcosa perché sono soldi futuri, si arriva ai 30.000 € dell'esempio. Il compratore ce li paga per prendere il nostro posto nel contratto. Nella realtà il calcolo tiene conto anche della probabilità che il titolo vada in perdita prima della scadenza, ma la logica è questa.</p>
+<p>Il premio di mercato lo decidono domanda e offerta: se tutti vogliono proteggersi e pochi vendono protezione, sale. Per i CDS sui subprime, però, i prezzi li quotavano soprattutto le grandi banche che facevano da intermediarie, e l'unico termometro pubblico era l'indice ABX (Capitolo 6). Qui sta la trappola del Capitolo 8: erano proprio le banche piene di titoli subprime a dire quanto valevano i CDS dei protagonisti, e nel 2007 avevano interesse a tenerne basso il valore finché è stato possibile.</p>
+</li>
+</ol>
+<p><strong><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Una precisazione sul film.</strong> Il film lascia intendere che Burry abbia "inventato" i CDS sui mutui. In realtà i CDS esistevano già, soprattutto sui debiti delle aziende. Secondo Lewis, Burry fu tra i primi a spingere le banche a scriverli su singoli titoli subprime, e poco dopo il mercato si dotò di contratti standard.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Burry ha trovato un modo per scommettere contro i mutui: pagare poco ogni anno per incassare tanto se i mutui andavano male. Non è proprio un'assicurazione, perché puoi "assicurare" una cosa che non possiedi e chi ti paga potrebbe fallire.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> nel nostro esempio, quanto perde l'investitore se dopo due anni non è successo niente, e quanto incassa se il piano BBB viene azzerato?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> se non succede niente perde 6.000 €, cioè due anni di premi da 3.000 €. Se il piano BBB viene azzerato incassa 150.000 €, l'intero valore del piano. Tolti i 6.000 € di premi, il guadagno netto è di 144.000 €, 24 volte quanto ha speso. La perdita massima è piccola e nota in anticipo; il guadagno possibile è enorme.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-6"><h2 id="capitolo-6">Capitolo 6 – 2006: Lippmann, Eisman e i ragazzi del garage entrano in gioco</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>Jared Vennett si accorge che qualcuno (Burry) sta comprando CDS a valanga e decide di approfittarne: vende la stessa scommessa ad altri fondi. Una telefonata arriva a FrontPoint, dove Baum e i suoi decidono di ascoltarlo.</em></p>
+<p><strong>Lippmann (Vennett).</strong> Greg Lippmann lavorava a Deutsche Bank, una banca che vendeva titoli ipotecari ai clienti. Si convinse che i piani BBB sarebbero crollati e costruì per la banca una scommessa contro di essi. <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Secondo il rapporto del Senato americano <em>Wall Street and the Financial Crisis</em> (2011), Lippmann arrivò a una posizione "corta" (al ribasso) da circa <strong>5 miliardi di dollari</strong>, che fruttò alla banca circa <strong>1,5 miliardi</strong>: secondo lo stesso Lippmann, il profitto più grande mai ottenuto da una singola posizione nella storia di Deutsche Bank. Ma nel 2007 la banca deteneva titoli ipotecari per un valore nominale di circa 128 miliardi e chiuse il settore mutui con perdite complessive per circa 4,5 miliardi, già compreso il guadagno di Lippmann. <strong>Da cosa guadagnava Lippmann:</strong> dal bonus sui profitti del suo desk e dalle commissioni sui CDS venduti ai fondi.</p>
+<p><strong>Eisman (Baum).</strong> Steve Eisman guidava un fondo dentro FrontPoint Partners, società che faceva capo a Morgan Stanley. Era un analista famoso per il suo scetticismo sulle società che prestavano ai più poveri. <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Secondo Lewis, Lippmann si presentò a FrontPoint nel <strong>febbraio 2006</strong>. La squadra (Danny Moses, Vincent Daniel, Porter Collins) verificò la tesi andando a vedere i mutui sul campo. Secondo Foreign Policy, che riprende Lewis, nella primavera del 2007 FrontPoint aveva circa <strong>600 milioni di dollari</strong> di posizioni contro i subprime.</p>
+<p><strong>Cornwall Capital (Geller e Shipley).</strong> <strong>Scena:</strong> <em>Charlie e Jamie, due giovani con un piccolo fondo, trovano per caso la presentazione di Vennett. Per comprare CDS dalle grandi banche serve però un contratto quadro chiamato <strong>ISDA</strong>, che le banche firmano solo con fondi grandi. Li aiuta Ben Rickert, ex trader ritirato e piuttosto paranoico.</em></p>
+<p><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Cornwall era nata nel 2003 con circa <strong>110.000 dollari</strong>; secondo Lewis, all'inizio del 2006 aveva quasi 30 milioni. La loro intuizione fu diversa da quella degli altri: invece di scommettere contro i piani BBB, scommisero contro i <strong>piani più alti dei CDO</strong>. La protezione su un titolo con voto altissimo costava pochissimo, proprio perché tutti lo credevano sicuro, mentre in una crisi nazionale anche quei titoli sarebbero crollati.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – La scommessa alla Cornwall.</strong> Si compra protezione sulla tranche AAA del nostro CDO (1.200.000 €) a un premio dello 0,5% l'anno: <strong>6.000 € l'anno</strong>. Nello scenario B la AAA perde 700.000 €: chi ha la protezione incassa 700.000 €, <strong>più di 100 volte</strong> il premio annuo. Nello scenario A non incassa nulla e perde i premi.</p>
+<p><strong>Il termometro: l'indice ABX.</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Dal 19 gennaio 2006 iniziò a essere scambiato l'indice <strong>ABX</strong>, un paniere di CDS su 20 titoli subprime, con sotto-indici per ciascun livello di rating (AAA, BBB, BBB− e così via). Per la prima volta c'era un prezzo pubblico della paura sui subprime. <em>Analogia: un termometro appeso fuori dalla finestra, che tutti possono guardare.</em></p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Un banchiere di Deutsche Bank ha copiato l'idea di Burry e l'ha venduta ad altri fondi, tra cui quello di Eisman. Due ragazzi partiti da un garage hanno scommesso perfino contro i titoli col voto più alto, perché costava pochissimo.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> perché scommettere contro un titolo AAA costava meno che scommettere contro un BBB, e perché poteva rendere di più?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> il premio di un CDS dipende da quanto il mercato crede probabile la perdita. Tutti consideravano la AAA quasi senza rischio, quindi la protezione costava pochissimo: nel nostro esempio lo 0,5% l'anno contro il 2% del BBB. Ma se la crisi è nazionale, anche la AAA perde moltissimo: 700.000 € a fronte di 6.000 € di premio annuo, più di 100 volte. Sul BBB il guadagno massimo è 150.000 € a fronte di 3.000 € l'anno, circa 50 volte. Cornwall guadagnava proprio sull'errore di valutazione: pagava come se il disastro fosse impossibile e incassava quando il disastro arrivava.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-7"><h2 id="capitolo-7">Capitolo 7 – Gennaio 2007: Las Vegas e il CDO sintetico</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>tutta l'industria dei mutui si ritrova a Las Vegas. Baum cena con un gestore di CDO, Mr. Chau, e scopre che costui non ha nessun interesse a sapere cosa c'è dentro i titoli: compra quello che le banche gli chiedono, perché è pagato in base al volume. Al tavolo del blackjack, l'economista Richard Thaler e la cantante Selena Gomez spiegano il CDO sintetico.</em></p>
+<p><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il convegno dell'American Securitization Forum (ASF) si tenne dal <strong>28 al 31 gennaio 2007</strong> all'hotel Venetian di Las Vegas, con oltre 6.000 iscritti attesi. La cena raccontata da Lewis si svolse durante quel convegno. Il gestore reale, Wing Chau, fece causa per diffamazione a Lewis ed Eisman; la causa fu respinta (Corte d'Appello del Secondo Circuito, 2014).</p>
+<p><strong>Il CDO sintetico.</strong> A Wall Street i mutui veri non bastavano più a soddisfare la domanda di titoli AAA. Soluzione: costruire CDO <strong>senza mutui dentro</strong>. Un <strong>CDO sintetico</strong> è un pacchetto di <em>scommesse</em> (CDS) su titoli già esistenti. Chi compra il CDO sintetico incassa i premi pagati da chi scommette contro (Burry, Eisman e gli altri) e, in cambio, paga le perdite se i titoli di riferimento crollano. <em>Analogia, quella del film: al tavolo da blackjack c'è un giocatore che punta; intorno, gli spettatori scommettono tra loro su quella mano, poi altri scommettono su quelle scommesse. Le carte sono sempre le stesse, ma i soldi in gioco si moltiplicano.</em></p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – La moltiplicazione.</strong> I piani BBB delle nostre dieci città valgono 1.500.000 €. Le banche costruiscono <strong>5 CDO sintetici</strong>, ciascuno dei quali scommette su quegli stessi 1.500.000 € di piani BBB. In gioco ci sono ora <strong>7.500.000 € di scommesse</strong> su 1.500.000 € di titoli veri. Nello scenario B:</p>
+<ul>
+<li><strong>perdite vere sulle case:</strong> 3 insolvenze × 50.000 € × 10 città = <strong>1.500.000 €</strong> su 10 milioni di mutui;</li>
+<li><strong>perdite sui CDO sintetici:</strong> 5 × 1.000.000 € = <strong>5.000.000 €</strong> in più, pagati dagli investitori "lunghi" (chi ha scommesso sulla tenuta) a chi ha comprato protezione.</li>
+</ul>
+<p>Così un problema da 1,5 milioni sulle case diventa un buco da <strong>6,5 milioni</strong> nei bilanci di chi aveva scommesso sulla tenuta. E chi aveva in mano tutto questo? Spesso fondi e banche, anche europee, che avevano comprato i titoli con soldi presi in prestito.</p>
+<p class="scene"><strong class="label">Scena:</strong> <em>Thaler cita la "fallacia della mano calda": credere che una serie fortunata continuerà. Il mercato pensava che, siccome i mutui erano andati bene per anni, avrebbero continuato ad andare bene.</em></p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Quando i mutui veri sono finiti, le banche hanno inventato titoli fatti solo di scommesse sui mutui. Così le stesse case hanno prodotto perdite molte volte più grandi del loro valore.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> nel nostro esempio, perché le perdite totali (6,5 milioni) sono più grandi delle perdite sulle case (1,5 milioni)?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> perché sugli stessi titoli veri sono state costruite molte scommesse. Le case producono 1,5 milioni di perdite una volta sola. Ma ognuno dei 5 CDO sintetici "copia" quei piani BBB senza possederli, e quando i piani perdono 1 milione, ciascuno dei 5 deve pagare 1 milione a chi ha comprato protezione. Il conto è 1,5 milioni sui titoli veri più 5 × 1 milione sulle scommesse: 6,5 milioni. Va precisato che i 5 milioni non spariscono: passano dalle tasche di chi aveva scommesso sulla tenuta a quelle di chi aveva scommesso sul crollo, come Burry ed Eisman. Il guaio è che chi perdeva erano banche, assicurazioni e fondi indebitati, il cuore del sistema finanziario.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-8"><h2 id="capitolo-8">Capitolo 8 – 2006-2007: perché la scommessa era quasi impossibile da tenere</h2>
+<p>Aver ragione non bastava: bisognava sopravvivere fino al momento in cui la ragione sarebbe stata riconosciuta. I protagonisti hanno affrontato quattro trappole.</p>
+<p><strong>1. I premi da pagare (il "costo dell'attesa").</strong> Ogni anno senza crollo era un anno di premi pagati a vuoto. Nel nostro esempio sono 3.000 € l'anno per ogni 150.000 € di protezione. Su posizioni da miliardi, come quelle di Burry, i premi pesavano sul rendimento del fondo anno dopo anno.</p>
+<p class="scene"><strong class="label">Scena:</strong> <em>il principale investitore di Burry, Lawrence Fields (personaggio inventato), lo affronta furioso: i premi stanno mangiando il fondo mentre i mercati salgono.</em></p>
+<p><strong>2. Gli investitori che volevano ritirare i soldi.</strong> Un fondo come Scion gestisce i soldi dei clienti: se i clienti chiedono il rimborso, il gestore deve vendere, magari proprio nel momento peggiore. Secondo Lewis, Burry bloccò i ritiri e mise i CDS in un comparto separato (<em>side pocket</em>) da cui non si poteva uscire. Fu una mossa legale ma odiatissima, con minacce di cause. <strong>Scena:</strong> <em>le lettere furiose e gli investitori che lo accusano di tenerli in ostaggio.</em> <em>Analogia: siete sicuri che pioverà e avete comprato mille ombrelli, ma i vostri soci vogliono indietro i soldi oggi, sotto il sole, e per pagarli dovreste svendere gli ombrelli.</em></p>
+<p><strong>3. Le banche che non aggiornavano i prezzi.</strong> Nei primi mesi del 2007 le insolvenze salivano, ma il valore dei CDS dei protagonisti, stabilito proprio dalle banche che glieli avevano venduti, a volte non si muoveva o addirittura peggiorava. Le banche avevano interesse a non riconoscere le perdite, perché in molti casi possedevano ancora quei titoli. <strong>Scena:</strong> <em>Baum e i suoi non capiscono perché le loro posizioni non guadagnino mentre i mutui vanno male; Vennett spiega che le banche stanno guadagnando tempo per liberarsi dei titoli.</em> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il termometro pubblico si mosse comunque. Secondo i materiali della FCIC, l'indice ABX BBB− scese già a fine 2006, ebbe un rimbalzo a marzo 2007 e a <strong>luglio 2007 perse un altro 33%</strong>. Tra fine 2007 e inizio 2008 i sotto-indici più rischiosi arrivarono a prezzi che scontavano la perdita quasi totale dei titoli sottostanti (BCE, Working Paper 1056, 2009). <em>Il livello esatto a fine 2007 non è verificato su una fonte primaria: la stampa dell'epoca parla di circa 43-47 centesimi per dollaro a metà luglio 2007 per alcune serie.</em></p>
+<p><strong>4. Il rischio di controparte.</strong> Chi aveva venduto la protezione ai protagonisti? Le grandi banche d'affari: Bear Stearns, Lehman, Merrill Lynch e altre. Se una di loro falliva, il CDS non valeva più nulla. Per Cornwall il problema era aggravato da accordi sbilanciati: secondo Lewis, Cornwall doveva versare garanzie alle banche se la scommessa andava male, ma non ne riceveva quando andava bene. <strong>Scena:</strong> <em>Ben Rickert avverte Charlie e Jamie che Bear Stearns potrebbe fallire e portarsi via i loro guadagni.</em> <em>Analogia: avete vinto alla lotteria, ma il banco della lotteria sta per chiudere per bancarotta.</em></p>
+<p><strong>La leva finanziaria: perché il crollo è stato così violento.</strong> La <strong>leva</strong> significa usare soldi presi in prestito per investire più di quanto si possiede. <em>Analogia: comprate una casa da 300.000 € con 10.000 € vostri e 290.000 € di mutuo. Se la casa sale del 3,3% avete raddoppiato i vostri soldi; se scende del 3,3% li avete persi tutti.</em> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Secondo il commissario giudiziale del fallimento, tra fine 2007 e inizio 2008 Lehman Brothers aveva circa <strong>700 miliardi di dollari di attività su circa 25 miliardi di capitale proprio</strong>: circa 28 dollari investiti per ogni dollaro suo. Con una leva simile basta un calo di pochi punti percentuali per azzerare il capitale.</p>
+<p><strong>I primi crolli.</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il 22 giugno 2007 Bear Stearns promise un prestito fino a 3,2 miliardi di dollari per salvare uno dei suoi due fondi carichi di CDO. Il 17 luglio comunicò agli investitori che nel fondo più indebitato non restava praticamente alcun valore, e nell'altro pochissimo; a marzo i due fondi avevano rispettivamente 638 e 925 milioni di capitale degli investitori. Il <strong>31 luglio 2007</strong> i fondi chiesero la protezione fallimentare. Il <strong>10 luglio 2007</strong> Moody's aveva intanto declassato in un colpo solo <strong>399 titoli subprime</strong> emessi l'anno prima, e a ottobre ne declassò altri 2.506 (33,4 miliardi di dollari), secondo la FCIC.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Avere ragione non bastava: bisognava continuare a pagare, tenere buoni i clienti e sperare che le banche che dovevano pagarti non fallissero prima. Molti avrebbero mollato un attimo prima di vincere.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> cita due motivi per cui i protagonisti avrebbero potuto perdere anche avendo ragione sul crollo dei mutui.</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> ne bastano due tra questi quattro. Primo, il tempo: se il crollo arrivava troppo tardi, anni di premi pagati a vuoto potevano svuotare il fondo prima della vittoria. Secondo, i clienti: se gli investitori ritiravano i soldi, il gestore era costretto a vendere i CDS a prezzi bassi, prima che rendessero. Terzo, i prezzi bloccati: le banche, che decidevano il valore dei CDS, potevano tenerlo basso e far sembrare la scommessa in perdita. Quarto, la controparte: se la banca che aveva venduto la protezione falliva, il CDS non pagava nulla, anche con i mutui crollati.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-9"><h2 id="capitolo-9">Capitolo 9 – Estate 2007 - 2008: l'incasso (e il suo prezzo morale)</h2>
+<p class="scene"><strong class="label">Scena:</strong> <em>Charlie, Jamie e Ben cercano freneticamente qualcuno a cui rivendere le loro posizioni prima che le banche crollino. Baum esita a vendere, perché vendere significa incassare sulla rovina altrui, e alla fine dà l'ordine.</em></p>
+<p><strong>Come si incassa un CDS.</strong> Non sempre si aspetta il fallimento del titolo. Quando la paura sale, la protezione diventa preziosissima e si può rivendere a qualcuno (spesso proprio alle banche disperate di coprirsi) a un prezzo molto più alto di quello pagato.</p>
+<p><strong><span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> I risultati, con le loro fonti e incertezze.</strong></p>
+<ul>
+<li><strong>Burry / Scion Capital:</strong> secondo Lewis, ripreso da fonti secondarie (non esiste una fonte primaria pubblica), circa <strong>725 milioni di dollari</strong> di profitti per gli investitori e circa <strong>100 milioni</strong> per Burry personalmente; rendimento netto del fondo del <strong>489,34%</strong> dal 1° novembre 2000 a giugno 2008. Burry chiuse il fondo nel 2008.</li>
+<li><strong>Eisman / FrontPoint:</strong> secondo Lewis, entro la fine del 2007 il fondo era più che raddoppiato, da poco più di <strong>700 milioni a 1,5 miliardi di dollari</strong>. Il guadagno netto preciso della scommessa non è pubblico; le cifre che circolano online sono stime.</li>
+<li><strong>Cornwall Capital:</strong> Lewis (cap. 9) scrive che Cornwall, partita quattro anni e mezzo prima con 110.000 dollari, aveva appena incassato <strong>oltre 80 milioni</strong> da una scommessa da circa <strong>1 milione</strong>; il capitale del fondo passò da poco più di 30 a circa <strong>135 milioni</strong> di dollari. Precisazione: secondo Lewis la puntata riguardava tranche dei CDO con rating <strong>AA</strong>, il secondo voto più alto, mentre il film e molte sintesi parlano di AAA. Il dettaglio della vendita (Ben Hockett che chiude le posizioni nell'agosto 2007) viene da fonti secondarie: data e importi vanno presi come approssimativi.</li>
+<li><strong>Lippmann / Deutsche Bank:</strong> circa <strong>1,5 miliardi</strong> di profitto per la banca, su una posizione da circa 5 miliardi (Senato USA, <em>Wall Street and the Financial Crisis</em>, aprile 2011). Il guadagno personale di Lippmann non è noto con certezza.</li>
+</ul>
+<p><strong>Perché il film insiste sul "prezzo morale".</strong> Guadagnare dalla crisi significava guadagnare da pignoramenti, disoccupazione e pensioni bruciate. Il film lo sottolinea con Ben Rickert, che rimprovera i due giovani di festeggiare: ogni punto percentuale di insolvenze in più significa persone che perdono casa e lavoro. I protagonisti però non hanno <em>causato</em> la crisi: la loro scommessa è stata possibile perché la macchina dei mutui era già difettosa.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Quando tutti si sono accorti che i mutui erano marci, chi aveva scommesso contro ha rivenduto le sue scommesse a peso d'oro. Hanno vinto, ma sulla rovina di milioni di famiglie.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> perché Cornwall poteva incassare anche prima che i titoli AAA fossero davvero azzerati?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> perché un CDS ha un prezzo di mercato che si muove con la paura, non solo con le perdite già avvenute. Nell'estate 2007 l'ABX crollava, Moody's declassava centinaia di titoli e i fondi di Bear Stearns fallivano: tutti capivano che le perdite sarebbero arrivate anche ai piani alti. La protezione comprata quando costava lo 0,5% l'anno valeva ora molto di più, perché banche e fondi pieni di quei titoli volevano disperatamente coprirsi. Cornwall poteva rivenderla subito a quel prezzo alto e incassare. Aveva anche un motivo per non aspettare: il rischio che la banca controparte fallisse prima di pagare.</p>
+</details></div>
+</section><section aria-labelledby="capitolo-10"><h2 id="capitolo-10">Capitolo 10 – Epilogo: dal crollo di Wall Street alla crisi dell'euro</h2>
+<p>Il film si chiude con poche didascalie. La storia vera continua, ed è la parte che ci riguarda da vicino.</p>
+<p><strong>Bear Stearns (marzo 2008).</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Domenica <strong>16 marzo 2008</strong> JPMorgan Chase annunciò l'acquisto di Bear Stearns a circa <strong>2 dollari per azione</strong>; il 24 marzo il prezzo fu alzato a circa <strong>10 dollari</strong>. La Federal Reserve di New York finanziò fino a <strong>30 miliardi</strong> di attività difficili da vendere di Bear (29 miliardi dalla Fed, 1 da JPMorgan, che si accollava le prime perdite) attraverso una società creata apposta, Maiden Lane. <strong>Scena:</strong> <em>Baum parla a un convegno mentre il titolo Bear Stearns crolla sugli schermi.</em></p>
+<p><strong>Fannie Mae e Freddie Mac (7 settembre 2008).</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Le due grandi società semi-pubbliche che garantivano gran parte dei mutui americani furono poste sotto il controllo dell'agenzia federale FHFA (<em>conservatorship</em>), con l'impegno del Tesoro a ricapitalizzarle.</p>
+<p><strong>Lehman Brothers (15 settembre 2008).</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Lehman chiese la protezione fallimentare (Chapter 11) dichiarando circa <strong>639 miliardi di dollari di attività</strong> e 613 di debiti: il più grande fallimento della storia americana. Questa volta lo Stato non intervenne. Il panico fu immediato: il giorno dopo un grande fondo monetario, il Reserve Primary Fund, che aveva titoli di Lehman, scese sotto 1 dollaro per quota, cosa considerata quasi impossibile. <em>Il film quasi non mostra il fallimento di Lehman: è una delle sue omissioni più evidenti.</em></p>
+<p><strong>AIG (16 settembre 2008).</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il colosso assicurativo aveva venduto protezione (CDS) su decine di miliardi di titoli ipotecari senza accantonare riserve. Quando il suo rating scese, dovette versare garanzie che non aveva. La Fed le prestò fino a <strong>85 miliardi di dollari</strong> in cambio del <strong>79,9%</strong> della società; il sostegno pubblico complessivo arrivò poi a circa 182 miliardi. È la conferma concreta del perché un CDS non è un'assicurazione: chi lo vende può non avere i soldi per pagare.</p>
+<p><strong>Il TARP (3 ottobre 2008).</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il Congresso approvò e il presidente Bush firmò l'<em>Emergency Economic Stabilization Act</em>, che creava il <strong>Troubled Asset Relief Program</strong> con <strong>700 miliardi di dollari</strong> per stabilizzare le banche. Nato per comprare titoli "tossici", fu usato soprattutto per iniettare capitale nelle banche. A consuntivo il Tesoro ha recuperato circa 441,7 miliardi a fronte di 426,4 investiti, ma il costo economico e sociale della crisi non si misura da questo saldo.</p>
+<p><strong>La recessione.</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Secondo il National Bureau of Economic Research (NBER), la recessione americana durò da <strong>dicembre 2007 a giugno 2009</strong>: 18 mesi, la più lunga dal dopoguerra. La disoccupazione salì dal 5,0% di dicembre 2007 a un picco del <strong>10,0% a ottobre 2009</strong> (BLS; la prima stima dell'epoca era 10,2%, poi rivista).</p>
+<p><strong>L'Europa: come una crisi delle banche diventa una crisi degli Stati.</strong> Fin qui la crisi riguardava banche e mutui. Tra il 2009 e il 2012 in Europa cambia bersaglio: tocca agli Stati, e in particolare ai loro debiti. Per capirlo serve un concetto nuovo.</p>
+<p><strong>Il debito sovrano.</strong> Anche uno Stato si finanzia con le obbligazioni del Capitolo 1. In Italia si chiamano BTP: lo Stato prende soldi in prestito dagli investitori, paga loro un interesse ogni anno e restituisce il capitale alla scadenza. Il debito pubblico è la somma di tutti questi prestiti, e si chiama "sovrano" perché il debitore è uno Stato. Quando un BTP scade, di solito lo Stato non ha i soldi da parte per rimborsarlo: ne emette uno nuovo e con quei soldi paga il vecchio. Funziona finché gli investitori sono disposti a prestare, e a un tasso ragionevole. <em>Analogia: una famiglia che paga il vecchio prestito accendendone uno nuovo. Va bene finché la banca continua a fidarsi.</em></p>
+<p><strong>Passaggio 1 – Le banche europee erano piene di titoli americani.</strong> Molte banche tedesche, francesi, inglesi e svizzere avevano comprato MBS e CDO. Già ad agosto 2007 la francese BNP Paribas aveva bloccato i rimborsi di tre fondi, perché non riusciva più a dare un prezzo a quei titoli (cronologia della Fed di St. Louis). Dopo Lehman le banche smisero di prestarsi soldi tra loro.</p>
+<p><strong>Passaggio 2 – Gli Stati si indebitano per tamponare.</strong> I governi salvano le banche con soldi pubblici. Intanto arriva la recessione: le aziende vendono meno, le tasse incassate calano e la spesa per disoccupati e cassa integrazione sale. Il risultato è che quasi tutti gli Stati spendono molto più di quanto incassano (il <strong>deficit</strong>), e il debito cresce.</p>
+<p><strong>Passaggio 3 – La Grecia rompe un tabù.</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Nell'ottobre 2009 il nuovo governo greco di Papandreou rivelò che il deficit 2009 non sarebbe stato del 3,7% del PIL, come dichiarato, ma del <strong>12,5%</strong> (Eurostat); le cifre furono poi riviste ancora al rialzo. Gli investitori scoprono che i conti di uno Stato dell'euro possono essere falsi, e che uno Stato dell'euro può non riuscire a pagare. Il <strong>2 maggio 2010</strong> UE e FMI concordarono il primo salvataggio della Grecia: <strong>110 miliardi di euro</strong> (80 dai Paesi dell'euro, 30 dal FMI).</p>
+<p><strong>Perché nell'euro il rischio era più alto.</strong> Uno Stato con la sua moneta, come gli Stati Uniti o il Regno Unito, ha sempre un'ultima risorsa: la sua banca centrale può creare la moneta in cui è scritto il debito. Può avere altri problemi, come l'inflazione, ma è difficile che resti senza soldi per pagare. I Paesi dell'euro invece si indebitano in una moneta che non controllano: la BCE è una sola per tutti e non era tenuta a intervenire per un singolo Stato. Gli investitori capirono che, per questo aspetto, un Paese dell'euro somiglia più a una famiglia che a uno Stato con la propria moneta.</p>
+<p><strong>Passaggio 4 – Il contagio e lo spread.</strong> Dopo la Grecia gli investitori cominciano a vendere i titoli di Stato dei Paesi che sembrano più fragili: Irlanda, Portogallo, Spagna, Italia. Quando molti vendono, il prezzo di quei titoli scende, e questo fa salire l'interesse che lo Stato deve pagare sui prestiti nuovi.</p>
+<p><strong><span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> – Perché se il prezzo scende l'interesse sale.</strong> Un BTP da 100 € paga 4 € l'anno: rende il 4%. Se gli investitori hanno paura e quel BTP si vende a 80 €, chi lo compra incassa comunque 4 € l'anno, ma avendo speso 80: rende il 5%. Da quel momento, per trovare chi gli presta soldi, lo Stato deve offrire anche sui BTP nuovi almeno il 5%.</p>
+<p>Lo <strong>spread</strong> è la differenza tra l'interesse che l'Italia paga sui BTP a dieci anni e quello che la Germania paga sui suoi titoli equivalenti, i Bund. La Germania è considerata il debitore più sicuro dell'euro, quindi lo spread misura quanto i mercati temono che l'Italia non ripaghi. <em>Analogia: il "supplemento di interesse" che una banca chiede a un cliente meno affidabile.</em> Lo spread si misura in punti base: 100 punti base = 1 punto percentuale di interesse in più.</p>
+<p><strong>Il circolo vizioso.</strong> Più interessi da pagare significano più deficit, quindi più debito, quindi più paura, quindi interessi ancora più alti. In più le banche di ogni Paese possedevano molti titoli del proprio Stato: quando i BTP perdevano valore, le banche italiane perdevano soldi, e uno Stato già in difficoltà poteva dover aiutare anche loro. Stati e banche si trascinavano a fondo a vicenda.</p>
+<p><strong>L'Italia.</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Le banche italiane avevano relativamente pochi titoli subprime, ma l'economia fu colpita dal crollo del commercio mondiale e delle esportazioni. Il PIL italiano scese del <strong>5% nel 2009</strong> secondo la stima Istat del 2010, il dato peggiore della serie iniziata nel 1971; le revisioni successive lo collocano intorno al <strong>−5,5%</strong>. L'Italia partiva con uno dei debiti pubblici più alti d'Europa e una crescita debole da anni: per i mercati era il candidato perfetto al contagio. Il <strong>9 novembre 2011</strong> lo spread toccò il record di <strong>574 punti base</strong> (5,74 punti percentuali), con il BTP decennale vicino al <strong>7,5%</strong>. A quei livelli ogni prestito nuovo costa carissimo, e un debito grande va rinnovato di continuo. Il 12 novembre Berlusconi si dimise e il <strong>16 novembre 2011</strong> si insediò il governo tecnico di <strong>Mario Monti</strong>, con misure di austerità (tagli alla spesa e aumenti delle tasse per ridurre il deficit) e la riforma delle pensioni.</p>
+<p><strong>"Whatever it takes".</strong> <span class="badge badge--dato"><span aria-hidden="true" class="badge__br">[</span>DATO REALE<span aria-hidden="true" class="badge__br">]</span></span> Il <strong>26 luglio 2012</strong>, a una conferenza di investitori a Londra, il presidente della BCE Mario Draghi disse che la BCE, nei limiti del suo mandato, era pronta a fare qualunque cosa servisse per salvare l'euro, e che sarebbe bastato. Era la risposta al problema dell'euro descritto sopra: la banca centrale faceva capire che non avrebbe lasciato un Paese senza qualcuno disposto a comprarne i titoli. La sola promessa fece scendere gli spread di Italia e Spagna. Qui si chiude, idealmente, la lunga catena partita da un mutuo civetta in Florida.</p>
+<aside aria-label="In due righe" class="box recap"><p><strong class="label">In due righe</strong> – Le perdite sui mutui hanno fatto fallire o quasi le grandi banche, e gli Stati hanno dovuto salvarle con i soldi pubblici. Così la crisi è passata dalle banche agli Stati, fino a mettere in dubbio l'euro e a far cadere un governo italiano.</p></aside>
+<div class="box check"><p><strong class="label">Domanda di verifica:</strong> come fa una crisi dei mutui americani a diventare, tre anni dopo, un problema per i titoli di Stato italiani?</p><details><summary>Mostra la risposta</summary><p><strong>Risposta:</strong> attraverso una catena in quattro passaggi. Primo, le perdite sui titoli legati ai mutui colpiscono banche di tutto il mondo, molte europee, e il credito si blocca. Secondo, arriva la recessione: in Italia il PIL crolla di circa il 5% nel 2009, le entrate fiscali calano e il rapporto tra debito e PIL sale. Terzo, con il caso greco i mercati scoprono che anche uno Stato dell'euro può non ripagare, e cominciano a guardare con sospetto i Paesi con molto debito e poca crescita, come l'Italia. Quarto, gli investitori chiedono interessi più alti per comprare BTP: lo spread sale fino a 574 punti nel novembre 2011. Pagare più interessi peggiora i conti pubblici, e il circolo vizioso si ferma solo quando la BCE promette di intervenire.</p>
+</details></div>
+</section><section aria-labelledby="film-e-fatti"><h2 id="film-e-fatti">Dove il film si discosta dai fatti (o semplifica)</h2>
+<ul>
+<li><strong>Nomi cambiati.</strong> Tutti i protagonisti tranne Burry hanno nomi di fantasia (Baum, Vennett, Rickert, Geller, Shipley); il fondo Cornwall diventa "Brownfield". Restano veri i nomi dei soci di Eisman e di FrontPoint.</li>
+<li><strong>Il rischio Morgan Stanley è esagerato.</strong> Il regista Adam McKay ha ammesso che la minaccia di un fallimento di Morgan Stanley (che possedeva FrontPoint) è più drammatica nel film che nella realtà, per alzare la tensione.</li>
+<li><strong>Come Lippmann arrivò a FrontPoint.</strong> Nel film tutto nasce da una telefonata finita per sbaglio; secondo Lewis, Lippmann andò a presentare la sua idea a FrontPoint nel febbraio 2006.</li>
+<li><strong>Burry non ha "inventato" i CDS.</strong> Ha spinto le banche ad applicarli ai singoli titoli subprime, ma lo strumento esisteva già.</li>
+<li><strong>Personaggi inventati o compositi.</strong> L'analista di S&amp;P, l'investitore Lawrence Fields e alcune figure minori sono costruzioni narrative che riassumono situazioni descritte da Lewis o dalla FCIC.</li>
+<li><strong>Tempi compressi.</strong> Il film comprime eventi di anni in poche scene. Per esempio, la vendita delle posizioni di Cornwall avviene nell'estate 2007, mesi prima del crollo di Bear Stearns del marzo 2008.</li>
+<li><strong>Il rating della puntata di Cornwall.</strong> Il film parla di AAA; secondo Lewis si trattava di tranche AA.</li>
+<li><strong>Omissioni importanti.</strong> Lehman, AIG, Fannie Mae e Freddie Mac appaiono pochissimo, e quasi nulla si dice delle conseguenze globali. Chris Matthews, su Fortune (12 dicembre 2015), ha osservato che nel libro di Lewis, e quindi nel film, manca un'analisi delle cause macroeconomiche: tassi d'interesse, squilibri commerciali globali, afflussi di capitali esteri. Libro e film si concentrano su Wall Street.</li>
+<li><strong>Le spiegazioni con le celebrità</strong> (Robbie, Bourdain, Gomez e Thaler) sono un'invenzione del film, non del libro. Sono corrette nella sostanza ma semplificate: il CDO di Bourdain fa pensare a "scarti", mentre molti CDO contenevano piani BBB che erano a tutti gli effetti titoli con rating "investimento".</li>
+</ul>
+</section><section aria-labelledby="avvertenze"><h2 id="avvertenze">Avvertenze sulle cifre</h2>
+<ul>
+<li>Tutti i numeri etichettati <span class="badge badge--esempio"><span aria-hidden="true" class="badge__br">[</span>ESEMPIO INVENTATO<span aria-hidden="true" class="badge__br">]</span></span> sono illustrativi: premi dei CDS, percentuali delle tranche, tassi di interesse e prezzi di rivendita delle case servono a far capire il meccanismo, non a riprodurre contratti reali.</li>
+<li>I guadagni dei protagonisti vengono quasi tutti dal libro di Lewis e da fonti giornalistiche che lo riprendono; solo quello di Deutsche Bank è documentato in un rapporto ufficiale (Senato USA). Il profitto netto di FrontPoint non è pubblico.</li>
+<li>Sul deficit greco del 2009 le fonti riportano cifre diverse (12,5%, 12,7%, 13,6%, oltre il 15%) a seconda della revisione: qui è usata quella annunciata a ottobre 2009 e riportata da Eurostat.</li>
+<li>Il calo del PIL italiano nel 2009 è −5,0% nella stima Istat dell'epoca e circa −5,5% nelle serie riviste.</li>
+</ul>
+</section><section aria-labelledby="domande-finali"><h2 id="domande-finali">Le tre domande finali (con risposta modello)</h2>
+<div class="box check"><p><strong>1. Come ha fatto un mutuo americano a mettere in crisi banche di tutto il mondo?</strong></p><details><summary>Mostra la risposta modello</summary><p>Il mutuo non è rimasto alla banca che l'aveva concesso: è stato venduto, impacchettato con altri in titoli (MBS), tagliato a piani, rimpacchettato in CDO e moltiplicato con scommesse (CDS e CDO sintetici). Questi titoli sono stati comprati, spesso con soldi presi in prestito, da banche, fondi e assicurazioni di tutto il mondo. Quando i prezzi delle case sono scesi ovunque nello stesso momento, le perdite sono arrivate insieme in migliaia di bilanci. Le banche hanno smesso di fidarsi l'una dell'altra, alcune sono fallite (Lehman) e gli Stati hanno dovuto salvarle, indebitandosi.</p></details></div>
+<div class="box check"><p><strong>2. Perché le agenzie davano il voto massimo (AAA) a titoli rischiosi?</strong></p><details><summary>Mostra la risposta modello</summary><p>Per due motivi. Il primo era un errore: i loro modelli assumevano che i mutui di città diverse non andassero male tutti insieme, perché nei dati recenti i prezzi delle case non erano mai scesi in tutto il Paese contemporaneamente. Il secondo era un conflitto di interessi: le agenzie erano pagate dalle banche che emettevano i titoli, e un voto severo voleva dire perdere il cliente a favore di un concorrente. Risultato: l'83% dei titoli ipotecari valutati AAA da Moody's nel 2006 è stato poi declassato.</p></details></div>
+<div class="box check"><p><strong>3. Come hanno guadagnato i protagonisti e perché hanno rischiato di perdere tutto?</strong></p><details><summary>Mostra la risposta modello</summary><p>Hanno comprato credit default swap, contratti in cui si paga un piccolo premio ogni anno e si incassa molto se certi titoli legati ai mutui crollano. Quando i mutui sono andati male, quella protezione è diventata preziosissima e l'hanno rivenduta o incassata: centinaia di milioni per Burry e Cornwall, circa 1,5 miliardi per Deutsche Bank. Hanno rischiato di perdere tutto perché per anni hanno pagato premi senza guadagnare, i loro investitori volevano ritirare i soldi, le banche non riconoscevano le perdite nei prezzi e quelle stesse banche, che dovevano pagarli, rischiavano di fallire prima di farlo.</p></details></div>
+</section><section aria-labelledby="fonti"><h2 id="fonti">Fonti principali</h2>
+<ul>
+<li>Financial Crisis Inquiry Commission, <a href="https://fraser.stlouisfed.org/archival-collection/financial-crisis-inquiry-commission-4967/final-report-financial-crisis-inquiry-commission-section-iii-financial-crisis-draft-530142/fulltext">Final Report (2011)</a></li>
+<li>Michael Lewis, <em>The Big Short</em> (2010)</li>
+<li>S&amp;P Dow Jones Indices, <a href="https://press.spglobal.com/2023-04-25-S-P-CORELOGIC-CASE-SHILLER-INDEX-DECLINES-MODERATED-IN-FEBRUARY">indice Case-Shiller</a></li>
+<li>BCE, <a href="https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp1056.pdf">Working Paper 1056 (2009)</a> e BRI, <a href="https://www.bis.org/publ/qtrpdf/r_qt0806u.htm">Quarterly Review giugno 2008</a> sull'indice ABX</li>
+<li>SEC, <a href="https://www.sec.gov/Archives/edgar/data/0000777001/000089882208000286/pressrelease.htm">comunicato JPMorgan-Bear Stearns</a>; Federal Reserve, <a href="https://www.federalreserve.gov/monetarypolicy/files/129bearstearnsacquisitionloan.pdf">prestito Bear Stearns</a> e <a href="https://www.federalreserve.gov/newsevents/pressreleases/other20080916a.htm">AIG</a></li>
+<li>FHFA, <a href="https://www.fhfa.gov/news/speech/the-conservatorships-of-fannie-mae-and-freddie-mac-current-and-future-operations">conservatorship di Fannie Mae e Freddie Mac</a></li>
+<li>BLS, <a href="https://www.bls.gov/spotlight/2012/recession/pdf/recession_bls_spotlight.pdf">la recessione 2007-2009</a></li>
+<li>FMI, <a href="https://www.imf.org/en/news/articles/2015/09/14/01/49/pr10176">salvataggio della Grecia (2010)</a></li>
+<li>Il Post, <a href="https://www.ilpost.it/2015/03/07/storia-spread/">storia dello spread</a></li>
+<li>Fed di St. Louis, <a href="https://fraser.stlouisfed.org/timeline/financial-crisis">cronologia della crisi finanziaria</a></li>
+</ul>
+</section>
+    </main>
+  </div>
+  <a class="to-index" href="#indice">↑ Indice</a>
+</body>
+</html>
