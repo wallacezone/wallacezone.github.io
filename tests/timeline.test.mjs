@@ -311,3 +311,26 @@ test('26. Adozione di un figlio con disabilità: i permessi decorrono dall\'ingr
   assert.match(diritto(r, 'prolungamento').dettaglio, /restano 1080 giorni/);
   assert.equal(diritto(r, 'prolungamento').al, '2033-04-30');
 });
+
+// ---------- Area 4: bonus ----------
+
+test('27. Bonus nuovi nati: domanda entro 120 giorni, solo per eventi del 2026 (circ. INPS 45/2026)', () => {
+  // Nato 16/7/2026 -> ultimo giorno 13/11/2026 (16/7 + 120 giorni). Oggi 25/11/2026 è scaduto.
+  const r = M.calcola(input({ dataNascita: '2026-07-16' }), P);
+  const b = diritto(r, 'bonus-nuovi-nati');
+  assert.deepEqual([b.al, b.stato], ['2026-11-13', 'scaduto']);
+  // Nato 1/11/2026 -> fino al 1/3/2027, attivo.
+  const r2 = M.calcola(input({ dataNascita: '2026-11-01' }), P);
+  assert.deepEqual([diritto(r2, 'bonus-nuovi-nati').al, diritto(r2, 'bonus-nuovi-nati').stato], ['2027-03-01', 'attivo']);
+  // Nato nel 2025: la circolare 45/2026 riguarda gli eventi del 2026 -> nessuna voce.
+  assert.equal(diritto(M.calcola(input({ dataNascita: '2025-12-31' }), P), 'bonus-nuovi-nati'), undefined);
+});
+
+test('28. Assegno unico +50% fino al primo compleanno (circ. INPS 7/2026)', () => {
+  // Nato 1/3/2026 -> maggiorazione fino al 28/2/2027.
+  const r = M.calcola(input({ dataNascita: '2026-03-01' }), P);
+  assert.equal(diritto(r, 'assegno-unico-primo-anno').al, '2027-02-28');
+  // Adozione di un bambino di 7 anni: nessuna maggiorazione (non ha meno di un anno).
+  const a = M.calcola(input({ evento: 'adozione_nazionale', dataIngresso: '2026-04-01', dataNascita: '2019-05-01' }), P);
+  assert.equal(diritto(a, 'assegno-unico-primo-anno'), undefined);
+});

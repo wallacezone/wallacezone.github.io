@@ -2,7 +2,7 @@
 
 Guida: [`guida_diritti_medico_genitore.html`](../guida_diritti_medico_genitore.html). Le regole e i parametri della pagina stanno nel JSON `<script id="dati">`; questa tabella dice da dove viene ciascuna.
 
-Data di verifica di tutte le righe: **25/11/2026**, salvo diversa indicazione.
+Data di verifica: **25/11/2026** per le aree 1-3, **26/11/2026** per l'area 4.
 
 Abbreviazioni: TU = D.Lgs. 151/2001; CCNL 2024 = CCNL Area Sanità 23/1/2024 (triennio 2019-2021); CCNL 2026 = CCNL Area Sanità 27/2/2026 (triennio 2022-2024); CCNL 2019 = CCNL Area Sanità 19/12/2019 (triennio 2016-2018).
 
@@ -82,9 +82,30 @@ Per ogni materia ho controllato quale CCNL la regola oggi. Il CCNL 2026 (art. 3)
 | `adozione-maternita` | TU art. 26 cc. 1-6-bis; art. 31; CCNL 2024 art. 41 c. 2 | D.Lgs. 80/2015 | Provvedimento di adozione/affidamento; certificazione ente per l'estero | Ingresso in famiglia / in Italia | 5 mesi (affidamento 3) entro 5 mesi. **Da verificare**: CCNL 100% o legge 80% |
 | `adozione-altri` | TU art. 27-bis c. 4; art. 36 cc. 1-3; art. 45 cc. 1, 2, 2-bis; art. 50 cc. 1-3; art. 53 c. 2 lett. b-bis; art. 54 c. 9; circ. INPS 122/2022 par. 2.2; msg. INPS 251/2026 | L. 199/2025 (14 anni dall'ingresso) | — | Ingresso; nascita (limite 18 anni) | **Da verificare**: art. 50 c. 2 non aggiornato (8 anni) |
 
-## Area 4 — Previdenza, ENPAM e bonus (non completata)
+## Area 4 — Previdenza, ENPAM e bonus (completa, verificata il 26/11/2026)
 
-Non verificata in questa versione e quindi assente dalla pagina. Un primo riscontro utile per chi la riprenderà: l'art. 71 c. 2 del TU chiede alla libera professionista, per avere l'indennità di maternità della cassa (ENPAM), di dichiarare di non avere diritto all'indennità del Capo III (lavoratrici dipendenti): la dirigente SSN in maternità non dovrebbe quindi avere l'indennità ENPAM per lo stesso evento. Va confermato sul regolamento ENPAM vigente, insieme a sussidi, bonus, contribuzione, riscatti, ricongiunzione/cumulo/totalizzazione, assegno unico e bonus nido.
+| Regola (id) | Fonte e punto | Letta da | Condizioni | Data che decide | Regime |
+|---|---|---|---|---|---|
+| `enpam-maternita` | Regolamento ENPAM genitorialità artt. 2, 5, 6; TU artt. 70-71; pagina ENPAM Maternità; pagina Importi | PDF e pagine ufficiali ENPAM; Normattiva | Esclusa se c'è trattamento di legge o contratto per lo stesso evento (art. 6 c. 1); integrazione fino al minimo e a 5 mensilità (art. 6 c. 2) | Data effettiva del parto | Minimo 6.045,10 €, massimo 30.225,50 € (2026) |
+| `enpam-paternita-rischio` | Regolamento ENPAM artt. 7, 8; TU art. 70 c. 3-ter | PDF ENPAM; Normattiva | Paternità solo con madre libera professionista; rischio solo senza altra tutela | Nascita / evento | Da marzo 2020 |
+| `enpam-sussidio` | Bando ENPAM 2026 artt. 3-5; Regolamento art. 10; pagina Importi | PDF ufficiale ENPAM | Reddito familiare medio triennale ≤ 62.753,60 € + 7.844,20 € per familiare; Quota B: 3 anni in 10, uno nel 2022-2024 | Nascita/ingresso; date del bando | Bando 2026: 2.000 € + 3.000 €; domande 13/4-10/9/2026. **Da verificare**: bando 2027 |
+| `enpam-quote` | Pagine ENPAM Quota A, libera professione, contributo volontario; Regolamento art. 9 | Sito ENPAM | — | Età | Importi della pagina al 26/11/2026 (anno non indicato sulla pagina) |
+| `figurativi` | TU artt. 25, 35 cc. 1-4, 42 c. 5-ter, 44, 49 | Normattiva | Dipendenti pubblici: figurativa per la differenza (art. 35 c. 3) | Data del congedo | **Da verificare**: malattia figlio 8-14 anni (art. 49 non aggiornato) |
+| `riscatti` | TU art. 25 c. 2; art. 35 c. 5 | Normattiva | 5 anni di contributi da lavoro al momento della domanda | Data della domanda | Invariato |
+| `ricongiunzione` | L. 45/1990 artt. 1-2; D.Lgs. 42/2006 art. 1; circ. INPS 140/2017; pagina ENPAM Ricongiunzione | Normattiva; PDF INPS; sito ENPAM | Cumulo: non titolari di pensione diretta; totalizzazione: 65+20 o 40 anni | Domanda / pensione | Cumulo con le casse dal 1/1/2017. Il testo della L. 228/2012 c. 239 non l'ho letto direttamente (Normattiva non carica l'art. 1): riportato tramite circ. INPS 140/2017 |
+| `assegno-unico` | Circ. INPS 7/2026 par. 1-3 e allegato 1 | PDF ufficiali INPS | ISEE neutralizzato dall'AUU | ISEE del mese | 2026: 203,8 → 58,3 € per figlio minore; +50% sotto 1 anno |
+| `bonus-nido` | Circ. INPS 29/2026 par. 2-3 | PDF ufficiale INPS | Figlio sotto 3 anni; non cumulabile con la detrazione | Nascita prima/dal 2024; ISEE | 3.600/1.500 € (nati dal 2024); 3.000/2.500/1.500 € (prima) |
+| `bonus-nuovi-nati` | Circ. INPS 45/2026 par. 2-4 | PDF ufficiale INPS | ISEE ≤ 40.000 €; residenza | Evento nel 2026; 120 giorni | L. 207/2024 cc. 206-208 |
+| `bonus-mamme` | Circ. INPS 106/2026 par. 1-4; circ. INPS 27/2024 par. 1-2 | Copie dei PDF INPS (informazionefiscale.it, dirittobancario.it): non ho trovato l'URL ufficiale dei due PDF | Bonus: redditi da lavoro ≤ 40.000 €; esonero: tempo indeterminato, pubblico o privato, 3 figli | Mesi di lavoro 2026 | Bonus 60 €/mese (2026); esonero fino al 31/12/2026 |
+
+### Combinazione ENPAM ↔ Azienda
+
+| Prestazione | Azienda (dirigente SSN) | ENPAM | Combinazione |
+|---|---|---|---|
+| Maternità | Retribuzione intera 5 mesi | Indennità 80% di 5/12 del reddito ENPAM | Non cumulabili; ENPAM integra solo fino al minimo legale (Regolamento art. 6 c. 2) |
+| Gravidanza a rischio | Retribuzione intera (interdizione art. 17) | Indennità fino a 6 mensilità | Non cumulabili (art. 8 c. 2) |
+| Paternità | 10 giorni al 100%; alternativa come maternità | Solo se la madre è libera professionista | Indipendenti |
+| Sussidio nuovi nati | — | Bando annuale | Nessuna incompatibilità dichiarata da ENPAM (bando 2026 art. 4) |
 
 ## Confronto a campione (5 regole)
 
