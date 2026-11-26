@@ -4,3 +4,5 @@
 exclude:
   - CLAUDE.md
   - README.md
+  - docs/
+  - tests/
